@@ -3,6 +3,7 @@ package zhanglubin.legend.utils
 	import flash.display.DisplayObject;
 	import flash.filters.ColorMatrixFilter;
 	import flash.filters.ConvolutionFilter;
+	import flash.filters.DropShadowFilter;
 	import flash.filters.GlowFilter;
 	
 	/**
@@ -20,6 +21,10 @@ package zhanglubin.legend.utils
 		 *光晕
 		 */
 		public static const SUN:Array = [new GlowFilter()];
+		/**
+		 *阴影
+		 */
+		public static const SHADOW:Array = [new DropShadowFilter(4,60,0x000000,0.4)];
 		/**
 		 *灰色
 		 */

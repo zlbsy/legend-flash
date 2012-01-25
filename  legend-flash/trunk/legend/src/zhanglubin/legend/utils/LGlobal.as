@@ -12,6 +12,7 @@ package zhanglubin.legend.utils
 	
 	import zhanglubin.legend.components.LLabel;
 	import zhanglubin.legend.display.LBitmap;
+	import zhanglubin.legend.display.LButton;
 	import zhanglubin.legend.display.LSprite;
 	import zhanglubin.legend.scripts.LScript;
 
@@ -114,6 +115,32 @@ package zhanglubin.legend.utils
 			bit.mask = txt;
 			sp.filters = [new GlowFilter(filterColor,1,2,2)];
 			return sp;
+		}
+		public static function getModelButton(type:int,typeArray:Array):LButton{
+			
+			//typeArray [x,y,w,h,text,size,color]
+			var color:int = 0xF700FF;
+			if(typeArray.length >= 7)color = typeArray[6];
+			var upBtnSprite:LSprite = new LSprite();
+			LDisplay.drawRectGradient(upBtnSprite.graphics,[typeArray[0] + 1,typeArray[1] + 1,typeArray[2] - 2,typeArray[3] - 2],[0xcccccc,color]);
+			LDisplay.drawRect(upBtnSprite.graphics,[typeArray[0],typeArray[1],typeArray[2],typeArray[3]],false,0,1,2);
+			var upBitmapdata:BitmapData = LDisplay.displayToBitmap(upBtnSprite);
+			
+			var onBtnSprite:LSprite = new LSprite();
+			LDisplay.drawRectGradient(onBtnSprite.graphics,[typeArray[0] + 1,typeArray[1] + 1,typeArray[2] - 2,typeArray[3] - 2],[0xffffff,color]);
+			LDisplay.drawRect(onBtnSprite.graphics,[typeArray[0],typeArray[1],typeArray[2],typeArray[3]],false,0,1,2);
+			var onBitmapdata:BitmapData = LDisplay.displayToBitmap(onBtnSprite);
+			
+			var downBtnSprite:LSprite = new LSprite();
+			LDisplay.drawRectGradient(downBtnSprite.graphics,[typeArray[0] + 3,typeArray[1] + 3,typeArray[2] - 2,typeArray[3] - 2],[0xffffff,color]);
+			LDisplay.drawRect(downBtnSprite.graphics,[typeArray[0] + 2,typeArray[1] + 2,typeArray[2],typeArray[3]],false,0,1,2);
+			var downBitmapdata:BitmapData = LDisplay.displayToBitmap(downBtnSprite);
+			
+			var btnApp:LButton = new LButton(upBitmapdata,onBitmapdata,downBitmapdata);
+			btnApp.filters = LFilter.SHADOW;
+			btnApp.labelSize = typeArray[5];
+			btnApp.label = typeArray[4];
+			return btnApp;
 		}
 	}
 }

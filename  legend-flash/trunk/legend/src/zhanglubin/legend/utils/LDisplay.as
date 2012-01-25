@@ -2,6 +2,7 @@ package zhanglubin.legend.utils
 {
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
+	import flash.display.GradientType;
 	import flash.display.Graphics;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
@@ -76,6 +77,15 @@ package zhanglubin.legend.utils
 			if(fill){
 				_target.endFill();
 			}
+		}
+		public static function drawRectGradient(_target:Graphics,pointArray:Array,colors : Array,alphas : Array = null,ratios : Array = null):void{
+			if(alphas == null)alphas = [1,1];
+			if(ratios == null)ratios = [0,255];
+			var matrix : Matrix = new Matrix();
+			matrix.createGradientBox(pointArray[2],pointArray[3], Math.PI / 2, 0, 0);
+			_target.beginGradientFill(GradientType.LINEAR, colors, alphas, ratios, matrix);
+			_target.drawRect(pointArray[0],pointArray[1],pointArray[2],pointArray[3]);
+			_target.endFill();
 		}
 		public static function drawLine(_target:Graphics,pointArray:Array,thickness:Number = 1,color:uint = 0x000000,alpha:Number = 1):void{
 			_target.lineStyle(thickness,color,alpha);
