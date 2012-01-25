@@ -37,6 +37,7 @@ package zhanglubin.legend.display
 		private var _labelUp:LLabel
 		private var _value:Object;
 		private var _labelColor:String = "#000000";
+		private var _labelSize:int = 15;
 		/**
 		 * legend按钮类
 		 * 
@@ -100,6 +101,9 @@ package zhanglubin.legend.display
 		public function set labelColor(value:String):void{
 			_labelColor = value;
 		}
+		public function set labelSize(value:int):void{
+			_labelSize = value;
+		}
 		public function set label(value:String):void{
 			if(this._labelUp == null){
 				this._labelUp = this.creatLabel(value);
@@ -122,7 +126,7 @@ package zhanglubin.legend.display
 		}
 		private function creatLabel(value:String):LLabel{
 			var label:LLabel = new LLabel();
-			label.htmlText = "<font color='" + this._labelColor + "'><b>" + value + "</b></font>";
+			label.htmlText = "<font color='" + this._labelColor + "' size = '" + _labelSize + "'><b>" + value + "</b></font>";
 			return label;
 		}
 		private function addLabel():void{

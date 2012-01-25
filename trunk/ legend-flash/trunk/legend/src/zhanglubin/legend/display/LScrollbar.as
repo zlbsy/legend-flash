@@ -89,6 +89,13 @@ package zhanglubin.legend.display
 				moveRight();
 			}
 		}
+		public function get scrollY():int{
+			return this._showObject.y;
+		}
+		public function set scrollY(value:int):void{
+			this._showObject.y = value;
+			setScroll_h();
+		}
 		/**
 		 * 滚动条到顶部
 		 */
