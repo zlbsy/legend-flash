@@ -139,6 +139,9 @@ package zhanglubin.legend.scripts
 				case "Radio":
 					ScriptRadio.analysis(lineValue);
 					break;
+				case "ComboBox":
+					ScriptComboBox.analysis(lineValue);
+					break;
 				case "Text":
 					ScriptText.analysis(lineValue);
 					break;
@@ -150,6 +153,9 @@ package zhanglubin.legend.scripts
 					break;
 				case "Mark":
 					ScriptMark.analysis(lineValue);
+					break;
+				case "Animation":
+					ScriptAnimation.analysis(lineValue);
 					break;
 				default:
 					if(lineValue.indexOf("if") >= 0){

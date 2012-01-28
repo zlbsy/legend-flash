@@ -13,6 +13,8 @@ package zhanglubin.legend.scripts
 		private var _textList:Array;
 		private var _varList:Array;
 		private var _radioList:Array;
+		private var _comboBoxList:Array;
+		private var _animationList:Array;
 		public function LScriptArray()
 		{
 			_imgList = new Array();
@@ -24,6 +26,28 @@ package zhanglubin.legend.scripts
 			_swfList = new Array();
 			_layerList = new Array();
 			_radioList = new Array();
+			_comboBoxList = new Array();
+			_animationList = new Array();
+		}
+
+		public function get animationList():Array
+		{
+			return _animationList;
+		}
+
+		public function set animationList(value:Array):void
+		{
+			_animationList = value;
+		}
+
+		public function get comboBoxList():Array
+		{
+			return _comboBoxList;
+		}
+
+		public function set comboBoxList(value:Array):void
+		{
+			_comboBoxList = value;
 		}
 
 		public function get radioList():Array

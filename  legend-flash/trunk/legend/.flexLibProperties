@@ -2,6 +2,7 @@
 <flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
   <includeClasses>
     <classEntry path="zhanglubin.legend.components.LComboBox"/>
+    <classEntry path="zhanglubin.legend.objects.LAnimationMovie"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
