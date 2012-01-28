@@ -25,6 +25,7 @@ package zhanglubin.legend.display
 		private var _distance:uint;
 		private var _speed:uint;
 		private var _wVisible:Boolean;
+		private var _lineSprite:LSprite;
 		/**
 		 * legend滚动条显示类
 		 * 
@@ -52,6 +53,18 @@ package zhanglubin.legend.display
 			this._scrollWidth = scrollWidth;
 			this._tager = new LCoordinate(0,0);
 			this.addEventListener(Event.ENTER_FRAME,onFrame);
+		}
+		public function set line(value:Boolean):void{
+			if(value){
+				if(_lineSprite != null)return;
+				_lineSprite = new LSprite();
+				LDisplay.drawRect(_lineSprite.graphics,[0,0,_mask.width,_mask.height],false,0x999999,1,2);
+				this.addChild(_lineSprite);
+			}else{
+				if(_lineSprite == null)return;
+				this.removeChild(_lineSprite);
+				_lineSprite = null;
+			}
 		}
 		/**
 		 * 贞事件

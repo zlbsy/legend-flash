@@ -182,6 +182,7 @@ package zhanglubin.legend.objects
 					_currentframe--;
 				}
 			}
+			trace(_currentframe);
 			_dataBMP = _dataArray[_rowIndex][_currentframe];
 		}
 		private function checkEvent(playMode:uint):void{

@@ -22,8 +22,14 @@ package zhanglubin.legend.scripts.analysis
 		{
 		}
 		/**
-		 * 脚本解析
-		 * 按钮
+		 * 脚本解析<br />
+		 * radio按钮<br />
+		 * Radio.add(-,radio01,0,[0,10,10,select,unselect,onover],[1,100,100,select,unselect,onover],[2,200,100,select,unselect,onover]...);<br />
+		 * function radiochange();<br />
+		 * Radio.getValue(radio01,radio01value);<br />
+		 * Text.labelChange(test,＠radio01value);<br />
+		 * endfunction;<br />
+		 * Radio.valuechange(radio01,radiochange);<br />
 		 * 
 		 * @param 脚本信息
 		 */
@@ -53,7 +59,6 @@ package zhanglubin.legend.scripts.analysis
 		}
 		/**
 		 * 脚本解析
-		 * 按钮事件，鼠标按下
 		 * 
 		 * @param 脚本信息
 		 */
@@ -111,7 +116,6 @@ package zhanglubin.legend.scripts.analysis
 		}
 		/**
 		 * 脚本解析
-		 * 添加层
 		 * Radio.remove(name);
 		 * @param 脚本信息
 		 */
