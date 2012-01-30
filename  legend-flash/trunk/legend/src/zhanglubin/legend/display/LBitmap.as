@@ -6,6 +6,7 @@ package zhanglubin.legend.display
 	
 	import zhanglubin.legend.core.die.IDie;
 	import zhanglubin.legend.core.events.IEventListener;
+	import zhanglubin.legend.utils.LGlobal;
 	import zhanglubin.legend.utils.math.LCoordinate;
 	
 	/**
@@ -50,6 +51,7 @@ package zhanglubin.legend.display
 		public function die():void{
 			//移除所有事件
 			this.removeAllEventListener();
+			if(LGlobal.bitmapDataDispose)this.bitmapData.dispose();
 		}
 		/**
 		 * 从父级移出函数

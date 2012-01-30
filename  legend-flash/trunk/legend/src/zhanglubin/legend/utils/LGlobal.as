@@ -15,7 +15,7 @@ package zhanglubin.legend.utils
 	import zhanglubin.legend.display.LButton;
 	import zhanglubin.legend.display.LSprite;
 	import zhanglubin.legend.scripts.LScript;
-
+ 
 	/**
 	 * legend Object操作类
 	 * 
@@ -33,6 +33,7 @@ package zhanglubin.legend.utils
 		}
 		public static var stage:Stage;
 		public static var script:LScript;
+		public static var bitmapDataDispose:Boolean;
 		/**
 		 * legend 得到.swf文件中的图片数据
 		 * 使用此方法时，swf文件发布的时候，必须在第一贞添加
