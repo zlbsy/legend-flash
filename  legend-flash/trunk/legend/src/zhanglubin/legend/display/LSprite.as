@@ -1,5 +1,6 @@
 package zhanglubin.legend.display
 {
+	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 	
@@ -14,11 +15,34 @@ package zhanglubin.legend.display
 	 */
 	public class LSprite extends BaseSprite
 	{
+		private var _disposeList:Array = new Array();
 		/**
 		 * legend显示类
 		 */
 		public function LSprite() {
 			super();
+		}
+		/**
+		 * 待销毁bitmapdata储存器
+		 */
+		public function get disposeList():Array
+		{
+			return _disposeList;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set disposeList(value:Array):void
+		{
+			_disposeList = value;
+		}
+		override public function die():void{
+			super.die();
+			while(this._disposeList.length > 0){
+				(this._disposeList[0] as BitmapData).dispose();
+				this._disposeList.shift();
+			}
 		}
 	}
 }

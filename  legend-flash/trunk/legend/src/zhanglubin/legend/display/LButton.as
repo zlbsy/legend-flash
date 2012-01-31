@@ -38,6 +38,7 @@ package zhanglubin.legend.display
 		private var _value:Object;
 		private var _labelColor:String = "#000000";
 		private var _labelSize:int = 15;
+		private var _disposeList:Array;
 		/**
 		 * legend按钮类
 		 * 
@@ -49,11 +50,27 @@ package zhanglubin.legend.display
 		{
 			super();
 			_eventList = new Array();
+			this._disposeList = new Array();
 			this.createUpState(up);
 			this.createOverState(over,up);
 			this.createDownState(down,up);
 			
 			this.hitTestState = this._upState;
+		}
+		/**
+		 * 待销毁bitmapdata储存器
+		 */
+		public function get disposeList():Array
+		{
+			return _disposeList;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set disposeList(value:Array):void
+		{
+			_disposeList = value;
 		}
 
 		public function get value():Object
@@ -187,6 +204,10 @@ package zhanglubin.legend.display
 			this.removeAllChild();
 			//移除所有事件
 			this.removeAllEventListener();
+			while(this._disposeList.length > 0){
+				(this._disposeList[0] as BitmapData).dispose();
+				this._disposeList.shift();
+			}
 		}
 		override public function addEventListener(type:String, listener:Function, useCapture:Boolean=false, priority:int=0, useWeakReference:Boolean=false):void{
 			if(this._eventList == null)return;
