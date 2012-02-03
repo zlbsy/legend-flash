@@ -5,9 +5,9 @@ package zhanglubin.legend.events
 	public class LEvent extends Event
 	{
 		/**
-		 * LRadio変更
+		 * LRadio&LComboBox的值変更
 		 */
-		public static const RADIO_VALUE_CHANGE:String = "radio_value_change";
+		public static const CHANGE_VALUE:String = "change_value";
 		/**
 		 * LAnimation显示完一行图片后所触发的事件
 		 */

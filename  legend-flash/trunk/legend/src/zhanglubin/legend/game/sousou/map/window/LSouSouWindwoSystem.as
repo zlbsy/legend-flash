@@ -96,7 +96,7 @@ package zhanglubin.legend.game.sousou.map.window
 					LGlobal.script.scriptArray.varList[LSouSouObject.SPEED_FLAG] = LSouSouObject.FAST;
 				}
 			}
-			radioSpeed.addEventListener(LEvent.RADIO_VALUE_CHANGE,fun);
+			radioSpeed.addEventListener(LEvent.CHANGE_VALUE,fun);
 			this.addChild(radioSpeed);
 			
 			
@@ -150,7 +150,7 @@ package zhanglubin.legend.game.sousou.map.window
 					LSouSouObject.sound.analysis(SCRIPT_SOUND_OFF);
 				}
 			}
-			radioSound.addEventListener(LEvent.RADIO_VALUE_CHANGE,fun);
+			radioSound.addEventListener(LEvent.CHANGE_VALUE,fun);
 			this.addChild(radioSound);
 			
 			

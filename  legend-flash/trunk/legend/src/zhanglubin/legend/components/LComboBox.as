@@ -10,6 +10,7 @@ package zhanglubin.legend.components
 	import zhanglubin.legend.display.LButton;
 	import zhanglubin.legend.display.LScrollbar;
 	import zhanglubin.legend.display.LSprite;
+	import zhanglubin.legend.events.LEvent;
 	import zhanglubin.legend.utils.LDisplay;
 	import zhanglubin.legend.utils.LFilter;
 	
@@ -56,6 +57,7 @@ package zhanglubin.legend.components
 			_button = new LSprite();
 			if(_buttonBitmapdata == null){
 				_buttonBitmapdata = new BitmapData(20,20);
+				LDisplay.drawRect(buttonSprite.graphics,[_back.width,0,_buttonBitmapdata.width,_buttonBitmapdata.height],true,0xffffff,1,1);
 				LDisplay.drawTriangle(buttonSprite.graphics,[_back.width + 3,7,_back.width + 17,7,_back.width + 10,_back.height - 5],true);
 				LDisplay.drawRect(buttonSprite.graphics,[_back.width,0,_buttonBitmapdata.width,_back.height],false,0x999999,1,1);
 				LDisplay.drawRect(buttonSprite.graphics,[0,0,_back.width+_buttonBitmapdata.width,_back.height],true,0x000000,0);
@@ -172,6 +174,7 @@ package zhanglubin.legend.components
 		 * 鼠标按下
 		 */
 		private function ondown(event:MouseEvent):void{
+			(this.parent as LSprite).setChildIndex(this,(this.parent as LSprite).numChildren - 1);
 			LFilter.setBrightness(_button,0.5);
 		}
 		/**
@@ -217,11 +220,15 @@ package zhanglubin.legend.components
 			var index:int = int(event.currentTarget.mouseY / _back.height);
 			if(index >= _childList.length)return;
 			_mystage.removeEventListener(MouseEvent.ROLL_OUT,hiddenChild);
+			var oldSelectIndex:int = _selectIndex;
 			_selectIndex = index;
 			_backLabel.htmlText = "<font size='"+_textsize+"'>"+_childList[index][0]+"</font>";
 			_childSprite.removeAllEventListener();
 			_childSprite.removeChild(_childSelect);
 			_childScroll.visible = false;
+			if(_selectIndex != oldSelectIndex){
+				this.dispatchEvent(new LEvent(LEvent.CHANGE_VALUE));
+			}
 		}
 		/**
 		 * 调整选择条出现位置
