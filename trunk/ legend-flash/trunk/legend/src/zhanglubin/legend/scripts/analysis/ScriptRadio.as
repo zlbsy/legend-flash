@@ -72,7 +72,7 @@ package zhanglubin.legend.scripts.analysis
 			var fun:Function = function(event:Event):void{
 				ScriptFunction.analysis("Call." + funStr + "();");
 			}
-			radio.addEventListener(LEvent.RADIO_VALUE_CHANGE,fun);
+			radio.addEventListener(LEvent.CHANGE_VALUE,fun);
 			
 			script.analysis();
 		}

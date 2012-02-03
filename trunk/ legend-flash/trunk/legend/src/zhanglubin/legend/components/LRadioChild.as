@@ -37,7 +37,7 @@ package zhanglubin.legend.components
 				_bitmap.visible = true;
 				_button.visible = false;
 				
-				(this.parent as LRadio).dispatchEvent(new LEvent(LEvent.RADIO_VALUE_CHANGE));
+				(this.parent as LRadio).dispatchEvent(new LEvent(LEvent.CHANGE_VALUE));
 			}else{
 				_bitmap.visible = false;
 				_button.visible = true;
