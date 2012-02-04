@@ -87,6 +87,14 @@ package zhanglubin.legend.utils
 			_target.drawRect(pointArray[0],pointArray[1],pointArray[2],pointArray[3]);
 			_target.endFill();
 		}
+		/**
+		 * 画线
+		 * @param _target
+		 * @param pointArray [startx,starty,endx,endy]
+		 * @param thickness
+		 * @param color
+		 * @param alpha
+		 */
 		public static function drawLine(_target:Graphics,pointArray:Array,thickness:Number = 1,color:uint = 0x000000,alpha:Number = 1):void{
 			_target.lineStyle(thickness,color,alpha);
 			_target.moveTo(pointArray[0],pointArray[1]);
