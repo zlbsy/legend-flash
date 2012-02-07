@@ -3,6 +3,14 @@ package zhanglubin.legend.utils
 
 	public class LString
 	{
+		public static function getRandWord(l:int):String{
+			var randStr:String = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghigklmnopqrstuvwxyz0123456789_";
+			var value:String = "";
+			while(value.length<l){
+				value += randStr.substr(int(randStr.length*Math.random()),1);
+			}
+			return value;
+		}
 		public static function trim(str:String):String
 		{
 			if (str == null) return '';

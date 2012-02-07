@@ -39,8 +39,8 @@ package zhanglubin.legend.display
 		}
 		override public function die():void{
 			super.die();
-			while(this._disposeList.length > 0){
-				(this._disposeList[0] as BitmapData).dispose();
+			while(this.disposeList != null && this._disposeList.length > 0){
+				if(this._disposeList[0] is BitmapData)(this._disposeList[0] as BitmapData).dispose();
 				this._disposeList.shift();
 			}
 		}
