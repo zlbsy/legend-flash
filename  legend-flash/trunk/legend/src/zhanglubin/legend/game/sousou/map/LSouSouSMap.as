@@ -665,6 +665,7 @@ package zhanglubin.legend.game.sousou.map
 			var statusBit:BitmapData;
 			var meffShow:LSouSouMeffShow,i:int;
 			_drawLayer.graphics.clear();
+
 			/**画地图*/
 			this._map.bitmapData.copyPixels(_mapBitmapData,new Rectangle(-_mapCoordinate.x,-_mapCoordinate.y,SCREEN_WIDTH,SCREEN_HEIGHT),new Point(0,0));
 			/*
@@ -699,6 +700,7 @@ package zhanglubin.legend.game.sousou.map
 								_characterS.y + _mapCoordinate.y + (_nodeLength - _characterS.height)/2));
 				}
 			}
+
 			for each(_characterS in _enemylist){
 				if(!_characterS.visible)continue;
 				_characterS.onFrame();
@@ -754,7 +756,6 @@ package zhanglubin.legend.game.sousou.map
 				_meff.onFrame();
 				var meffarr:Array;
 				for each(meffarr in _meff.animationList){
-					trace(meffarr,meffarr[0].dataBMP);
 					this._map.bitmapData.copyPixels(meffarr[0].dataBMP,meffarr[0].dataBMP.rect,
 						new Point(_meff.x + meffarr[2] + _mapCoordinate.x,_meff.y + meffarr[3] + _mapCoordinate.y));
 				}
@@ -1233,9 +1234,22 @@ package zhanglubin.legend.game.sousou.map
 					LGlobal.script.scriptLayer.addChild(window);
 					return;
 				}
-				//trace("map = ",this._mapData[intY][intX],LSouSouObject.terrain["Terrain"+this._mapData[intY][intX]],LSouSouObject.terrain["Terrain"+this._mapData[intY][intX]].@meff);
-				//trace("_strategy.type="+_strategy.Type);
-				charaList = _enemylist;
+				
+				if(_strategy.Belong == 1){
+					charaList = _enemylist;
+				}else if(_strategy.Belong == 0){
+					
+					charaList = new Vector.<LSouSouCharacterS>();
+					
+					for each(_characterS in this._ourlist){
+						if(!_characterS.visible || _characterS.member.troops == 0)continue;
+						charaList.push(_characterS);
+					}
+					for each(_characterS in this._friendlist){
+						if(!_characterS.visible || _characterS.member.troops == 0)continue;
+						charaList.push(_characterS);
+					}
+				}
 				/*
 				for each(_characterS in this._ourlist){
 				}
@@ -1252,12 +1266,14 @@ package zhanglubin.legend.game.sousou.map
 							nodeArr = nodeStr.split(",");
 							if(LSouSouObject.charaSNow.locationX  + int(nodeArr[0]) == _characterS.locationX && 
 								LSouSouObject.charaSNow.locationY + int( nodeArr[1]) == _characterS.locationY){
-								LSouSouObject.sMap.cancel_menu.removeAllEventListener();
-								LSouSouObject.sMap.cancel_menu.visible = false;
-								LSouSouObject.charaSNow.targetCharacter = _characterS;
-								LSouSouObject.charaSNow.strategyAttackCalculate();
-								//_meff = new LSouSouMeff(_strategy);
-								//_strategy = null;
+								if(!LSouSouCalculate.belongMeff(_characterS)){
+									return;
+								}else{
+									LSouSouObject.sMap.cancel_menu.removeAllEventListener();
+									LSouSouObject.sMap.cancel_menu.visible = false;
+									LSouSouObject.charaSNow.targetCharacter = _characterS;
+									LSouSouObject.charaSNow.strategyAttackCalculate();
+								}
 								break;
 							}
 						}

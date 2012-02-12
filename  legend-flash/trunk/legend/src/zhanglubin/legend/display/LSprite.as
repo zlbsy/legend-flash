@@ -36,7 +36,7 @@ package zhanglubin.legend.display
 		public function set disposeList(value:Array):void
 		{
 			_disposeList = value;
-		}
+		} 
 		override public function die():void{
 			super.die();
 			while(this.disposeList != null && this._disposeList.length > 0){
