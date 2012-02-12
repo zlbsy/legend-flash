@@ -300,13 +300,85 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 			
 			_loader.die();
 			_loader = null;
-			loadSwfMeff();
+			//loadSwfMeff();
+			
+			_urlloader = new LURLLoader();
+			_urlloader.addEventListener(Event.COMPLETE,loadMeffImgOver);
+			_urlloader.dataFormat = URLLoaderDataFormat.BINARY;
+			_urlloader.load(new URLRequest(_path+"meff.limg2"));
+		}
+		private static function loadMeffImgOver(event:Event):void{
+			_loadBar.per = 80;
+			var script:LScript = LGlobal.script;
+			//script.scriptArray.swfList["meff"] = _loader.content;
+			
+			var bytes:ByteArray = event.target.data as ByteArray;
+			bytes.uncompress();
+			//return;
+			var i:int;
+			var bitmapdata:BitmapData;
+			var size:uint;
+			var limg2:String;
+			var l:uint,w:uint,h:uint;
+			var byte:ByteArray;
+			var sizebyte:ByteArray;
+			for(i=0;i<bytes.length;i+=size){
+				l = bytes.readUnsignedInt();
+				limg2 = bytes.readUTFBytes(l);
+				trace("img2 meff = " + limg2);
+				w = bytes.readUnsignedInt();
+				h = bytes.readUnsignedInt();
+				bitmapdata = new BitmapData(w,h);
+				byte = new ByteArray();
+				bytes.readBytes(byte,0,w*h*4);
+				bitmapdata.setPixels(bitmapdata.rect,byte);
+				LSouSouObject.meffImg[limg2] = bitmapdata;
+				size = l + w*h*4 + 12;
+			}
+			trace("loadMeffOver");
+			_urlloader.die();
+			//_urlloader = null;
+			//loadSwfItem();
+			
+			_urlloader = new LURLLoader();
+			_urlloader.addEventListener(Event.COMPLETE,loadItemImgOver);
+			_urlloader.dataFormat = URLLoaderDataFormat.BINARY;
+			_urlloader.load(new URLRequest(_path+"item.limg2"));
+		}
+		private static function loadItemImgOver(event:Event):void{
+			_loadBar.per = 80;
+			var script:LScript = LGlobal.script;
+			
+			var bytes:ByteArray = event.target.data as ByteArray;
+			bytes.uncompress();
+			//return;
+			var i:int;
+			var bitmapdata:BitmapData;
+			var size:uint;
+			var limg2:String;
+			var l:uint,w:uint,h:uint;
+			var byte:ByteArray;
+			var sizebyte:ByteArray;
+			for(i=0;i<bytes.length;i+=size){
+				l = bytes.readUnsignedInt();
+				limg2 = bytes.readUTFBytes(l);
+				w = bytes.readUnsignedInt();
+				h = bytes.readUnsignedInt();
+				bitmapdata = new BitmapData(w,h);
+				byte = new ByteArray();
+				bytes.readBytes(byte,0,w*h*4);
+				bitmapdata.setPixels(bitmapdata.rect,byte);
+				LSouSouObject.itemImg[limg2] = bitmapdata;
+				size = l + w*h*4 + 12;
+			}
+			trace("loadMeffOver");
+			_urlloader.die();
+			_urlloader = null;
+			//loadSwfItem();
+			loadSwfStage();
+			
 		}
 		/**
-		 * 脚本解析
-		 * 添加层
-		 * @param 脚本信息
-		 */
 		private static function loadSwfMeff():void{
 			trace("loadSwfMeff");
 			_loader = new LLoader();
@@ -338,7 +410,7 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 			_loader.die();
 			_loader = null;
 			loadSwfStage();
-		}
+		}*/
 		private static function loadSwfStage():void{
 			trace("loadSwfStage");
 			_loader = new LLoader();

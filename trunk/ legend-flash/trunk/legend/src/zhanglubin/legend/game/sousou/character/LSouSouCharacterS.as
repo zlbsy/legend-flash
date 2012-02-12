@@ -138,8 +138,8 @@ package zhanglubin.legend.game.sousou.character
 		public static const STATUS_FIXED:int = 1;
 		/**武将状态 中毒*/
 		public static const STATUS_POISON:int = 2;
-		/**武将状态 怯力*/
-		public static const STATUS_NOATK:int = 3;
+		/**武将状态 禁咒*/
+		public static const STATUS_STATEGY:int = 3;
 		/**武将状态 攻击加成*/
 		public static const STATUS_ATTACK:int = 4;
 		/**武将状态 精神加成*/
@@ -152,18 +152,21 @@ package zhanglubin.legend.game.sousou.character
 		public static const STATUS_MORALE:int = 8;
 		/**武将状态 移动加成*/
 		public static const STATUS_MOVE:int = 9;
+		/**武将状态 怯力*/
+		public static const STATUS_NOATK:int = 10;
 		/**
 		 * 武将状态
 		 * 0混乱[状态，回合数，图片]
 		 * 1定身[状态，回合数，图片] 
 		 * 2中毒[状态，回合数，图片] 
-		 * 3怯力[状态，回合数，图片] 
+		 * 3禁咒[状态，回合数，图片] 
 		 * 4攻击加成[状态，回合数，加成数值]
 		 * 5精神加成[状态，回合数，加成数值]
 		 * 6防御加成[状态，回合数，加成数值]
 		 * 7爆发加成[状态，回合数，加成数值]
 		 * 8士气加成[状态，回合数，加成数值]
 		 * 9士气加成[状态，回合数，移动数值]
+		 * 10怯力[状态，回合数，图片] 
 		 * */
 		private var _statusArray:Array = [
 			[0,0,"chaos_sign"],
@@ -175,12 +178,16 @@ package zhanglubin.legend.game.sousou.character
 			[0,0,0],
 			[0,0,0],
 			[0,0,0],
-			[0,0,0]];
+			[0,0,0],
+			[0,0,"fixed_sign"]];
 		private var _statusIndex:Number = 0;
 		private var _statusX:int = 0;
 		//行动方针[0主动出击，1被动出击，2原地防守]
 		private var _command:int;
-		
+		/**
+		 * 行动是否进行中
+		 * */
+		private var _isActionRun:Boolean;
 		public function LSouSouCharacterS(mbr:LSouSouMember,belongInt:int,direct:int,comm:int)
 		{
 			super();
@@ -482,7 +489,8 @@ package zhanglubin.legend.game.sousou.character
 		public function drawStatus():BitmapData{
 			var returnBitmapdata:BitmapData;
 			if(_statusArray[int(_statusIndex)][0] > 0 && _statusArray[int(_statusIndex)][2] is String){
-				returnBitmapdata = LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],_statusArray[int(_statusIndex)][2]);
+				//returnBitmapdata = LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],_statusArray[int(_statusIndex)][2]);
+				returnBitmapdata = LSouSouObject.meffImg[_statusArray[int(_statusIndex)][2]];
 			}
 			return returnBitmapdata;
 		}
@@ -493,7 +501,8 @@ package zhanglubin.legend.game.sousou.character
 		 *攻击动作
 		 */
 		public function toStrategyAttackTargets():void{
-			if(this._animation.currentframe == 1){
+			if(this._animation.currentframe == 1 && !_isActionRun){
+				_isActionRun = true;
 				LSouSouObject.sMap.meff = new LSouSouMeff(LSouSouObject.sMap.strategy,this);
 
 			}else if(this._animation.currentframe == 3){
@@ -1308,8 +1317,6 @@ package zhanglubin.legend.game.sousou.character
 				checkBelong = this._targetCharacter.belong;
 			}
 			target = this._targetCharacter;
-			//this._animation.removeEventListener(LEvent.ANIMATION_COMPLETE,attackOver);
-			//target.returnAction();
 			if(target.action_mode == LSouSouCharacterS.MODE_STOP){
 				target.action = LSouSouCharacterS.DOWN + target.direction;
 			}else{
@@ -1317,7 +1324,6 @@ package zhanglubin.legend.game.sousou.character
 			}
 			
 			for each(charas in _targetArray){
-				//charas.returnAction();
 				if(charas.action_mode == LSouSouCharacterS.MODE_STOP){
 					charas.action = LSouSouCharacterS.DOWN + charas.direction;
 				}else{
@@ -1325,16 +1331,18 @@ package zhanglubin.legend.game.sousou.character
 				}
 			}
 			if(this.belong == LSouSouObject.charaSNow.belong){
-				this._animation.rowIndex -= 8;
-				this._animation.run(_mode);
+				this.action = LSouSouCharacterS.DOWN + this.direction;
+				//this._animation.rowIndex -= 8;
+				//this._animation.run(_mode);
 				this._aiIntelligent = false;
 				_action_mode = LSouSouCharacterS.MODE_STOP;
 				this._targetCharacter.targetCharacter = null;
 				this._targetCharacter = null;
 				LSouSouSMapMethod.checkCharacterSOver(checkBelong);
 			}else{
-				this._animation.rowIndex -= 4;
-				this._animation.run(_mode);
+				this.action = LSouSouCharacterS.DOWN + this.direction;
+				//this._animation.rowIndex -= 4;
+				//this._animation.run(_mode);
 				this._aiIntelligent = false;
 				this._targetCharacter.action_mode = LSouSouCharacterS.MODE_STOP;
 				
@@ -1343,22 +1351,8 @@ package zhanglubin.legend.game.sousou.character
 				this._targetCharacter.targetCharacter = null;
 				this._targetCharacter = null;
 			}
+			_isActionRun = false;
 			troopsCheck();
-			/**
-			//己方兵力判断
-			if(this.member.troops < this.member.maxTroops*0.25){
-				this._animation.rowIndex = LSouSouCharacterS.PANT;
-			}
-			//对方兵力判断
-			if(target.member.troops == 0){
-				LSouSouObject.checkFunction = function():void{
-					LSouSouSMapMethod.checkCharacterSOver(checkBelong);
-				}
-				target.toDie();
-			}else if(target.member.troops < target.member.maxTroops*0.25){
-				target._animation.rowIndex = LSouSouCharacterS.PANT;
-			} 
-			*/
 		}
 		private function atAttackRect(attChara:LSouSouCharacterS,hertCoordinate:LCoordinate):Boolean{
 			var nodeStr:String;

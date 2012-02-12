@@ -29,6 +29,8 @@ package zhanglubin.legend.game.sousou.meff
 			super();
 			this._meffXml = _xml;
 			_meffCharacter = chara;
+			trace("LSouSOuMeff _meffCharacter = " + _meffCharacter);
+			trace("LSouSOuMeff _meffCharacter = " + _meffCharacter.member.name);
 			this.x = _meffCharacter.targetCharacter.x;
 			this.y = _meffCharacter.targetCharacter.y;
 			setImage();
@@ -55,7 +57,9 @@ package zhanglubin.legend.game.sousou.meff
 			var _mefflength:int = int(_meffXml.Num.toString());
 			var charas:LSouSouCharacterS;
 			var _charalist:Array = [];
-			var bit:BitmapData = LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["meff"],_meffXml.Img.toString());
+			trace("LSouSouMeff setImage _meffXml.Img.toString() = " + _meffXml.Img.toString());
+			var bit:BitmapData = LSouSouObject.meffImg[_meffXml.Img.toString()];
+			trace("LSouSouMeff setImage bit = " + bit);
 			
 			var arr:Array = LImage.divideByCopyPixels(bit,_mefflength,1);
 			_dataArray = new Array();
@@ -65,8 +69,23 @@ package zhanglubin.legend.game.sousou.meff
 				bitarr.push(arr[i][0]);
 			}
 			_dataArray.push(bitarr);
-			
+			/**
 			if(_meffCharacter.belong == LSouSouObject.BELONG_SELF || _meffCharacter.belong == LSouSouObject.BELONG_FRIEND){
+				for each(charas in LSouSouObject.sMap.enemylist){
+					if(!charas.visible || charas.member.troops == 0)continue;
+					_charalist[charas.locationX + "," + charas.locationY] = charas;
+				}
+			}else{
+				for each(charas in LSouSouObject.sMap.ourlist){
+					if(!charas.visible || charas.member.troops == 0)continue;
+					_charalist[charas.locationX + "," + charas.locationY] = charas;
+				}
+				for each(charas in LSouSouObject.sMap.friendlist){
+					if(!charas.visible || charas.member.troops == 0)continue;
+					_charalist[charas.locationX + "," + charas.locationY] = charas;
+				}
+			}*/
+			if(LSouSouObject.sMap.strategy.Belong.toString() == "1"){
 				for each(charas in LSouSouObject.sMap.enemylist){
 					if(!charas.visible || charas.member.troops == 0)continue;
 					_charalist[charas.locationX + "," + charas.locationY] = charas;
@@ -87,6 +106,7 @@ package zhanglubin.legend.game.sousou.meff
 			for each(nodeStr in LSouSouObject.sMap.strategy.Att.elements()){
 				nodeArr = nodeStr.split(",");
 				charas = _charalist[(_meffCharacter.targetCharacter.locationX + int(nodeArr[0])) + "," + (_meffCharacter.targetCharacter.locationY + int(nodeArr[1]))];
+				trace("LSouSouMeff setImage charas = " + charas);
 				if(!charas)continue;
 				
 				this._animation = new LAnimation(_dataArray);
@@ -119,8 +139,33 @@ package zhanglubin.legend.game.sousou.meff
 				_animation.run(LAnimation.POSITIVE);
 				bitmapData = _animation.dataBMP;
 				if(_atHert == _animation.currentframe){
-					toHert(arr[1]);
-					//toHert(_meffCharacter.targetCharacter);
+					
+					if(LSouSouObject.sMap.strategy.Type.toString() == "1" ||
+						LSouSouObject.sMap.strategy.Type.toString() == "2" ||
+						LSouSouObject.sMap.strategy.Type.toString() == "3"){
+						toHert(arr[1]);
+					}else if(LSouSouObject.sMap.strategy.Type.toString() == "4"){
+						toAdd(arr[1]);
+					}else if(LSouSouObject.sMap.strategy.Type.toString() == "5"){
+						toChangeStatus(arr[1]);
+					}else if(LSouSouObject.sMap.strategy.Type.toString() == "6"){
+						toChangeStatus2(arr[1]);
+					}else{
+						trace("LSouSouMeff onFrame 该策略功能尚未实现");
+					}
+					/**
+					if(LSouSouObject.sMap.strategy.Belong.toString() == "1"){
+						toHert(arr[1]);
+					}else{
+						if(LSouSouObject.sMap.strategy.Type.toString() == "4"){
+							toAdd(arr[1]);
+						}else if(LSouSouObject.sMap.strategy.Type.toString() == "5"){
+							toChangeStatus(arr[1]);
+						}else{
+							trace("LSouSouMeff onFrame 该策略功能尚未实现");
+						}
+					}
+					//toHert(_meffCharacter.targetCharacter);*/
 				}
 			}
 			/*
@@ -133,6 +178,7 @@ package zhanglubin.legend.game.sousou.meff
 		}
 		public function checkOver():void{
 			this._animation = _animationList[0][0];
+			trace("checkOver",this._animation.currentframe , this._animation.currentframeCount - 1);
 			if(this._animation.currentframe == this._animation.currentframeCount - 1){
 				LSouSouObject.sMap.meff = null;
 				LSouSouObject.sMap.strategy = null;
@@ -147,6 +193,122 @@ package zhanglubin.legend.game.sousou.meff
 				}
 				_meffCharacter.strategyOver();
 			}
+		}
+		public function toChangeStatus2(charas:LSouSouCharacterS):void{
+			var hitrate:Boolean =LSouSouCalculate.getHitrateStrategy(_meffCharacter,charas);
+			var hitrate2:Boolean =LSouSouCalculate.getHitrateStrategy(_meffCharacter,charas);
+			
+			if(hitrate){
+				charas.setReturnAction(LSouSouCharacterS.DOWN + charas.direction);
+				if(LSouSouObject.sMap.strategy.Type2.toString() == "poison_1"){
+					charas.action = LSouSouCharacterS.HERT;
+					if(int(LSouSouObject.sMap.strategy.Status.toString()) == LSouSouCharacterS.STATUS_ATTACK){
+						charas.statusArray[LSouSouCharacterS.STATUS_POISON][0] = 1;
+						charas.statusArray[LSouSouCharacterS.STATUS_POISON][1] = 0;
+						charas.statusArray[LSouSouCharacterS.STATUS_ATTACK][2] = -int(charas.member.attack*0.2);
+					}
+					if(hitrate2){
+						var hertValue:int = LSouSouCalculate.getHertStrategyValue(_meffCharacter,charas);
+					}
+				}else{
+					charas.action = LSouSouCharacterS.UPGRADE;
+					if(int(LSouSouObject.sMap.strategy.Status.toString()) == LSouSouCharacterS.STATUS_ATTACK){
+						charas.statusArray[LSouSouCharacterS.STATUS_ATTACK][0] = 1;
+						charas.statusArray[LSouSouCharacterS.STATUS_ATTACK][1] = 0;
+						charas.statusArray[LSouSouCharacterS.STATUS_ATTACK][2] = int(charas.member.attack*0.2);
+					}
+				}
+			}else{
+				/**档格*/
+				if(charas.index == _meffCharacter.targetCharacter.index){
+					charas.targetCharacter = _meffCharacter;
+					if(int(_meffCharacter.member.weapon) > 0 && int(LSouSouObject.item["Child"+_meffCharacter.member.weapon].Spirit.@add) > 0){
+						if(_meffCharacter.member.lv <= charas.member.lv){
+							_meffCharacter.member.weapon.@exp = int(_meffCharacter.member.weapon.@exp.toString()) + 3;
+						}else{
+							_meffCharacter.member.weapon.@exp = int(_meffCharacter.member.weapon.@exp.toString()) + 2;
+						}
+					}
+				}
+			}
+			
+		}
+		public function toChangeStatus(charas:LSouSouCharacterS):void{
+			var hitrate:Boolean =LSouSouCalculate.getHitrateStrategy(_meffCharacter,charas);
+			
+			if(hitrate){
+				charas.setReturnAction(LSouSouCharacterS.DOWN + charas.direction);
+				if(LSouSouObject.sMap.strategy.Belong.toString() == "1"){
+					
+					charas.action = LSouSouCharacterS.HERT;
+					if(int(LSouSouObject.sMap.strategy.Status.toString()) == LSouSouCharacterS.STATUS_ATTACK){
+						charas.statusArray[LSouSouCharacterS.STATUS_ATTACK][0] = 1;
+						charas.statusArray[LSouSouCharacterS.STATUS_ATTACK][1] = 0;
+						charas.statusArray[LSouSouCharacterS.STATUS_ATTACK][2] = -int(charas.member.attack*0.2);
+					}
+				}else{
+					charas.action = LSouSouCharacterS.UPGRADE;
+					if(int(LSouSouObject.sMap.strategy.Status.toString()) == LSouSouCharacterS.STATUS_ATTACK){
+						charas.statusArray[LSouSouCharacterS.STATUS_ATTACK][0] = 1;
+						charas.statusArray[LSouSouCharacterS.STATUS_ATTACK][1] = 0;
+						charas.statusArray[LSouSouCharacterS.STATUS_ATTACK][2] = int(charas.member.attack*0.2);
+					}
+				}
+			}else{
+				/**档格*/
+				if(charas.index == _meffCharacter.targetCharacter.index){
+					charas.targetCharacter = _meffCharacter;
+					if(int(_meffCharacter.member.weapon) > 0 && int(LSouSouObject.item["Child"+_meffCharacter.member.weapon].Spirit.@add) > 0){
+						if(_meffCharacter.member.lv <= charas.member.lv){
+							_meffCharacter.member.weapon.@exp = int(_meffCharacter.member.weapon.@exp.toString()) + 3;
+						}else{
+							_meffCharacter.member.weapon.@exp = int(_meffCharacter.member.weapon.@exp.toString()) + 2;
+						}
+					}
+				}
+			}
+			
+		}
+		public function toAdd(charas:LSouSouCharacterS):void{
+			var hitrate:Boolean = LSouSouCalculate.getHitrateRestoration(_meffCharacter,charas);
+			
+			if(hitrate){
+				charas.setReturnAction(LSouSouCharacterS.DOWN + charas.direction);
+				/**计算补给值*/
+				var addValue:int;
+				if(LSouSouObject.sMap.strategy.Hert.toString() == "hp_1"){
+					addValue = _meffCharacter.member.spirit/10 + 40;
+				}
+				
+				
+				if(_meffCharacter.skillRun && _meffCharacter.member.skill == 4){
+					addValue = addValue*2;
+					_meffCharacter.skillRun = false;
+				}
+				if(addValue > charas.member.maxTroops - charas.member.troops)addValue = charas.member.maxTroops - charas.member.troops;
+				charas.member.troops += addValue;
+				charas.action = LSouSouCharacterS.UPGRADE;
+				var arr:Array = [];
+				var addNum:String = "+"+addValue;
+				arr[0] = addNum;
+				arr[1] = charas.x + LSouSouObject.sMap.mapCoordinate.x + (charas.width - addNum.length*20)/2;
+				arr[2] = charas.y + LSouSouObject.sMap.mapCoordinate.y;
+				arr[3] = 0;
+				LSouSouObject.sMap.numList.push(arr);
+			}else{
+				/**档格*/
+				if(charas.index == _meffCharacter.targetCharacter.index){
+					charas.targetCharacter = _meffCharacter;
+					if(int(_meffCharacter.member.weapon) > 0 && int(LSouSouObject.item["Child"+_meffCharacter.member.weapon].Spirit.@add) > 0){
+						if(_meffCharacter.member.lv <= charas.member.lv){
+							_meffCharacter.member.weapon.@exp = int(_meffCharacter.member.weapon.@exp.toString()) + 3;
+						}else{
+							_meffCharacter.member.weapon.@exp = int(_meffCharacter.member.weapon.@exp.toString()) + 2;
+						}
+					}
+				}
+			}
+			
 		}
 		public function toHert(charas:LSouSouCharacterS):void{
 			var hitrate:Boolean = LSouSouCalculate.getHitrateStrategy(_meffCharacter,charas);
@@ -176,7 +338,7 @@ package zhanglubin.legend.game.sousou.meff
 				
 				if(_meffCharacter.skillRun && _meffCharacter.member.skill == 4){
 					hertValue = 2*hertValue;
-					_meffCharacter,charas.skillRun = false;
+					_meffCharacter.skillRun = false;
 				}
 				if(hertValue > charas.member.troops)hertValue = charas.member.troops;
 				charas.member.troops -= hertValue;
@@ -200,23 +362,6 @@ package zhanglubin.legend.game.sousou.meff
 						}
 					}
 				}
-				/**
-				if(this.x > charas.x){
-					charas.setReturnAction(LSouSouCharacterS.RIGHT);
-					charas.animation.rowIndex = LSouSouCharacterS.BLOCK_RIGHT;
-				}else if(this.x < charas.x){
-					charas.setReturnAction(LSouSouCharacterS.LEFT);
-					charas.animation.rowIndex = LSouSouCharacterS.BLOCK_LEFT;
-				}else{
-					if(this.y > charas.y){
-						charas.setReturnAction(LSouSouCharacterS.DOWN);
-						charas.animation.rowIndex = LSouSouCharacterS.BLOCK_DOWN;
-					}else{
-						charas.setReturnAction(LSouSouCharacterS.UP);
-						charas.animation.rowIndex = LSouSouCharacterS.BLOCK_UP;
-					}
-				}
-				*/
 			}
 			
 		}

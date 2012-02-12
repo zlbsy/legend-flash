@@ -29,6 +29,8 @@ package zhanglubin.legend.game.sousou.object
 		public static var charaMOVList:Array = [];
 		public static var charaSPCList:Array = [];
 		public static var charaFaceList:Array = [];
+		public static var meffImg:Array = [];
+		public static var itemImg:Array = [];
 		public static var chara:XML;
 		public static var arms:XML;
 		public static var mapStage:XML;

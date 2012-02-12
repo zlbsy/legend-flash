@@ -33,8 +33,8 @@ package zhanglubin.legend.game.sousou.meff
 			var _mefflength:int = int(_meffXml.Num.toString());
 			var _skilllength:int = 12;
 			
-			var bit:BitmapData = LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["meff"],_meffXml.Img.toString());
-			
+			//var bit:BitmapData = LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["meff"],_meffXml.Img.toString());
+			var bit:BitmapData = LSouSouObject.meffImg[_meffXml.Img.toString()];
 			var arr:Array = LImage.divideByCopyPixels(bit,_mefflength,1);
 			_dataArray = new Array();
 			var i:int;

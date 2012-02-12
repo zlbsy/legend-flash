@@ -1,11 +1,38 @@
 package zhanglubin.legend.game.sousou.object
 {
 	import zhanglubin.legend.game.sousou.character.LSouSouCharacterS;
+	import zhanglubin.legend.game.sousou.map.LSouSouWindow;
+	import zhanglubin.legend.utils.LGlobal;
 
 	public class LSouSouCalculate
 	{
 		public function LSouSouCalculate()
 		{
+		}
+		public static function belongMeff(charas:LSouSouCharacterS):Boolean{
+			var strategyBelong:int = int(LSouSouObject.sMap.strategy.Belong.toString());
+			var window:LSouSouWindow;
+			if(strategyBelong == 0){
+				if(charas.belong == LSouSouObject.BELONG_ENEMY){
+					window = new LSouSouWindow();
+					window.setMsg(["无法向对方使用",1,30]);
+					LGlobal.script.scriptLayer.addChild(window);
+					return false;
+				}
+			}else{
+				if(charas.belong == LSouSouObject.BELONG_FRIEND){
+					window = new LSouSouWindow();
+					window.setMsg(["无法向我方使用",1,30]);
+					LGlobal.script.scriptLayer.addChild(window);
+					return false;
+				}else if(charas.belong == LSouSouObject.BELONG_FRIEND){
+					window = new LSouSouWindow();
+					window.setMsg(["无法向友方使用",1,30]);
+					LGlobal.script.scriptLayer.addChild(window);
+					return false;
+				}
+			}
+			return true;
 		}
 		/********************************************
 		   法术是否可用
@@ -59,6 +86,15 @@ package zhanglubin.legend.game.sousou.object
 			return false;
 		}
 		
+		/********************************************
+		 法术恢复的命中率<br>
+		 
+		 *********************************************/
+		public static function getHitrateRestoration(attChara:LSouSouCharacterS,hertChara:LSouSouCharacterS):Boolean{
+			if(LSouSouObject.sMap.strategy.Type.toString() == "4")return true;
+			if(LSouSouObject.sMap.strategy.Type.toString() == "5" && LSouSouObject.sMap.strategy.Hert.toString() == "change_1")return true;
+			return false;
+		}
 		/********************************************
 		 法术攻击的命中率<br>
 		 X代表我方的精神力与运气之和，Y代表敌方的精神力与运气之和。R表示命中率<br>
