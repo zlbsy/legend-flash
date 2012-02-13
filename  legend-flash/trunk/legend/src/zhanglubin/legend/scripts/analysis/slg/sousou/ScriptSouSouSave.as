@@ -44,43 +44,64 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 			}
 		}
 		/**
-		 * 脚本解析
-		 * 
-		 * @param 脚本信息
+		 * 存档功能
+		 * @param name 存档名称
 		 */
 		public static function saveGameAsFile(name:String = "save1"):String{
 			var start_file:String = LGlobal.script.scriptArray.varList["save_file"];
 			var start_word:String = LGlobal.script.scriptArray.varList["save_word"];
-			var bytes:ByteArray = new ByteArray();
-			//bytes.writeObject(LSouSouObject.memberList);
+			var saveArray:Array,i:int;
+			//var bytes:ByteArray = new ByteArray();
+			//已加入我军队列的人员信息
 			var mbr:LSouSouMember,xml:XML = new XML("<data></data>");
 			for each(mbr in LSouSouObject.memberList){
 				xml.appendChild(mbr.data);
 			}
-			bytes.writeUTF(start_file);
-			bytes.writeUTF(start_word);
-			bytes.writeUTF(xml.toXMLString());
-			bytes.writeUTF(LSouSouObject.itemsList.toXMLString());
-			bytes.writeUTF(LSouSouObject.propsList.toXMLString());
-			bytes.writeInt(LSouSouObject.money);
 			
 			var varlable:String = "<data>";
-			for(var i:int = 0;i<1000;i++){
+			for(i = 0;i<1000;i++){
 				if(LGlobal.script.scriptArray.varList["sousou" + i] != null && LGlobal.script.scriptArray.varList["sousou" + i].toString().length > 0){
 					varlable += "<varlable name='sousou"+i+"'>"+LGlobal.script.scriptArray.varList["sousou" + i]+"<varlable>";
 				}
 			}
-			varlable += "</data>";
 			
-			var saveArray:Array = [start_file,
-				start_word,
-				xml.toXMLString(),
-				LSouSouObject.itemsList.toXMLString(),
-				LSouSouObject.propsList.toXMLString(),
-				LSouSouObject.money,
-				varlable
-			];
+			//如果R剧情进行中，则储存R存档，否则进行S存档
+			if(LSouSouObject.rMap != null){
+				/*
+				bytes.writeUTF("R");
+				bytes.writeUTF(start_file);
+				bytes.writeUTF(start_word);
+				bytes.writeUTF(xml.toXMLString());
+				bytes.writeUTF(LSouSouObject.itemsList.toXMLString());
+				bytes.writeUTF(LSouSouObject.propsList.toXMLString());
+				bytes.writeInt(LSouSouObject.money);*/
+				varlable += "</data>";
+				
+				saveArray = [
+					"R",
+					start_file,
+					start_word,
+					xml.toXMLString(),
+					LSouSouObject.itemsList.toXMLString(),
+					LSouSouObject.propsList.toXMLString(),
+					LSouSouObject.money,
+					varlable
+				];
+			}else{
+				saveArray = [
+					"S",
+					start_file,
+					start_word,
+					xml.toXMLString(),
+					LSouSouObject.itemsList.toXMLString(),
+					LSouSouObject.propsList.toXMLString(),
+					LSouSouObject.money,
+					varlable
+				];
+				
+			}
 			var savepath:String = LGlobal.script.scriptArray.varList["savepath"];
+			return "ScriptSouSouSave saveGameAsFile over";
 			return LGlobal.script.scriptLayer["saveGame"](saveArray,name + ".slf",savepath);
 		}
 		/**

@@ -5,7 +5,7 @@ package zhanglubin.legend.game.sousou.character
 	public class LSouSouCharacter extends LCharacter
 	{
 		public function LSouSouCharacter()
-		{
+		{ 
 			super();
 			
 		}
