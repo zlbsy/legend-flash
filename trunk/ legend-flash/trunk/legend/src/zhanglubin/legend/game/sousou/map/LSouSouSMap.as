@@ -486,7 +486,7 @@ package zhanglubin.legend.game.sousou.map
 			_btn_system.xy = new LCoordinate(755,180);
 			_btn_system.addEventListener(MouseEvent.MOUSE_UP,systemShow);
 			_menuLayer.addChild(_btn_system);
-			_btn_system.visible = false;
+			//_btn_system.visible = false;
 			
 			_btn_gameclose = new LButton(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"gameclose"));
 			_btn_gameclose.filters = [new GlowFilter()];
@@ -530,7 +530,8 @@ package zhanglubin.legend.game.sousou.map
 		private function systemShow(event:MouseEvent):void{
 			if(LSouSouObject.storyCtrl)return;
 			var window:LSouSouWindow = new LSouSouWindow();
-			window.systemShow("read");
+			//window.systemShow("read");
+			window.systemShow();
 			LGlobal.script.scriptLayer.addChild(window);
 		}
 		private function libGameExplanation(event:MouseEvent):void{
