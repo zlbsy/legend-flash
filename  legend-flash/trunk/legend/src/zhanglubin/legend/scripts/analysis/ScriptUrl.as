@@ -38,17 +38,19 @@ package zhanglubin.legend.scripts.analysis
 		}
 		/**
 		 * 脚本解析
-		 * 添加waitclick
+		 * Url.get(a=0,c=aaa,...);
 		 * 
 		 * @param 脚本信息
 		 */
-		private static function waitclick():void{
-			var layer:LSprite = LGlobal.script.scriptLayer;
-			layer.addEventListener(MouseEvent.CLICK,clickEvent);
+		private static function get(value:String,start:int,end:int):void{
 		}
-		private static function clickEvent(event:MouseEvent):void{
-			LGlobal.script.scriptLayer.removeEventListener(MouseEvent.CLICK,clickEvent);
-			LGlobal.script.analysis();
+		/**
+		 * 脚本解析
+		 * Url.post(a=0,c=aaa,...);
+		 * 
+		 * @param 脚本信息
+		 */
+		private static function post(value:String,start:int,end:int):void{
 		}
 	}
 }

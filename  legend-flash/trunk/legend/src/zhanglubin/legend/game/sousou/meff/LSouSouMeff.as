@@ -69,35 +69,38 @@ package zhanglubin.legend.game.sousou.meff
 				bitarr.push(arr[i][0]);
 			}
 			_dataArray.push(bitarr);
-			/**
+			
 			if(_meffCharacter.belong == LSouSouObject.BELONG_SELF || _meffCharacter.belong == LSouSouObject.BELONG_FRIEND){
-				for each(charas in LSouSouObject.sMap.enemylist){
-					if(!charas.visible || charas.member.troops == 0)continue;
-					_charalist[charas.locationX + "," + charas.locationY] = charas;
+				if(LSouSouObject.sMap.strategy.Belong.toString() == "1"){
+					for each(charas in LSouSouObject.sMap.enemylist){
+						if(!charas.visible || charas.member.troops == 0)continue;
+						_charalist[charas.locationX + "," + charas.locationY] = charas;
+					}
+				}else{
+					for each(charas in LSouSouObject.sMap.ourlist){
+						if(!charas.visible || charas.member.troops == 0)continue;
+						_charalist[charas.locationX + "," + charas.locationY] = charas;
+					}
+					for each(charas in LSouSouObject.sMap.friendlist){
+						if(!charas.visible || charas.member.troops == 0)continue;
+						_charalist[charas.locationX + "," + charas.locationY] = charas;
+					}
 				}
 			}else{
-				for each(charas in LSouSouObject.sMap.ourlist){
-					if(!charas.visible || charas.member.troops == 0)continue;
-					_charalist[charas.locationX + "," + charas.locationY] = charas;
-				}
-				for each(charas in LSouSouObject.sMap.friendlist){
-					if(!charas.visible || charas.member.troops == 0)continue;
-					_charalist[charas.locationX + "," + charas.locationY] = charas;
-				}
-			}*/
-			if(LSouSouObject.sMap.strategy.Belong.toString() == "1"){
-				for each(charas in LSouSouObject.sMap.enemylist){
-					if(!charas.visible || charas.member.troops == 0)continue;
-					_charalist[charas.locationX + "," + charas.locationY] = charas;
-				}
-			}else{
-				for each(charas in LSouSouObject.sMap.ourlist){
-					if(!charas.visible || charas.member.troops == 0)continue;
-					_charalist[charas.locationX + "," + charas.locationY] = charas;
-				}
-				for each(charas in LSouSouObject.sMap.friendlist){
-					if(!charas.visible || charas.member.troops == 0)continue;
-					_charalist[charas.locationX + "," + charas.locationY] = charas;
+				if(LSouSouObject.sMap.strategy.Belong.toString() == "1"){
+					for each(charas in LSouSouObject.sMap.ourlist){
+						if(!charas.visible || charas.member.troops == 0)continue;
+						_charalist[charas.locationX + "," + charas.locationY] = charas;
+					}
+					for each(charas in LSouSouObject.sMap.friendlist){
+						if(!charas.visible || charas.member.troops == 0)continue;
+						_charalist[charas.locationX + "," + charas.locationY] = charas;
+					}
+				}else{
+					for each(charas in LSouSouObject.sMap.enemylist){
+						if(!charas.visible || charas.member.troops == 0)continue;
+						_charalist[charas.locationX + "," + charas.locationY] = charas;
+					}
 				}
 			}
 			var nodeStr:String;
@@ -105,6 +108,7 @@ package zhanglubin.legend.game.sousou.meff
 			var ax:int,ay:int;
 			for each(nodeStr in LSouSouObject.sMap.strategy.Att.elements()){
 				nodeArr = nodeStr.split(",");
+				trace("LSouSouMeff setImage _meffCharacter.targetCharacter = " + _meffCharacter.targetCharacter);
 				charas = _charalist[(_meffCharacter.targetCharacter.locationX + int(nodeArr[0])) + "," + (_meffCharacter.targetCharacter.locationY + int(nodeArr[1]))];
 				trace("LSouSouMeff setImage charas = " + charas);
 				if(!charas)continue;
@@ -196,20 +200,64 @@ package zhanglubin.legend.game.sousou.meff
 		}
 		public function toChangeStatus2(charas:LSouSouCharacterS):void{
 			var hitrate:Boolean =LSouSouCalculate.getHitrateStrategy(_meffCharacter,charas);
-			var hitrate2:Boolean =LSouSouCalculate.getHitrateStrategy(_meffCharacter,charas);
-			
+			var hitrate2:Boolean;
+			var hertValue:int;
+			var arr:Array;
+			var hertNum:String;
 			if(hitrate){
 				charas.setReturnAction(LSouSouCharacterS.DOWN + charas.direction);
 				if(LSouSouObject.sMap.strategy.Type2.toString() == "poison_1"){
+					hitrate2 =LSouSouCalculate.getHitrateStrategy(_meffCharacter,charas);
 					charas.action = LSouSouCharacterS.HERT;
-					if(int(LSouSouObject.sMap.strategy.Status.toString()) == LSouSouCharacterS.STATUS_ATTACK){
-						charas.statusArray[LSouSouCharacterS.STATUS_POISON][0] = 1;
-						charas.statusArray[LSouSouCharacterS.STATUS_POISON][1] = 0;
-						charas.statusArray[LSouSouCharacterS.STATUS_ATTACK][2] = -int(charas.member.attack*0.2);
-					}
+					charas.statusArray[LSouSouCharacterS.STATUS_POISON][0] = 1;
+					charas.statusArray[LSouSouCharacterS.STATUS_POISON][1] = 0;
 					if(hitrate2){
-						var hertValue:int = LSouSouCalculate.getHertStrategyValue(_meffCharacter,charas);
+						hertValue = LSouSouCalculate.getHertStrategyValue(_meffCharacter,charas);
+						if(_meffCharacter.skillRun && _meffCharacter.member.skill == 4){
+							hertValue = 2*hertValue;
+							_meffCharacter.skillRun = false;
+						}
+						if(hertValue > charas.member.troops)hertValue = charas.member.troops;
+						charas.member.troops -= hertValue;
+						charas.action = LSouSouCharacterS.HERT;
+						arr = [];
+						hertNum = "-"+hertValue;
+						arr[0] = hertNum;
+						arr[1] = charas.x + LSouSouObject.sMap.mapCoordinate.x + (charas.width - hertNum.length*20)/2;
+						arr[2] = charas.y + LSouSouObject.sMap.mapCoordinate.y;
+						arr[3] = 0;
+						LSouSouObject.sMap.numList.push(arr);
 					}
+				}else if(LSouSouObject.sMap.strategy.Type2.toString() == "fixed_1"){
+					hitrate2 =LSouSouCalculate.getHitrateStrategy(_meffCharacter,charas);
+					charas.action = LSouSouCharacterS.HERT;
+					charas.statusArray[LSouSouCharacterS.STATUS_FIXED][0] = 1;
+					charas.statusArray[LSouSouCharacterS.STATUS_FIXED][1] = 0;
+					if(hitrate2){
+						hertValue = LSouSouCalculate.getHertStrategyValue(_meffCharacter,charas);
+						if(_meffCharacter.skillRun && _meffCharacter.member.skill == 4){
+							hertValue = 2*hertValue;
+							_meffCharacter.skillRun = false;
+						}
+						if(hertValue > charas.member.troops)hertValue = charas.member.troops;
+						charas.member.troops -= hertValue;
+						charas.action = LSouSouCharacterS.HERT;
+						arr = [];
+						hertNum = "-"+hertValue;
+						arr[0] = hertNum;
+						arr[1] = charas.x + LSouSouObject.sMap.mapCoordinate.x + (charas.width - hertNum.length*20)/2;
+						arr[2] = charas.y + LSouSouObject.sMap.mapCoordinate.y;
+						arr[3] = 0;
+						LSouSouObject.sMap.numList.push(arr);
+					}
+				}else if(LSouSouObject.sMap.strategy.Type2.toString() == "chaos_1"){
+					charas.action = LSouSouCharacterS.HERT;
+					charas.statusArray[LSouSouCharacterS.STATUS_CHAOS][0] = 1;
+					charas.statusArray[LSouSouCharacterS.STATUS_CHAOS][1] = 0;
+				}else if(LSouSouObject.sMap.strategy.Type2.toString() == "stategy_1"){
+					charas.action = LSouSouCharacterS.HERT;
+					charas.statusArray[LSouSouCharacterS.STATUS_STATEGY][0] = 1;
+					charas.statusArray[LSouSouCharacterS.STATUS_STATEGY][1] = 0;
 				}else{
 					charas.action = LSouSouCharacterS.UPGRADE;
 					if(int(LSouSouObject.sMap.strategy.Status.toString()) == LSouSouCharacterS.STATUS_ATTACK){

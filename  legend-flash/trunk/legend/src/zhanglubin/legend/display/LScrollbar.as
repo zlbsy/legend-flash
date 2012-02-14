@@ -1,6 +1,7 @@
 package zhanglubin.legend.display
 {
 	import flash.display.DisplayObject;
+	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
@@ -26,6 +27,7 @@ package zhanglubin.legend.display
 		private var _speed:uint;
 		private var _wVisible:Boolean;
 		private var _lineSprite:LSprite;
+		private var _thisStage:Stage;
 		/**
 		 * legend滚动条显示类
 		 * 
@@ -388,6 +390,7 @@ package zhanglubin.legend.display
 			}
 		}
 		private function mouseDownW():void{
+			_thisStage = this.stage;
 			if(this.mouseX >= 0 && this.mouseX <= this._scrollWidth){
 				if(this._showObject.x >= 0 || this._key["left"])return;
 				this._distance = 10;
@@ -412,8 +415,8 @@ package zhanglubin.legend.display
 				this._key["scroll_w"] = true;
 				this._key["scroll_x"] = this.mouseX - this._scroll_w_bar.x;
 				this._key["mouseX"] = this.mouseX;
-				this.stage.addEventListener(MouseEvent.MOUSE_MOVE,mouseMoveW);
-				this.stage.addEventListener(MouseEvent.MOUSE_UP,mouseUpW);
+				_thisStage.addEventListener(MouseEvent.MOUSE_MOVE,mouseMoveW);
+				_thisStage.addEventListener(MouseEvent.MOUSE_UP,mouseUpW);
 			}else if(this.mouseX > 0 && this.mouseX < this._mask.width){
 				this._key["left"] = false;
 				this._key["right"] = false;
@@ -428,6 +431,7 @@ package zhanglubin.legend.display
 			}
 		}
 		private function mouseDownH():void{
+			_thisStage = this.stage;
 			if(this.mouseY >= 0 && this.mouseY <= this._scrollWidth){
 				if(this._showObject.y >= 0)return;
 				this._distance = 10;
@@ -438,7 +442,7 @@ package zhanglubin.legend.display
 				this._key["Dkey"] = true;
 				this._speed = this._distance;
 				this.setSpeed();
-				this.stage.addEventListener(MouseEvent.MOUSE_UP,mouseUpH);
+				_thisStage.addEventListener(MouseEvent.MOUSE_UP,mouseUpH);
 			}else if(this.mouseY >= this._mask.height - this._scrollWidth && this.mouseY <= this._mask.height){
 				if(this._showObject.y <= this._mask.height - this._showObject.height)return;
 				this._distance = 10;
@@ -449,13 +453,13 @@ package zhanglubin.legend.display
 				this._key["Dkey"] = true;
 				this._speed = this._distance;
 				this.setSpeed();
-				this.stage.addEventListener(MouseEvent.MOUSE_UP,mouseUpH);
+				_thisStage.addEventListener(MouseEvent.MOUSE_UP,mouseUpH);
 			}else if(this.mouseY >= this._scroll_h_bar.y && this.mouseY <= this._scroll_h_bar.y + this._scroll_h_bar.height && !this._key["scroll_h"]){
 				this._key["scroll_h"] = true;
 				this._key["scroll_y"] = this.mouseY - this._scroll_h_bar.y;
 				this._key["mouseY"] = this.mouseY;
-				this.stage.addEventListener(MouseEvent.MOUSE_MOVE,mouseMoveH);
-				this.stage.addEventListener(MouseEvent.MOUSE_UP,mouseUpH);
+				_thisStage.addEventListener(MouseEvent.MOUSE_MOVE,mouseMoveH);
+				_thisStage.addEventListener(MouseEvent.MOUSE_UP,mouseUpH);
 			}else if(this.mouseY > 0 && this.mouseY < this._mask.height){
 				this._key["up"] = false;
 				this._key["down"] = false;
@@ -487,11 +491,11 @@ package zhanglubin.legend.display
 			this.setSpeed();
 		}
 		private function mouseUpH(event:MouseEvent):void{
-			this.stage.removeEventListener(MouseEvent.MOUSE_UP,mouseUpH);
+			_thisStage.removeEventListener(MouseEvent.MOUSE_UP,mouseUpH);
 			if(this._key["Dkey"]){
 				this._key["Dkey"] = false;
 			}else{
-				this.stage.removeEventListener(MouseEvent.MOUSE_MOVE,mouseMoveH);
+				_thisStage.removeEventListener(MouseEvent.MOUSE_MOVE,mouseMoveH);
 				if(this._key["scroll_h"])this._key["scroll_h"] = false;
 			}
 		}
@@ -513,8 +517,8 @@ package zhanglubin.legend.display
 			this.setSpeed();
 		}
 		private function mouseUpW(event:MouseEvent):void{
-			this.stage.removeEventListener(MouseEvent.MOUSE_UP,mouseUpW);
-			this.stage.removeEventListener(MouseEvent.MOUSE_MOVE,mouseMoveW);
+			_thisStage.removeEventListener(MouseEvent.MOUSE_UP,mouseUpW);
+			_thisStage.removeEventListener(MouseEvent.MOUSE_MOVE,mouseMoveW);
 			if(this._key["scroll_w"])this._key["scroll_w"] = false;
 		}
 		/**
