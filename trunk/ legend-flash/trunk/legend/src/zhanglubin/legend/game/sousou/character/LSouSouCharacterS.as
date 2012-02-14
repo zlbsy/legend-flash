@@ -171,8 +171,8 @@ package zhanglubin.legend.game.sousou.character
 		private var _statusArray:Array = [
 			[0,0,"chaos_sign"],
 			[0,0,"fixed_sign"],
-			[0,0,"fixed_sign"],
-			[0,0,"fixed_sign"],
+			[0,0,"poison_sign"],
+			[0,0,"stategy_sign"],
 			[0,0,0],
 			[0,0,0],
 			[0,0,0],
@@ -180,9 +180,11 @@ package zhanglubin.legend.game.sousou.character
 			[0,0,0],
 			[0,0,0],
 			[0,0,"fixed_sign"]];
+		/**不良状态用index*/
 		private var _statusIndex:Number = 0;
+		/**不良状态描画位置x坐标*/
 		private var _statusX:int = 0;
-		//行动方针[0主动出击，1被动出击，2原地防守]
+		/**行动方针[0主动出击，1被动出击，2原地防守]*/
 		private var _command:int;
 		/**
 		 * 行动是否进行中
@@ -421,6 +423,7 @@ package zhanglubin.legend.game.sousou.character
 			setStatusX();
 		}
 		public function setStatusX():void{
+			//if(index == 35)trace("_statusIndex = " + _statusIndex);
 			_statusIndex += 0.25;
 			if(_statusIndex % 0.5 == 0){
 				if(_statusX == 0){
@@ -456,7 +459,8 @@ package zhanglubin.legend.game.sousou.character
 					if(_statusArray[i][2] is int)_statusArray[i][2] = 0;
 				}
 			}
-			
+			//如果中毒，则中毒状态处理
+			this.poison_run();
 			if(this.member.troops < this.member.maxTroops){
 				var arr:Array;
 				var addValue:int;
@@ -486,12 +490,38 @@ package zhanglubin.legend.game.sousou.character
 				}
 			}
 		}
+		/**
+		 *中毒状态每回合掉血
+		 * */
+		public function poison_run():void{
+			if(this._statusArray[LSouSouCharacterS.STATUS_POISON][0] == 0)return;
+			if(this.member.troops > 1){
+				var arr:Array;
+				var addValue:int;
+				var addNum:String;
+				addValue = int(this.member.maxTroops*0.1);
+				if(addValue > this.member.troops - 1)addValue=this.member.troops - 1;
+				this.member.troops -= addValue;
+				arr = [];
+				addNum = "-"+addValue;
+				arr[0] = addNum;
+				arr[1] = this.x + LSouSouObject.sMap.mapCoordinate.x + (this.width - addNum.length*20)/2;
+				arr[2] = this.y + LSouSouObject.sMap.mapCoordinate.y;
+				arr[3] = 0;
+				LSouSouObject.sMap.numList.push(arr);
+			}
+		}
+		/**
+		 *不良状态描画
+		 * */
 		public function drawStatus():BitmapData{
+			//if(index == 35)trace("drawStatus _statusIndex = " + _statusIndex);
 			var returnBitmapdata:BitmapData;
 			if(_statusArray[int(_statusIndex)][0] > 0 && _statusArray[int(_statusIndex)][2] is String){
 				//returnBitmapdata = LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],_statusArray[int(_statusIndex)][2]);
 				returnBitmapdata = LSouSouObject.meffImg[_statusArray[int(_statusIndex)][2]];
 			}
+			
 			return returnBitmapdata;
 		}
 		public function get statusX():int{

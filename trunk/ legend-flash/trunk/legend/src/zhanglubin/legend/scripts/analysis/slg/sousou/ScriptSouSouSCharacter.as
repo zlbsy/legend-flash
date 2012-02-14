@@ -146,6 +146,17 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 							}
 							LGlobal.script.analysis();
 							break;
+						case "poison":
+							for each(charas in charaList){
+								if(!charas.visible)continue;
+								if(charas.locationX >= int(params[3]) && charas.locationX <= int(params[5]) && 
+									charas.locationY >= int(params[4]) && charas.locationY <= int(params[6])){
+									charas.statusArray[LSouSouCharacterS.STATUS_POISON][0] = 1;
+									charas.statusArray[LSouSouCharacterS.STATUS_POISON][1] = 0;
+								}
+							}
+							LGlobal.script.analysis();
+							break;
 						case "attack_down":
 							for each(charas in charaList){
 								if(!charas.visible)continue;
@@ -431,6 +442,11 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 						case "fixed":
 							charas.statusArray[LSouSouCharacterS.STATUS_FIXED][0] = 1;
 							charas.statusArray[LSouSouCharacterS.STATUS_FIXED][1] = 0;
+							LGlobal.script.analysis();
+							break;
+						case "poison":
+							charas.statusArray[LSouSouCharacterS.STATUS_POISON][0] = 1;
+							charas.statusArray[LSouSouCharacterS.STATUS_POISON][1] = 0;
 							LGlobal.script.analysis();
 							break;
 						case "attack_down":
