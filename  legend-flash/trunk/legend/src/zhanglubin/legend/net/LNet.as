@@ -17,24 +17,16 @@ package zhanglubin.legend.net{
 	 */
 	public class LNet implements INet
 	{
+		public static const TYPE_JSON:String = "json";
+		public static const TYPE_XML:String = "xml";
+		public static const TYPE_STRING:String = "string";
 		private var _variables:URLVariables;
 		private var _request:URLRequest;
 		private var _loader:LURLLoader;
 		private var _phpURL:String;
-
-		public function get json():Boolean
-		{
-			return _json;
-		}
-
-		public function set json(value:Boolean):void
-		{
-			_json = value;
-		}
-
 		private var _fun:Function;
 		private var _errorShow:Function;
-		private var _json:Boolean;
+		private var _resultType:String;
 		/**
 		 * legendPHP连接类
 		 */
@@ -53,14 +45,13 @@ package zhanglubin.legend.net{
 			this._errorShow = errorFun;
 			this._fun = completeFun;
 			
-			trace("LNet setVariables this._phpURL = " ,this._phpURL );
 		}
 		/**
 		 * php运行
 		 * 
 		 * @param 参数传递方式(默认POST)　
 		 */
-		public function run(method:String = URLRequestMethod.POST):void{
+		public function run(method:String = URLRequestMethod.POST,resultType:String = LNet.TYPE_XML):void{
 			// 送信先設定
 			_request = new URLRequest();
 			_request.url = _phpURL + "?legendrand=" + Math.random() + "&";
@@ -111,14 +102,14 @@ package zhanglubin.legend.net{
 		 * @param Event
 		 */
 		protected function completeHandler(event:Event):void{
-			if(json){
-				event.target.die();
-				this._fun(event.target.data.toString());
-				return;
-			}
-			var xml:XML = new XML(event.target.data.toString());
 			event.target.die();
-			this._fun(xml);
+			if(_resultType == LNet.TYPE_JSON){
+				this._fun(JSON.parse(event.target.data.toString()));
+			}else if(_resultType == LNet.TYPE_JSON){
+				this._fun(new XML(event.target.data.toString()));
+			}else{
+				this._fun(event.target.data.toString());
+			}
 		}
 	}
 }

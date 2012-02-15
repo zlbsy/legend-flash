@@ -1,19 +1,15 @@
 package zhanglubin.legend.scripts.analysis
 {
-	import flash.events.MouseEvent;
+	import flash.net.URLRequestMethod;
+	import flash.net.URLVariables;
 	
-	import zhanglubin.legend.components.LLabel;
-	import zhanglubin.legend.display.LSprite;
+	import zhanglubin.legend.net.LNet;
 	import zhanglubin.legend.scripts.LScript;
-	import zhanglubin.legend.scripts.analysis.text.ScriptLabel;
-	import zhanglubin.legend.scripts.analysis.text.ScriptWind;
 	import zhanglubin.legend.utils.LGlobal;
-	import zhanglubin.legend.utils.LString;
-	import zhanglubin.legend.utils.transitions.LManager;
 
 	public class ScriptUrl
 	{
-		
+		private static var _error:Function;
 		public function ScriptUrl()
 		{
 		}
@@ -28,8 +24,13 @@ package zhanglubin.legend.scripts.analysis
 			var end:int = value.indexOf(")");
 			switch(value.substr(0,start)){
 				case "Url.get":
+					run(URLRequestMethod.GET,value,start,end);
 					break;
 				case "Url.post":
+					run(URLRequestMethod.POST,value,start,end);
+					break;
+				case "Url.error":
+					setError(value,start,end);
 					break;
 				default:
 					LGlobal.script.analysis();
@@ -38,19 +39,44 @@ package zhanglubin.legend.scripts.analysis
 		}
 		/**
 		 * 脚本解析
-		 * Url.get(a=0,c=aaa,...);
+		 * Url.error(errorFun);
 		 * 
 		 * @param 脚本信息
 		 */
-		private static function get(value:String,start:int,end:int):void{
+		private static function setError(value:String,start:int,end:int):void{
+			var params:Array = value.substring(start+1,end).split(",");
+			_error = function():void{
+				ScriptFunction.analysis("Call." + params[0] + "();");
+			}
+		}
+		private static function complete(str:String):void{
+			var script:LScript = LGlobal.script;
+			var data:String = script.removeComment(str);
+			script.saveList();
+			script.dataList.unshift([data]);
+			script.toList(data);
 		}
 		/**
 		 * 脚本解析
-		 * Url.post(a=0,c=aaa,...);
+		 * Url.get(url,a=0,c=aaa,...);
+		 * Url.post(url,a=0,c=aaa,...);
 		 * 
 		 * @param 脚本信息
 		 */
-		private static function post(value:String,start:int,end:int):void{
+		private static function run(method:String,value:String,start:int,end:int):void{
+			var script:LScript = LGlobal.script;
+			var params:Array = value.substring(start+1,end).split(",");
+			var variables:URLVariables = new URLVariables();
+			var i:int,param:Array;
+			if(params.length > 1){
+				for(i=1;i<params.length;i++){
+					param = (params[i] as String).split("=");
+					variables[param[0]] = param[1];
+				}
+			}
+			if(_error==null)_error=function():void{};
+			LGlobal.url.setVariables(params[0],variables,_error,complete);
+			LGlobal.url.run(method,LNet.TYPE_STRING);
 		}
 	}
 }
