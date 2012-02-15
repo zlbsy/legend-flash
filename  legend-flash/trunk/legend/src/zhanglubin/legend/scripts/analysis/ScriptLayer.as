@@ -43,10 +43,30 @@ package zhanglubin.legend.scripts.analysis
 				case "Layer.drawRect":
 					drawRect(value,start,end);
 					break;
+				case "Layer.drawRectGradient":
+					drawRectGradient(value,start,end);
+					break;
 				default:
 					
 			}
 			
+		}
+		/**
+		 * 脚本解析
+		 * 添加层
+		 * Layer.drawRect(name,x,y,width,height,color,color2);
+		 * @param 脚本信息
+		 */
+		private static function drawRectGradient(value:String,start:int,end:int):void{
+			var params:Array = value.substring(start+1,end).split(",");
+			var nameStr:String = params[0];
+			var color:int = int(params[5]);
+			var color2:Number = int(params[6]);
+			var script:LScript = LGlobal.script;
+			var layer:LSprite;
+			layer = script.scriptArray.layerList[nameStr];
+			LDisplay.drawRectGradient(layer.graphics,[int(params[1]),int(params[2]),int(params[3]),int(params[4])],[color,color2]);
+			script.analysis();
 		}
 		/**
 		 * 脚本解析
