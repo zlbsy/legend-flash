@@ -14,6 +14,6 @@ package zhanglubin.legend.core.net
 		function ioErrorHandler(event:IOErrorEvent):void;
 		function configureListeners():void;
 		function setVariables(phpURL:String,variables:URLVariables,errorFun:Function,completeFun:Function):void;
-		function run(method:String = URLRequestMethod.POST):void;
+		function run(method:String = URLRequestMethod.POST,returnType:String = "xml"):void;
 	}
 }

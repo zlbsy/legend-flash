@@ -118,6 +118,7 @@ package zhanglubin.legend.game.sousou.character
 		private var _targetCharacter:LSouSouCharacterS;
 		private var _pointList:Vector.<Point>;
 		private var _action_mode:String;
+		/**人工智能*/
 		private var _aiIntelligent:Boolean;
 		private var _charalist:Array;
 		private var _attackNumber:int;
@@ -1595,10 +1596,17 @@ package zhanglubin.legend.game.sousou.character
 			}
 			LSouSouObject.checkFunction();
 		}
+		/**
+		 * 是否使用策略判断
+		 * */
 		public function getStrategyTarget(characterSArray:Array,targetArray:Array):Object{
+			//如果mp为0，则无法使用策略
 			if(this._member.strategy == 0)return null;
+			//行动范围
 			LSouSouObject.sMap.roadList = LSouSouObject.sStarQuery.makePath(LSouSouObject.charaSNow);
+			//将自己加入到行动范围
 			LSouSouObject.sMap.roadList.unshift(new Node(this.locationX,this.locationY,0));
+			
 			var roadLength:int = LSouSouObject.sMap.roadList.length;
 			var charas:LSouSouCharacterS;
 			var obj:Object;
@@ -1607,18 +1615,26 @@ package zhanglubin.legend.game.sousou.character
 			var strategyRectString:String;
 			var strategyRect:Array;
 			var i:int;
+			//根据每一个可移动到的位置进行判断
 			for(i=0;i<roadLength;i++){
+				//如果移动目的地有其他人员，则判断下一位置
 				if((characterSArray[LSouSouObject.sMap.roadList[i].x + "," +LSouSouObject.sMap.roadList[i].y] != null && LSouSouObject.charaSNow.index != characterSArray[LSouSouObject.sMap.roadList[i].x + "," +LSouSouObject.sMap.roadList[i].y].index) && 
 					_charalist[LSouSouObject.sMap.roadList[i].x + "," +LSouSouObject.sMap.roadList[i].y])continue;
+				//循环敌军数组
 				for each(obj in targetArray){
 					charas = obj.charas;
+					//获取所有策略，依次判断是否使用
 					for each(slist in this._member.strategyList.elements()){
+						//跳过未习得策略
 						if(slist.@lv > this._member.lv)continue;
+						//获取策略
 						strategyXMLList = LSouSouObject.strategy["Strategy" + slist];
+						//如果mp不够，则跳过
 						if(this._member.strategy < int(strategyXMLList.Cost))continue;
+						//获取策略可视范围
 						strategyRectString = strategyXMLList["Range"].elements()[0];
-						trace("strategyRectString = " + strategyRectString);
 						strategyRect = strategyRectString.split(",");
+						//判断策略可视范围内所有位置，是否有可攻击的敌军
 						if(Math.abs(this.locationX - charas.locationX) + Math.abs(this.locationY - charas.locationY) <= Math.abs(strategyRect[0]) + Math.abs(strategyRect[1])){
 							obj.nodeparent = LSouSouObject.sMap.roadList[i];
 							LSouSouObject.sMap.strategy = strategyXMLList;
@@ -1648,7 +1664,9 @@ package zhanglubin.legend.game.sousou.character
 			var targetArray2:Array = new Array();
 			var intHert:int;
 			_charalist = new Array();
+			//获取所有敌军，以及战场所有人员位置
 			if(this.belong == LSouSouObject.BELONG_FRIEND){
+				//友军
 				for each(charas in LSouSouObject.sMap.enemylist){
 					if(!charas.visible || charas.member.troops == 0)continue;
 					obj = new Object();
@@ -1666,6 +1684,7 @@ package zhanglubin.legend.game.sousou.character
 					_charalist[charas.locationX + "," + charas.locationY] = charas;
 				}
 			}else{
+				//敌军
 				for each(charas in LSouSouObject.sMap.ourlist){
 					if(!charas.visible || charas.member.troops == 0)continue;
 					obj = new Object();
@@ -1693,7 +1712,7 @@ package zhanglubin.legend.game.sousou.character
 				(this.member.armsType == 2 && Math.random() < 0.5)){
 				obj = getStrategyTarget(characterSArray,targetArray);
 			}
-			
+			//如果获得策略攻击目标，则停止计算
 			if(obj){
 				this.aiForStrategy = true;
 				return obj;
@@ -1717,7 +1736,7 @@ package zhanglubin.legend.game.sousou.character
 			
 			
 			if(targetArray2.length > 0 ){
-				trace("没有一击可以杀死的人的时候，如果有可以攻击到的人，则随即抽取可以攻击到的人，确立目标");
+				trace("没有一击可以杀死的人的时候，如果有可以攻击到的人，则随机抽取可以攻击到的人，确立目标");
 				var returnObj:Object;
 				for each(obj in targetArray2){
 					if(returnObj == null){
@@ -1748,9 +1767,6 @@ package zhanglubin.legend.game.sousou.character
 					}
 				}
 				return returnObj;
-				//i = Math.floor(Math.random() * targetArray2.length );
-				//return targetArray2[i];
-				//if(this._command != LSouSouCharacterS.COMMAND_STAND_DEFENSE){
 			}else if(targetArray.length > 0 && this._command == LSouSouCharacterS.COMMAND_INITIATIVE){
 				trace("没有可以攻击到的人，确立最近目标,准备向目标移动");
 				//没有可以攻击到的人，随机确立目标 obj.nodeparent空
@@ -1795,13 +1811,6 @@ package zhanglubin.legend.game.sousou.character
 					}
 					if(setarr[node.x + "," +node.y] == null)continue;
 					objDistance = setarr[node.x + "," +node.y];
-					/**
-					objx = obj.charas.x;
-					objy = obj.charas.y;
-					objDx = node.x * LSouSouObject.sMap._nodeLength - objx;
-					objDy = node.y * LSouSouObject.sMap._nodeLength - objy;
-					objDxy = objDx*objDx + objDy*objDy;
-					*/
 					
 					if(objDxy < objDistance){
 						obj.mx = node.x;
