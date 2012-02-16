@@ -3,6 +3,7 @@
   <includeClasses>
     <classEntry path="zhanglubin.legend.components.LComboBox"/>
     <classEntry path="zhanglubin.legend.objects.LAnimationMovie"/>
+    <classEntry path="zhanglubin.legend.game.sousou.character.LSouSouCharacterSAI"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

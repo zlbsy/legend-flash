@@ -3,7 +3,9 @@ package zhanglubin.legend.game.sousou.object
 	import zhanglubin.legend.game.sousou.character.LSouSouCharacterS;
 	import zhanglubin.legend.game.sousou.map.LSouSouWindow;
 	import zhanglubin.legend.utils.LGlobal;
-
+	/**
+	 * 战场命中伤害等计算
+	 * */
 	public class LSouSouCalculate
 	{
 		public function LSouSouCalculate()
