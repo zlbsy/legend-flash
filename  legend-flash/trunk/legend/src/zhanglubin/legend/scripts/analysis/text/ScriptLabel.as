@@ -15,7 +15,7 @@ package zhanglubin.legend.scripts.analysis.text
 		/**
 		 * 脚本解析
 		 * 添加label
-		 * Text.label(layer,name,こんにちは、張です。,100,200,13,#ff0000);
+		 * Text.label(layer,name,こんにちは、張です。,100,200,13,#ff0000,1);
 		 * @param 脚本信息
 		 */
 		public static function analysis(value:String,start:int,end:int):void{
@@ -25,8 +25,12 @@ package zhanglubin.legend.scripts.analysis.text
 			var layer:LSprite;
 			var layerStr:String = lArr[0];
 			var nameStr:String = lArr[1];
-			label.htmlText = "<font size='"+lArr[5]+"' color='"+lArr[6]+"'>" + lArr[2] + "</font>";
-			label.xy = new LCoordinate(int(lArr[3]),int(lArr[4]));
+			var textStr:String = lArr[2];
+			while(textStr.indexOf("\\n")>=0)textStr = textStr.replace("\\n","\n");
+			if(lArr.length > 7 && int(lArr[7]) == 1)textStr = "<b>"+textStr+"</b>";
+			label.htmlText = "<font size='"+lArr[5]+"' color='"+lArr[6]+"'>" + textStr + "</font>";
+			label.x = int(lArr[3]);
+			label.y = int(lArr[4]);
 			
 			layer = script.scriptArray.layerList[layerStr];
 			script.scriptArray.textList[nameStr] = label;

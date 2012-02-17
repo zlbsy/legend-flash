@@ -22,6 +22,7 @@ package zhanglubin.legend.game.sousou.character
 	import zhanglubin.legend.utils.LGlobal;
 	import zhanglubin.legend.utils.LImage;
 	import zhanglubin.legend.utils.math.LCoordinate;
+	import zhanglubin.legend.game.sousou.character.characterS.LSouSouCharacterSAI;
 
 	public class LSouSouCharacterS extends LSouSouCharacter
 	{
