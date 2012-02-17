@@ -43,6 +43,12 @@ package zhanglubin.legend.scripts.analysis
 				case "Layer.drawRect":
 					drawRect(value,start,end);
 					break;
+				case "Layer.drawRectLine":
+					drawRectLine(value,start,end);
+					break;
+				case "Layer.drawRoundRectLine":
+					drawRoundRectLine(value,start,end);
+					break;
 				case "Layer.drawRectGradient":
 					drawRectGradient(value,start,end);
 					break;
@@ -83,6 +89,42 @@ package zhanglubin.legend.scripts.analysis
 			var layer:LSprite;
 			layer = script.scriptArray.layerList[nameStr];
 			LDisplay.drawRect(layer.graphics,[int(params[1]),int(params[2]),int(params[3]),int(params[4])],true,color,alpha);
+			script.analysis();
+		}
+		/**
+		 * 脚本解析
+		 * 添加层
+		 * Layer.drawRoundRectLine(name,x,y,width,height,jw,jh,color,size);
+		 * @param 脚本信息
+		 */
+		private static function drawRoundRectLine(value:String,start:int,end:int):void{
+			var params:Array = value.substring(start+1,end).split(",");
+			var nameStr:String = params[0];
+			var color:int = int(params[7]);
+			var size:int = int(params[8]);
+			var script:LScript = LGlobal.script;
+			var layer:LSprite;
+			layer = script.scriptArray.layerList[nameStr];
+			layer.graphics.lineStyle(size,color);
+			LDisplay.drawRoundRect(layer.graphics,[int(params[1]),int(params[2]),int(params[3]),int(params[4]),int(params[5]),int(params[6])],false,color,1,size);
+			script.analysis();
+		}
+		/**
+		 * 脚本解析
+		 * 添加层
+		 * Layer.drawRectLine(name,x,y,width,height,color,size);
+		 * @param 脚本信息
+		 */
+		private static function drawRectLine(value:String,start:int,end:int):void{
+			var params:Array = value.substring(start+1,end).split(",");
+			var nameStr:String = params[0];
+			var color:int = int(params[5]);
+			var size:int = int(params[6]);
+			var script:LScript = LGlobal.script;
+			var layer:LSprite;
+			layer = script.scriptArray.layerList[nameStr];
+			layer.graphics.lineStyle(size,color);
+			LDisplay.drawRect(layer.graphics,[int(params[1]),int(params[2]),int(params[3]),int(params[4])],false,color,1,size);
 			script.analysis();
 		}
 		/**
