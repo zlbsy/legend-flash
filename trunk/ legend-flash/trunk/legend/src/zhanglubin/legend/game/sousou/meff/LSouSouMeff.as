@@ -154,6 +154,8 @@ package zhanglubin.legend.game.sousou.meff
 						toChangeStatus(arr[1]);
 					}else if(LSouSouObject.sMap.strategy.Type.toString() == "6"){
 						toChangeStatus2(arr[1]);
+					}else if(LSouSouObject.sMap.strategy.Type.toString() == "7"){
+						toWake(arr[1]);
 					}else{
 						trace("LSouSouMeff onFrame 该策略功能尚未实现");
 					}
@@ -197,6 +199,42 @@ package zhanglubin.legend.game.sousou.meff
 				}
 				_meffCharacter.strategyOver();
 			}
+		}
+		public function toWake(charas:LSouSouCharacterS):void{
+			var hitrate:Boolean = LSouSouCalculate.getHitrateRestoration(_meffCharacter,charas);
+			
+			if(hitrate){
+				charas.setReturnAction(LSouSouCharacterS.DOWN + charas.direction);
+				/**状态恢复*/
+				charas.action = LSouSouCharacterS.UPGRADE;
+				charas.statusArray[LSouSouCharacterS.STATUS_CHAOS][0] = 0;
+				charas.statusArray[LSouSouCharacterS.STATUS_CHAOS][1] = 0;
+				
+				charas.statusArray[LSouSouCharacterS.STATUS_FIXED][0] = 0;
+				charas.statusArray[LSouSouCharacterS.STATUS_FIXED][1] = 0;
+				
+				charas.statusArray[LSouSouCharacterS.STATUS_POISON][0] = 0;
+				charas.statusArray[LSouSouCharacterS.STATUS_POISON][1] = 0;
+				
+				charas.statusArray[LSouSouCharacterS.STATUS_STATEGY][0] = 0;
+				charas.statusArray[LSouSouCharacterS.STATUS_STATEGY][1] = 0;
+				
+				charas.statusArray[LSouSouCharacterS.STATUS_NOATK][0] = 0;
+				charas.statusArray[LSouSouCharacterS.STATUS_NOATK][1] = 0;
+			}else{
+				/**档格*/
+				if(charas.index == _meffCharacter.targetCharacter.index){
+					charas.targetCharacter = _meffCharacter;
+					if(int(_meffCharacter.member.weapon) > 0 && int(LSouSouObject.item["Child"+_meffCharacter.member.weapon].Spirit.@add) > 0){
+						if(_meffCharacter.member.lv <= charas.member.lv){
+							_meffCharacter.member.weapon.@exp = int(_meffCharacter.member.weapon.@exp.toString()) + 3;
+						}else{
+							_meffCharacter.member.weapon.@exp = int(_meffCharacter.member.weapon.@exp.toString()) + 2;
+						}
+					}
+				}
+			}
+			
 		}
 		public function toChangeStatus2(charas:LSouSouCharacterS):void{
 			var hitrate:Boolean =LSouSouCalculate.getHitrateStrategy(_meffCharacter,charas);

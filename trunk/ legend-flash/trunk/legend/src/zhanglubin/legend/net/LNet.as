@@ -10,6 +10,7 @@ package zhanglubin.legend.net{
 	
 	import zhanglubin.legend.core.net.INet;
 	import zhanglubin.legend.display.LURLLoader;
+	import zhanglubin.legend.json.JSON;
 	
 	/**
 	 * legendPHP连接类
@@ -104,7 +105,7 @@ package zhanglubin.legend.net{
 		protected function completeHandler(event:Event):void{
 			event.target.die();
 			if(_resultType == LNet.TYPE_JSON){
-				this._fun(JSON.parse(event.target.data.toString()));
+				this._fun(JSON.decode(event.target.data.toString()));
 			}else if(_resultType == LNet.TYPE_JSON){
 				this._fun(new XML(event.target.data.toString()));
 			}else{

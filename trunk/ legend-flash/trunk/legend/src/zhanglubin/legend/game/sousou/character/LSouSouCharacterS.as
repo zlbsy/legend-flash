@@ -127,7 +127,7 @@ package zhanglubin.legend.game.sousou.character
 		private var _breakoutIndex:int;
 		private var _breakoutNumber:int;
 		private var _targetArray:Array;
-		private var _aiForStrategy:Boolean;
+		private var _aiForStrategy:Object;
 		private var _status:int = 0;
 		private var _skillRun:Boolean;
 		private var isCanBreakout:Boolean;
@@ -252,12 +252,12 @@ package zhanglubin.legend.game.sousou.character
 			_direction = value;
 		}
 
-		public function get aiForStrategy():Boolean
+		public function get aiForStrategy():Object
 		{
 			return _aiForStrategy;
 		}
 
-		public function set aiForStrategy(value:Boolean):void
+		public function set aiForStrategy(value:Object):void
 		{
 			_aiForStrategy = value;
 		}
@@ -322,7 +322,7 @@ package zhanglubin.legend.game.sousou.character
 			this._targetCharacter = obj.charas;
 			this._skillViewOver = true;
 			this._skillRun = false;
-			if(!this._aiForStrategy)setAttackNumber();
+			if(this._aiForStrategy != null)setAttackNumber();
 			
 			LSouSouObject.sMap.moveToCoordinate(0,0,new LCoordinate(obj.nodeparent.x,obj.nodeparent.y));
 		}
@@ -1463,8 +1463,8 @@ package zhanglubin.legend.game.sousou.character
 			var charas:LSouSouCharacterS;
 			for each(charas in LSouSouObject.sMap.enemylist){
 				if(!charas.visible)continue;
-				if(charas.member.troops >= charas.member.maxTroops*0.25)continue;
-				if(charas.member.troops > 0 && charas.member.troops <  charas.member.maxTroops*0.25){
+				if(charas.member.troops >= charas.member.pantTroops)continue;
+				if(charas.member.troops > 0 && charas.member.troops <  charas.member.pantTroops){
 					charas.action = LSouSouCharacterS.PANT;
 					continue;
 				}
@@ -1491,8 +1491,8 @@ package zhanglubin.legend.game.sousou.character
 			}
 			for each(charas in LSouSouObject.sMap.ourlist){
 				if(!charas.visible)continue;
-				if(charas.member.troops >= charas.member.maxTroops*0.25)continue;
-				if(charas.member.troops > 0 && charas.member.troops <  charas.member.maxTroops*0.25){
+				if(charas.member.troops >= charas.member.pantTroops)continue;
+				if(charas.member.troops > 0 && charas.member.troops <  charas.member.pantTroops){
 					charas.action = LSouSouCharacterS.PANT;
 					continue;
 				}
@@ -1518,8 +1518,8 @@ package zhanglubin.legend.game.sousou.character
 			}
 			for each(charas in LSouSouObject.sMap.friendlist){
 				if(!charas.visible)continue;
-				if(charas.member.troops >= charas.member.maxTroops*0.25)continue;
-				if(charas.member.troops > 0 && charas.member.troops <  charas.member.maxTroops*0.25){
+				if(charas.member.troops >= charas.member.pantTroops)continue;
+				if(charas.member.troops > 0 && charas.member.troops <  charas.member.pantTroops){
 					charas.action = LSouSouCharacterS.PANT;
 					continue;
 				}

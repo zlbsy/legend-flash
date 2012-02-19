@@ -95,6 +95,7 @@ package zhanglubin.legend.game.sousou.object
 		public static function getHitrateRestoration(attChara:LSouSouCharacterS,hertChara:LSouSouCharacterS):Boolean{
 			if(LSouSouObject.sMap.strategy.Type.toString() == "4")return true;
 			if(LSouSouObject.sMap.strategy.Type.toString() == "5" && LSouSouObject.sMap.strategy.Hert.toString() == "change_1")return true;
+			if(LSouSouObject.sMap.strategy.Type.toString() == "7")return true;
 			return false;
 		}
 		/********************************************
