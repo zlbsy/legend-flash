@@ -226,6 +226,9 @@ package zhanglubin.legend.game.sousou.character
 		public function set maxTroops(value:int):void{
 			_data.MaxTroops = value;
 		}
+		public function get pantTroops():int{
+			return maxTroops*0.25;
+		}
 		public function get strategy():int{
 			return int(_data.Strategy.toString());
 		}

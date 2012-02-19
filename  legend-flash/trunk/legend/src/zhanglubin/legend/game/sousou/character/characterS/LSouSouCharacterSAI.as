@@ -1,10 +1,10 @@
 package zhanglubin.legend.game.sousou.character.characterS
 {
+	import zhanglubin.legend.game.sousou.character.LSouSouCharacterS;
 	import zhanglubin.legend.game.sousou.object.LSouSouCalculate;
 	import zhanglubin.legend.game.sousou.object.LSouSouObject;
 	import zhanglubin.legend.game.utils.Node;
 	import zhanglubin.legend.utils.math.LCoordinate;
-	import zhanglubin.legend.game.sousou.character.LSouSouCharacterS;
 
 	/**
 	 * 战场人物AI处理类
@@ -15,19 +15,35 @@ package zhanglubin.legend.game.sousou.character.characterS
 		public function LSouSouCharacterSAI()
 		{
 		}
-		
+		private static function setSupply(charasSupply:Array,charas:LSouSouCharacterS):void{
+			var objSupply:Object;
+			if(charas.member.troops < charas.member.pantTroops){
+				objSupply = {type:"troops",charas:charas};
+				charasSupply.push(objSupply);
+			}else if(charas.statusArray[LSouSouCharacterS.STATUS_CHAOS][0] > 0 || 
+				charas.statusArray[LSouSouCharacterS.STATUS_FIXED][0] > 0 || 
+				charas.statusArray[LSouSouCharacterS.STATUS_POISON][0] > 0 || 
+				charas.statusArray[LSouSouCharacterS.STATUS_STATEGY][0] > 0 || 
+				charas.statusArray[LSouSouCharacterS.STATUS_NOATK][0] > 0){
+				objSupply = {type:"status",charas:charas};
+				charasSupply.push(objSupply);
+			}
+		}
 		/**
 		 * 计算攻击目标
 		 */
 		public static function getAttTarget(aiChara:LSouSouCharacterS):Object{
+			aiChara.aiForStrategy = null;
 			var charas:LSouSouCharacterS;
 			var i:int,j:int;
 			var objResult:Object;
 			var obj:Object;
+			var objSupply:Object;
 			var node:Node;
 			var node2:Node;
 			var canattack:Boolean;
 			
+			var charasSupply:Array = new Array();
 			var characterSArray:Array = new Array();
 			var targetArray:Array = new Array();
 			var targetArray2:Array = new Array();
@@ -46,10 +62,12 @@ package zhanglubin.legend.game.sousou.character.characterS
 				}
 				for each(charas in LSouSouObject.sMap.ourlist){
 					if(!charas.visible || charas.member.troops == 0)continue;
+					setSupply(charasSupply,charas);
 					_charalist[charas.locationX + "," + charas.locationY] = charas;
 				}
 				for each(charas in LSouSouObject.sMap.friendlist){
 					if(!charas.visible || charas.member.troops == 0)continue;
+					setSupply(charasSupply,charas);
 					_charalist[charas.locationX + "," + charas.locationY] = charas;
 				}
 			}else{
@@ -72,19 +90,30 @@ package zhanglubin.legend.game.sousou.character.characterS
 				}
 				for each(charas in LSouSouObject.sMap.enemylist){
 					if(!charas.visible || charas.member.troops == 0)continue;
+					setSupply(charasSupply,charas);
 					_charalist[charas.locationX + "," + charas.locationY] = charas;
 				}
 			}
 			obj = null;
-			//判断是否用策略
-			if(aiChara.member.armsType == 1 || 
-				(aiChara.member.armsType == 2 && Math.random() < 0.5)){
-				obj = getStrategyTarget(aiChara,characterSArray,targetArray);
-			}
-			//如果获得策略攻击目标，则停止计算
-			if(obj){
-				aiChara.aiForStrategy = true;
-				return obj;
+			//行动范围
+			LSouSouObject.sMap.roadList = LSouSouObject.sStarQuery.makePath(LSouSouObject.charaSNow);
+			//将自己加入到行动范围
+			LSouSouObject.sMap.roadList.unshift(new Node(aiChara.locationX,aiChara.locationY,0));
+			if(aiChara.statusArray[LSouSouCharacterS.STATUS_STATEGY][0] == 0 && aiChara.member.strategy >= 0){
+				//判断是否用恢复策略
+				if(charasSupply.length > 0){
+					obj = useSupply(aiChara,characterSArray,charasSupply);
+				}
+				//判断是否用攻击策略
+				if(obj == null && (aiChara.member.armsType == 1 || 
+					(aiChara.member.armsType == 2 && Math.random() < 0.5))){
+					obj = getStrategyTarget(aiChara,characterSArray,targetArray);
+				}
+				//如果获得策略攻击目标，则停止计算
+				if(obj){
+					aiChara.aiForStrategy = obj;
+					return obj;
+				}
 			}
 			//计算所有攻击范围
 			var attRange:Array = getAttRange(aiChara);
@@ -194,28 +223,115 @@ package zhanglubin.legend.game.sousou.character.characterS
 			return null;
 		}
 		/**
-		 * 判断是否在攻击范围之内
+		 * 是否使用恢复策略判断
 		 * */
-		public static function atAttackRect(attChara:LSouSouCharacterS,hertCoordinate:LCoordinate):Boolean{
-			var nodeStr:String;
-			var nodeArr:Array;
-			var canattack:Boolean;
-			for each(nodeStr in attChara.member.rangeAttack){
-				nodeArr = nodeStr.split(",");
-				if(attChara.locationX + int(nodeArr[0]) == hertCoordinate.x &&
-					attChara.locationY + int(nodeArr[1]) == hertCoordinate.y){
-					canattack = true;
-					break;
+		private static function useSupply(aiChara:LSouSouCharacterS,characterSArray:Array,charasSupply:Array):Object{
+			//如果mp为0，则无法使用策略
+			if(aiChara.member.strategy == 0)return null;
+			
+			var roadLength:int = LSouSouObject.sMap.roadList.length;
+			var charas:LSouSouCharacterS;
+			var obj:Object;
+			var objSupply:Object;
+			var slist:XML;
+			var strategyXMLList:XMLList;
+			var strategyRectString:String;
+			var strategyRect:Array;
+			var i:int;
+			//根据每一个可移动到的位置进行判断
+			for(i=0;i<roadLength;i++){
+				//如果移动目的地有其他人员，则判断下一位置
+				if((characterSArray[LSouSouObject.sMap.roadList[i].x + "," +LSouSouObject.sMap.roadList[i].y] != null && LSouSouObject.charaSNow.index != characterSArray[LSouSouObject.sMap.roadList[i].x + "," +LSouSouObject.sMap.roadList[i].y].index) && 
+					_charalist[LSouSouObject.sMap.roadList[i].x + "," +LSouSouObject.sMap.roadList[i].y])continue;
+				//循环敌军数组
+				for each(obj in charasSupply){
+					charas = obj.charas;
+					//获取所有策略，依次判断是否使用
+					for each(slist in aiChara.member.strategyList.elements()){
+						//跳过未习得策略
+						if(slist.@lv > aiChara.member.lv)continue;
+						//获取策略
+						strategyXMLList = LSouSouObject.strategy["Strategy" + slist];
+						//如果mp不够，则跳过
+						if(aiChara.member.strategy < int(strategyXMLList.Cost))continue;
+						if(obj.type == "troops"){
+							if(int(strategyXMLList.Type.toString()) != 4)continue;
+						}else{
+							if(objSupply != null || int(strategyXMLList.Type.toString()) != 7)continue;
+						}
+						//获取策略可视范围
+						strategyRectString = strategyXMLList["Range"].elements()[0];
+						strategyRect = strategyRectString.split(",");
+						//判断策略可视范围内所有位置，是否有可攻击的敌军
+						if(Math.abs(aiChara.locationX - charas.locationX) + Math.abs(aiChara.locationY - charas.locationY) <= Math.abs(strategyRect[0]) + Math.abs(strategyRect[1])){
+							obj.nodeparent = LSouSouObject.sMap.roadList[i];
+							LSouSouObject.sMap.strategy = strategyXMLList;
+							if(obj.type == "troops"){
+								return obj;
+							}
+							objSupply = obj;
+						}
+					}
 				}
 			}
-			return canattack;
+			return objSupply;
 		}
-		
+		/**
+		 * 是否使用攻击策略判断
+		 * */
+		public static function getStrategyTarget(aiChara:LSouSouCharacterS,characterSArray:Array,targetArray:Array):Object{
+			//如果mp为0，则无法使用策略
+			if(aiChara.member.strategy == 0)return null;
+			//行动范围
+			//LSouSouObject.sMap.roadList = LSouSouObject.sStarQuery.makePath(LSouSouObject.charaSNow);
+			//将自己加入到行动范围
+			//LSouSouObject.sMap.roadList.unshift(new Node(aiChara.locationX,aiChara.locationY,0));
+			
+			var roadLength:int = LSouSouObject.sMap.roadList.length;
+			var charas:LSouSouCharacterS;
+			var obj:Object;
+			var slist:XML;
+			var strategyXMLList:XMLList;
+			var strategyRectString:String;
+			var strategyRect:Array;
+			var i:int;
+			//根据每一个可移动到的位置进行判断
+			for(i=0;i<roadLength;i++){
+				//如果移动目的地有其他人员，则判断下一位置
+				if((characterSArray[LSouSouObject.sMap.roadList[i].x + "," +LSouSouObject.sMap.roadList[i].y] != null && LSouSouObject.charaSNow.index != characterSArray[LSouSouObject.sMap.roadList[i].x + "," +LSouSouObject.sMap.roadList[i].y].index) && 
+					_charalist[LSouSouObject.sMap.roadList[i].x + "," +LSouSouObject.sMap.roadList[i].y])continue;
+				//循环敌军数组
+				for each(obj in targetArray){
+					charas = obj.charas;
+					//获取所有策略，依次判断是否使用
+					for each(slist in aiChara.member.strategyList.elements()){
+						//跳过未习得策略
+						if(slist.@lv > aiChara.member.lv)continue;
+						//获取策略
+						strategyXMLList = LSouSouObject.strategy["Strategy" + slist];
+						//如果mp不够，则跳过
+						if(int(strategyXMLList.Type.toString()) < 4 || aiChara.member.strategy < int(strategyXMLList.Cost))continue;
+						//获取策略可视范围
+						strategyRectString = strategyXMLList["Range"].elements()[0];
+						strategyRect = strategyRectString.split(",");
+						//判断策略可视范围内所有位置，是否有可攻击的敌军
+						if(Math.abs(aiChara.locationX - charas.locationX) + Math.abs(aiChara.locationY - charas.locationY) <= Math.abs(strategyRect[0]) + Math.abs(strategyRect[1])){
+							obj.nodeparent = LSouSouObject.sMap.roadList[i];
+							LSouSouObject.sMap.strategy = strategyXMLList;
+							return obj;
+						}
+					}
+				}
+			}
+			
+			
+			return null;
+		}
 		/**
 		 * 计算所有攻击范围
 		 */
 		private static function getAttRange(aiChara:LSouSouCharacterS):Array{
-			LSouSouObject.sMap.roadList = LSouSouObject.sStarQuery.makePath(LSouSouObject.charaSNow);
+			//LSouSouObject.sMap.roadList = LSouSouObject.sStarQuery.makePath(LSouSouObject.charaSNow);
 			//if(LSouSouObject.sMap.roadList == null)return null;
 			var attArr:Array = new Array();
 			var attRoundArr:Array;
@@ -285,61 +401,28 @@ package zhanglubin.legend.game.sousou.character.characterS
 			return attArr;
 		}
 		
+		/**
+		 * 判断是否在攻击范围之内
+		 * */
+		public static function atAttackRect(attChara:LSouSouCharacterS,hertCoordinate:LCoordinate):Boolean{
+			var nodeStr:String;
+			var nodeArr:Array;
+			var canattack:Boolean;
+			for each(nodeStr in attChara.member.rangeAttack){
+				nodeArr = nodeStr.split(",");
+				if(attChara.locationX + int(nodeArr[0]) == hertCoordinate.x &&
+					attChara.locationY + int(nodeArr[1]) == hertCoordinate.y){
+					canattack = true;
+					break;
+				}
+			}
+			return canattack;
+		}
+		
 		private static function getDistance(fromCoordinate:LCoordinate,toCoordinate:LCoordinate):int{
 			var coorX:int = fromCoordinate.x - toCoordinate.x;
 			var coorY:int = fromCoordinate.y - toCoordinate.y;
 			return coorX*coorX + coorY*coorY;
-		}
-		/**
-		 * 是否使用策略判断
-		 * */
-		public static function getStrategyTarget(aiChara:LSouSouCharacterS,characterSArray:Array,targetArray:Array):Object{
-			//如果mp为0，则无法使用策略
-			if(aiChara.member.strategy == 0)return null;
-			//行动范围
-			LSouSouObject.sMap.roadList = LSouSouObject.sStarQuery.makePath(LSouSouObject.charaSNow);
-			//将自己加入到行动范围
-			LSouSouObject.sMap.roadList.unshift(new Node(aiChara.locationX,aiChara.locationY,0));
-			
-			var roadLength:int = LSouSouObject.sMap.roadList.length;
-			var charas:LSouSouCharacterS;
-			var obj:Object;
-			var slist:XML;
-			var strategyXMLList:XMLList;
-			var strategyRectString:String;
-			var strategyRect:Array;
-			var i:int;
-			//根据每一个可移动到的位置进行判断
-			for(i=0;i<roadLength;i++){
-				//如果移动目的地有其他人员，则判断下一位置
-				if((characterSArray[LSouSouObject.sMap.roadList[i].x + "," +LSouSouObject.sMap.roadList[i].y] != null && LSouSouObject.charaSNow.index != characterSArray[LSouSouObject.sMap.roadList[i].x + "," +LSouSouObject.sMap.roadList[i].y].index) && 
-					_charalist[LSouSouObject.sMap.roadList[i].x + "," +LSouSouObject.sMap.roadList[i].y])continue;
-				//循环敌军数组
-				for each(obj in targetArray){
-					charas = obj.charas;
-					//获取所有策略，依次判断是否使用
-					for each(slist in aiChara.member.strategyList.elements()){
-						//跳过未习得策略
-						if(slist.@lv > aiChara.member.lv)continue;
-						//获取策略
-						strategyXMLList = LSouSouObject.strategy["Strategy" + slist];
-						//如果mp不够，则跳过
-						if(aiChara.member.strategy < int(strategyXMLList.Cost))continue;
-						//获取策略可视范围
-						strategyRectString = strategyXMLList["Range"].elements()[0];
-						strategyRect = strategyRectString.split(",");
-						//判断策略可视范围内所有位置，是否有可攻击的敌军
-						if(Math.abs(aiChara.locationX - charas.locationX) + Math.abs(aiChara.locationY - charas.locationY) <= Math.abs(strategyRect[0]) + Math.abs(strategyRect[1])){
-							obj.nodeparent = LSouSouObject.sMap.roadList[i];
-							LSouSouObject.sMap.strategy = strategyXMLList;
-							return obj;
-						}
-					}
-				}
-			}
-			
-			
-			return null;
 		}
 	}
 }
