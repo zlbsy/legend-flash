@@ -323,7 +323,6 @@ package zhanglubin.legend.game.sousou.character
 			this._skillViewOver = true;
 			this._skillRun = false;
 			if(this._aiForStrategy != null)setAttackNumber();
-			
 			LSouSouObject.sMap.moveToCoordinate(0,0,new LCoordinate(obj.nodeparent.x,obj.nodeparent.y));
 		}
 		public function get action_mode():String

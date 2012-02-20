@@ -108,7 +108,7 @@ package zhanglubin.legend.game.sousou.meff
 			var ax:int,ay:int;
 			for each(nodeStr in LSouSouObject.sMap.strategy.Att.elements()){
 				nodeArr = nodeStr.split(",");
-				trace("LSouSouMeff setImage _meffCharacter.targetCharacter = " + _meffCharacter.targetCharacter);
+				trace("LSouSouMeff setImage _meffCharacter.targetCharacter = " + _meffCharacter.targetCharacter.index);
 				charas = _charalist[(_meffCharacter.targetCharacter.locationX + int(nodeArr[0])) + "," + (_meffCharacter.targetCharacter.locationY + int(nodeArr[1]))];
 				trace("LSouSouMeff setImage charas = " + charas);
 				if(!charas)continue;
@@ -118,7 +118,7 @@ package zhanglubin.legend.game.sousou.meff
 				this._animation.run(LAnimation.POSITIVE);
 				this.bitmapData = this._animation.dataBMP;
 				ax = (_meffCharacter.targetCharacter.width - bitmapData.width)/2 + nodeArr[0]*LSouSouObject.sMap._nodeLength;
-				ay = (_meffCharacter.targetCharacter.height - bitmapData.height)/2 + nodeArr[1]*LSouSouObject.sMap._nodeLength;
+				ay = (_meffCharacter.targetCharacter.height - bitmapData.height) + nodeArr[1]*LSouSouObject.sMap._nodeLength;
 				_animationList.push([this._animation,charas,ax,ay]);
 			}
 			/*
