@@ -8,6 +8,7 @@ package zhanglubin.legend.scripts.analysis
 	import zhanglubin.legend.scripts.LScript;
 	import zhanglubin.legend.text.LTextField;
 	import zhanglubin.legend.utils.LDisplay;
+	import zhanglubin.legend.utils.LFilter;
 	import zhanglubin.legend.utils.LGlobal;
 	import zhanglubin.legend.utils.LString;
 	import zhanglubin.legend.utils.transitions.LManager;
@@ -37,11 +38,17 @@ package zhanglubin.legend.scripts.analysis
 				case "Layer.transition":
 					transition(value,start,end);
 					break;
+				case "Layer.setFilter":
+					setFilter(value,start,end);
+					break;
 				case "Layer.clear":
 					clearLayer(value,start,end);
 					break;
 				case "Layer.drawRect":
 					drawRect(value,start,end);
+					break;
+				case "Layer.drawRoundRect":
+					drawRoundRect(value,start,end);
 					break;
 				case "Layer.drawRectLine":
 					drawRectLine(value,start,end);
@@ -52,10 +59,48 @@ package zhanglubin.legend.scripts.analysis
 				case "Layer.drawRectGradient":
 					drawRectGradient(value,start,end);
 					break;
+				case "Layer.drawTriangle":
+					drawTriangle(value,start,end);
+					break;
+				case "Layer.drawTriangleLine":
+					drawTriangle(value,start,end);
+					break;
 				default:
 					
 			}
 			
+		}
+		/**
+		 * 脚本解析
+		 * 添加层
+		 * Layer.setFilter(name,filter);
+		 * @param 脚本信息
+		 */
+		private static function setFilter(value:String,start:int,end:int):void{
+			var params:Array = value.substring(start+1,end).split(",");
+			var nameStr:String = params[0];
+			var filter:String = params[1];
+			var script:LScript = LGlobal.script;
+			var layer:LSprite;
+			layer = script.scriptArray.layerList[nameStr];
+			switch(filter){
+				case "INIT":
+					LFilter.setFilter(layer,LFilter.INIT);
+					break;
+				case "GRAY":
+					LFilter.setFilter(layer,LFilter.GRAY);
+					break;
+				case "SHADOW":
+					LFilter.setFilter(layer,LFilter.SHADOW);
+					break;
+				case "SUN":
+					LFilter.setFilter(layer,LFilter.SUN);
+					break;
+				case "RELIEF":
+					LFilter.setFilter(layer,LFilter.RELIEF);
+					break;
+			}
+			script.analysis();
 		}
 		/**
 		 * 脚本解析
@@ -72,6 +117,58 @@ package zhanglubin.legend.scripts.analysis
 			var layer:LSprite;
 			layer = script.scriptArray.layerList[nameStr];
 			LDisplay.drawRectGradient(layer.graphics,[int(params[1]),int(params[2]),int(params[3]),int(params[4])],[color,color2]);
+			script.analysis();
+		}
+		/**
+		 * 脚本解析
+		 * 添加层
+		 * Layer.drawRoundRect(name,x,y,width,height,jw,jh,color,size);
+		 * @param 脚本信息
+		 */
+		private static function drawRoundRect(value:String,start:int,end:int):void{
+			var params:Array = value.substring(start+1,end).split(",");
+			var nameStr:String = params[0];
+			var color:int = int(params[7]);
+			var size:int = int(params[8]);
+			var script:LScript = LGlobal.script;
+			var layer:LSprite;
+			layer = script.scriptArray.layerList[nameStr];
+			layer.graphics.lineStyle(size,color);
+			LDisplay.drawRoundRect(layer.graphics,[int(params[1]),int(params[2]),int(params[3]),int(params[4]),int(params[5]),int(params[6])],true,color,1,size);
+			script.analysis();
+		}
+		/**
+		 * 脚本解析
+		 * 添加层
+		 * Layer.drawTriangle(name,x1,y1,x2,y2,x3,y3,color,alpha);
+		 * @param 脚本信息
+		 */
+		private static function drawTriangle(value:String,start:int,end:int):void{
+			var params:Array = value.substring(start+1,end).split(",");
+			var nameStr:String = params[0];
+			var color:int = int(params[7]);
+			var alpha:Number = Number(params[8]);
+			var script:LScript = LGlobal.script;
+			var layer:LSprite;
+			layer = script.scriptArray.layerList[nameStr];
+			LDisplay.drawTriangle(layer.graphics,[int(params[1]),int(params[2]),int(params[3]),int(params[4]),int(params[5]),int(params[6])],true,color,alpha);
+			script.analysis();
+		}
+		/**
+		 * 脚本解析
+		 * 添加层
+		 * Layer.drawTriangle(name,x1,y1,x2,y2,x3,y3,color,alpha);
+		 * @param 脚本信息
+		 */
+		private static function drawTriangleLine(value:String,start:int,end:int):void{
+			var params:Array = value.substring(start+1,end).split(",");
+			var nameStr:String = params[0];
+			var color:int = int(params[7]);
+			var alpha:Number = Number(params[8]);
+			var script:LScript = LGlobal.script;
+			var layer:LSprite;
+			layer = script.scriptArray.layerList[nameStr];
+			LDisplay.drawTriangle(layer.graphics,[int(params[1]),int(params[2]),int(params[3]),int(params[4]),int(params[5]),int(params[6])],false,color,alpha);
 			script.analysis();
 		}
 		/**
