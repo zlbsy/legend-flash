@@ -59,7 +59,6 @@ package zhanglubin.legend.scripts.analysis
 			var lArr:Array = value.substring(start+1,end).split(",");
 			var nameStr:String = lArr[0];
 			var actionIndex:int = lArr[1];
-			trace(actionIndex);
 			var script:LScript = LGlobal.script;
 			var animationMovie:LAnimationMovie = script.scriptArray.animationList[nameStr];
 			animationMovie.action = actionIndex;
@@ -77,7 +76,6 @@ package zhanglubin.legend.scripts.analysis
 			
 			var script:LScript = LGlobal.script;
 			var animationMovie:LAnimationMovie = script.scriptArray.animationList[nameStr];
-			trace("remove = " + animationMovie);
 			if(animationMovie == null){
 				script.scriptArray.animationList[nameStr] = null;
 				script.analysis();

@@ -105,7 +105,7 @@ package zhanglubin.legend.net{
 		protected function completeHandler(event:Event):void{
 			event.target.die();
 			if(_resultType == LNet.TYPE_JSON){
-				this._fun(JSON.decode(event.target.data.toString()));
+				this._fun(zhanglubin.legend.json.JSON.decode(event.target.data.toString()));
 			}else if(_resultType == LNet.TYPE_JSON){
 				this._fun(new XML(event.target.data.toString()));
 			}else{

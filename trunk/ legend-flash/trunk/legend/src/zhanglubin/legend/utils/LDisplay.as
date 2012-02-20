@@ -31,6 +31,7 @@ package zhanglubin.legend.utils
 		 */
 		public static function drawTriangle(_target:Graphics,pointArray:Array,fill:Boolean=false,color:uint = 0x000000,alpha:Number = 1,thickness:Number = 1):void{
 			if(fill){
+				_target.lineStyle(thickness,color,alpha);
 				_target.beginFill(color,alpha);
 			}else{
 				_target.lineStyle(thickness,color,alpha);
@@ -58,6 +59,7 @@ package zhanglubin.legend.utils
 		}
 		public static function drawRect(_target:Graphics,pointArray:Array,fill:Boolean=false,color:uint = 0x000000,alpha:Number = 1,thickness:Number = 1):void{
 			if(fill){
+				_target.lineStyle(thickness,color,alpha);
 				_target.beginFill(color,alpha);
 			}else{
 				_target.lineStyle(thickness,color,alpha);
@@ -69,6 +71,7 @@ package zhanglubin.legend.utils
 		}
 		public static function drawRoundRect(_target:Graphics,pointArray:Array,fill:Boolean=false,color:uint = 0x000000,alpha:Number = 1,thickness:Number = 1):void{
 			if(fill){
+				_target.lineStyle(thickness,color,alpha);
 				_target.beginFill(color,alpha);
 			}else{
 				_target.lineStyle(thickness,color,alpha);

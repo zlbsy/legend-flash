@@ -19,7 +19,7 @@ package zhanglubin.legend.scripts.analysis.text
 		/**
 		 * 脚本解析
 		 * 添加label
-		 * Text.wind(layer,name,こんにちは、張です。,100,200,13);
+		 * Text.wind(layer,name,こんにちは、張です。,x,y,width,size,speed);
 		 * @param 脚本信息
 		 */
 		public static function analysis(value:String,start:int,end:int):void{
@@ -29,6 +29,7 @@ package zhanglubin.legend.scripts.analysis.text
 			var layer:LSprite;
 			var layerStr:String = lArr[0];
 			var nameStr:String = lArr[1];
+			var textStr:String = lArr[2];
 			label.wordWrap = true;
 			label.width = int(lArr[5]);
 			label.xy = new LCoordinate(int(lArr[3]),int(lArr[4]));
@@ -37,7 +38,8 @@ package zhanglubin.legend.scripts.analysis.text
 			if(LGlobal.script.scriptArray != null && LGlobal.script.scriptArray.varList != null && LGlobal.script.scriptArray.varList[LSouSouObject.SPEED_FLAG] == LSouSouObject.FAST){
 				speed *= 0.5;;
 			}
-			label.setWindText(lArr[2],ScriptWind.getCss(int(lArr[6])),speed);
+			while(textStr.indexOf("\\n")>=0)textStr = textStr.replace("\\n","\n");
+			label.setWindText(textStr,ScriptWind.getCss(int(lArr[6])),speed);
 			
 			layer = script.scriptArray.layerList[layerStr];
 			script.scriptArray.textList[nameStr] = label;
@@ -58,8 +60,10 @@ package zhanglubin.legend.scripts.analysis.text
 			var script:LScript = LGlobal.script;
 			var lArr:Array = value.substring(start+1,end).split(",");
 			var nameStr:String = lArr[0];
+			var textStr:String = lArr[1];
 			var label:LLabel = script.scriptArray.textList[nameStr];
-			label.setWindText(lArr[1],label.css);
+			while(textStr.indexOf("\\n")>=0)textStr = textStr.replace("\\n","\n");
+			label.setWindText(textStr,label.css);
 			label.addEventListener(LEvent.LTEXT_MAX,function (event:LEvent):void{
 				trace("windChange Max");
 				label.removeAllEventListener();

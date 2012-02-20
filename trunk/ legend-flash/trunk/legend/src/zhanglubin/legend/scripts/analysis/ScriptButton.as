@@ -7,6 +7,7 @@ package zhanglubin.legend.scripts.analysis
 	import zhanglubin.legend.display.LButton;
 	import zhanglubin.legend.display.LSprite;
 	import zhanglubin.legend.scripts.LScript;
+	import zhanglubin.legend.utils.LFilter;
 	import zhanglubin.legend.utils.LGlobal;
 	import zhanglubin.legend.utils.math.LCoordinate;
 
@@ -44,10 +45,44 @@ package zhanglubin.legend.scripts.analysis
 				case "Button.mouseout":
 					mousedown(value,start,end,MouseEvent.MOUSE_OUT);
 					break;
+				case "Button.setFilter":
+					setFilter(value,start,end);
+					break;
 				default:
 					
 			}
 			
+		}
+		/**
+		 * 脚本解析
+		 * 添加层
+		 * Layer.setFilter(name,filter);
+		 * @param 脚本信息
+		 */
+		private static function setFilter(value:String,start:int,end:int):void{
+			var params:Array = value.substring(start+1,end).split(",");
+			var nameStr:String = params[0];
+			var filter:String = params[1];
+			var script:LScript = LGlobal.script;
+			var btn:LButton = script.scriptArray.btnList[nameStr];
+			switch(filter){
+				case "INIT":
+					LFilter.setFilter(btn,LFilter.INIT);
+					break;
+				case "GRAY":
+					LFilter.setFilter(btn,LFilter.GRAY);
+					break;
+				case "SHADOW":
+					LFilter.setFilter(btn,LFilter.SHADOW);
+					break;
+				case "SUN":
+					LFilter.setFilter(btn,LFilter.SUN);
+					break;
+				case "RELIEF":
+					LFilter.setFilter(btn,LFilter.RELIEF);
+					break;
+			}
+			script.analysis();
 		}
 		/**
 		 * 脚本解析
