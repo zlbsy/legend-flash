@@ -810,7 +810,7 @@ package zhanglubin.legend.game.sousou.map
 							_nodeLength,_nodeLength],
 						false,0xFF0000,1,2);
 				}
-			}else if(_strategy != null && _meff == null){
+			}else if(_strategy != null && _meff == null && LSouSouObject.charaSNow.belong == LSouSouObject.BELONG_SELF){
 				for each(nodeStr in _strategy.Range.elements()){
 					nodeArr = nodeStr.split(",");
 					LDisplay.drawRect(_drawLayer.graphics,
@@ -1027,7 +1027,7 @@ package zhanglubin.legend.game.sousou.map
 			}else{
 				if(LSouSouObject.charaSNow.targetCharacter){
 					if(LSouSouObject.charaSNow.aiForStrategy){
-						trace("法术攻击目标确定，进行攻击");
+						trace("法术攻击目标确定，进行攻击",LSouSouObject.charaSNow.index);
 						LSouSouObject.charaSNow.strategyAttackCalculate();
 					}else{
 						trace("攻击目标确定，进行攻击");
