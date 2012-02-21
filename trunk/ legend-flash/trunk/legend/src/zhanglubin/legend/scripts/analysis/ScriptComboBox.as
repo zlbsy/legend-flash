@@ -78,7 +78,7 @@ package zhanglubin.legend.scripts.analysis
 		}
 		/**
 		 * 脚本解析
-		 * Radio.getValue(name,valname)
+		 * ComboBox.getValue(name,valname)
 		 * 
 		 * @param 脚本信息
 		 */
@@ -95,7 +95,7 @@ package zhanglubin.legend.scripts.analysis
 		}
 		/**
 		 * 脚本解析
-		 * Radio.setValue(name,value)
+		 * ComboBox.setValue(name,value)
 		 * 
 		 * @param 脚本信息
 		 */

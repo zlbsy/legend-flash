@@ -35,7 +35,11 @@ package zhanglubin.legend.scripts
 			//LGlobal.stage.frameRate = 10;
 			toList(value);
 		}
-
+		
+		public function set copyList(value:Array):void
+		{
+			_copyList = value;
+		}
 		public function get copyList():Array
 		{
 			return _copyList;
@@ -80,9 +84,9 @@ package zhanglubin.legend.scripts
 		} 
 		public function toList(ltxt:String):void{
 			_lineList = ltxt.split(";");
-			if(LSouSouObject.isreading.length > 0){
-				_lineList.unshift("Mark.goto("+LSouSouObject.isreading+")");
-				LSouSouObject.isreading = "";
+			if(LGlobal.isreading.length > 0){
+				_lineList.unshift("Mark.goto("+LGlobal.isreading+")");
+				LGlobal.isreading = "";
 			}
 			_copyList = _lineList.concat();
 			analysis();
@@ -113,6 +117,8 @@ package zhanglubin.legend.scripts
 			trace("LScript analysis lineValue = " + lineValue);
 			switch(sarr[0]){
 				case "Exit":
+					ScriptExit.analysis(lineValue);
+					/**
 					_dataList.shift();
 					if(_dataList.length > 0){
 						arr=_dataList[0];
@@ -120,12 +126,16 @@ package zhanglubin.legend.scripts
 						_copyList = arr[2];
 						analysis();
 					}
-					return;
+					return;*/
+					break;
 				case "Layer":
 					ScriptLayer.analysis(lineValue);
 					break;
 				case "Load":
 					ScriptLoad.analysis(lineValue);
+					break;
+				case "Url":
+					ScriptUrl.analysis(lineValue);
 					break;
 				case "Img":
 					ScriptImg.analysis(lineValue);

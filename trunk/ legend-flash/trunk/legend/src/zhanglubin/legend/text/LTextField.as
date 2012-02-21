@@ -117,6 +117,13 @@ package zhanglubin.legend.text
 				dispatchEvent(new LEvent(LEvent.LTEXT_MAX));
 			}
 		}
+		public function windOver():void{
+			if(this._textWind != null){
+				this.htmlText = "<p>" + this._textWind.join("") + "</p>";
+				this.scrollV = this.maxScrollV;
+			}
+			this.removeAllEventListener();
+		}
 		/**
 		 * 返回一个StyleSheet的Css
 		 * 
@@ -155,8 +162,6 @@ package zhanglubin.legend.text
 		public function die():void{
 			//移除所有事件
 			this.removeAllEventListener();
-			this.deleteTimer();
-			if(this._textWind != null)this._textWind = null;
 		}
 		override public function addEventListener(type:String, listener:Function, useCapture:Boolean=false, priority:int=0, useWeakReference:Boolean=true):void{
 			var eventList:Array = [type,listener,useCapture,priority,useWeakReference];
@@ -176,10 +181,15 @@ package zhanglubin.legend.text
 		 * 移除所有事件
 		 */
 		public function removeAllEventListener():void{
+			trace("LTextField removeAllEventListener text = " + this.text);
+			this.deleteTimer();
+			if(this._textWind != null)this._textWind = null;
+			
 			var eventListLength:int = this._eventList.length;
 			var eventList:Array;
 			for(var i:int = 0;i<eventListLength;i++){
 				eventList = this._eventList[0];
+				trace("LTextField removeAllEventListener eventList = " + eventList);
 				super.removeEventListener(eventList[0],eventList[1],eventList[2]);
 				this._eventList.splice(0,1);
 			}

@@ -114,9 +114,13 @@ package zhanglubin.legend.scripts.analysis
 		private static function removeButton(value:String,start:int,end:int):void{
 			var lArr:Array = value.substring(start+1,end).split(",");
 			var nameStr:String = lArr[0];
-			
 			var script:LScript = LGlobal.script;
 			var btn:LButton = script.scriptArray.btnList[nameStr];
+			if(btn == null){
+				script.scriptArray.btnList[nameStr] = null;
+				script.analysis();
+				return;
+			}
 			btn.removeFromParent();
 			script.scriptArray.btnList[nameStr] = null;
 			script.analysis();

@@ -61,6 +61,11 @@ package zhanglubin.legend.scripts.analysis
 			var actionIndex:int = lArr[1];
 			var script:LScript = LGlobal.script;
 			var animationMovie:LAnimationMovie = script.scriptArray.animationList[nameStr];
+			if(animationMovie == null){
+				script.scriptArray.animationList[nameStr] = null;
+				script.analysis();
+				return;
+			}
 			animationMovie.action = actionIndex;
 			script.analysis();
 		}

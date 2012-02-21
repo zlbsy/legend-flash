@@ -275,6 +275,10 @@ package zhanglubin.legend.scripts.analysis
 			var layer:LSprite;
 			var i:uint;
 			layer = script.scriptArray.layerList[nameStr];
+			if(layer == null){
+				script.analysis();
+				return;
+			}
 			removeFromArray(layer);
 			layer.die();
 			

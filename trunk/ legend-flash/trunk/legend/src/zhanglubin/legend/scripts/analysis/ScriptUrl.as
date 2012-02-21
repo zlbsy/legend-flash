@@ -1,7 +1,9 @@
 package zhanglubin.legend.scripts.analysis
 {
+	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
 	import flash.net.URLVariables;
+	import flash.net.navigateToURL;
 	
 	import zhanglubin.legend.net.LNet;
 	import zhanglubin.legend.scripts.LScript;
@@ -32,10 +34,32 @@ package zhanglubin.legend.scripts.analysis
 				case "Url.error":
 					setError(value,start,end);
 					break;
+				case "Url.goto":
+					goto(value,start,end);
+					break;
 				default:
 					LGlobal.script.analysis();
 			}
 			
+		}
+		/**
+		 * 脚本解析
+		 * @param 脚本信息
+		 * Url.goto(host,url,window);
+		 * "_self" は、現在のウィンドウ内の現在のフレームを指定します。
+		 * "_blank" は、新規ウィンドウを指定します。
+		 * "_parent" は、現在のフレームの親を指定します。
+		 * "_top" は、現在のウィンドウ内の最上位のフレームを指定します。
+		 */
+		private static function goto(value:String,start:int,end:int):void{
+			var params:Array = value.substring(start+1,end).split(",");
+			var strHost:String = params[0];
+			var strURL:String = params[1];
+			var strWindow:String = "_self";
+			if(params.length > 2)strWindow = params[2];
+			var adUrl:URLRequest = new URLRequest(strHost+"://"+strURL);
+			navigateToURL(adUrl,strWindow); 
+			LGlobal.script.analysis();
 		}
 		/**
 		 * 脚本解析

@@ -38,8 +38,31 @@ package zhanglubin.legend.scripts.analysis
 				case "Wait.time":
 					LManager.wait(int(value.substring(start + 1,end)),function ():void{trace("wait time run !! ");LGlobal.script.analysis();});
 					break;
+				case "Wait.clickOver":
+					LGlobal.script.scriptLayer.removeEventListener(MouseEvent.MOUSE_UP,clickEvent);
+					break;
+				case "Wait.Over":
+					LGlobal.script.scriptLayer.removeEventListener(MouseEvent.MOUSE_UP,clickEvent);
+				case "Wait.timeOver":
+					timeOver();
+					break;
 			}
 			
+		}
+		private static function timeOver():void{
+			if(LManager.transitionList == null){
+				LGlobal.script.analysis();
+				return;
+			}
+			var i:uint;
+			for(i=0;i<LManager.transitionList.length;i++){
+				var tran:Array = LManager.transitionList[i];
+				if(tran[0] == "wait"){
+					LManager.transitionList.splice(i,1);
+					i--;
+				}
+			}
+			LGlobal.script.analysis();
 		}
 		/**
 		 * 脚本解析
@@ -48,12 +71,13 @@ package zhanglubin.legend.scripts.analysis
 		 * @param 脚本信息
 		 */
 		private static function waitclick():void{
-			trace("ScriptWait waitclick");
+			trace("ScriptWait waitclick is run");
 			var layer:LSprite = LGlobal.script.scriptLayer;
-			layer.addEventListener(MouseEvent.CLICK,clickEvent);
+			layer.addEventListener(MouseEvent.MOUSE_UP,clickEvent);
 		}
 		private static function clickEvent(event:MouseEvent):void{
-			LGlobal.script.scriptLayer.removeEventListener(MouseEvent.CLICK,clickEvent);
+			trace("ScriptWait clickEvent is run");
+			LGlobal.script.scriptLayer.removeEventListener(MouseEvent.MOUSE_UP,clickEvent);
 			LGlobal.script.analysis();
 		}
 	}

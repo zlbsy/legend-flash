@@ -34,6 +34,10 @@ package zhanglubin.legend.utils
 		}
 		public static var stage:Stage;
 		public static var script:LScript;
+		public static var isreading:String="";
+		/**
+		 * 是否释放bitmapdata
+		 * */
 		public static var bitmapDataDispose:Boolean;
 		private static var _url:LNet;
 		public static function get url():LNet{

@@ -35,6 +35,9 @@ package zhanglubin.legend.scripts.analysis
 				case "Text.windChange":
 					ScriptWind.windChange(value,start,end);
 					break;
+				case "Text.windOver":
+					ScriptWind.windOver(value,start,end);
+					break;
 				case "Text.remove":
 					removeText(value,start,end);
 					break;
