@@ -6,6 +6,7 @@ package zhanglubin.legend.game.sousou.map
 	import flash.events.ProgressEvent;
 	import flash.filters.GlowFilter;
 	import flash.geom.ColorTransform;
+	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.net.URLLoaderDataFormat;
@@ -71,6 +72,7 @@ package zhanglubin.legend.game.sousou.map
 		private var _mapData:Array;
 		private var _map:LBitmap;
 		private var _mapBitmapData:BitmapData;
+		private var _minimapBitmapData:BitmapData;
 		private var _mapCoordinate:LCoordinate = new LCoordinate(0,0);
 		private var _mapToCoordinate:LCoordinate = new LCoordinate(0,0);
 		
@@ -649,10 +651,16 @@ package zhanglubin.legend.game.sousou.map
 			LSouSouObject.sStarQuery = new LSouSouStarS(_mapData);
 			this._mapBitmapData = new BitmapData(mapW, mapH, true, 0);
 			_mapBitmapData.setPixels(_mapBitmapData.rect, bytes);
-
+			_minimapBitmapData = new BitmapData(mapW/24, mapH/24, true, 0);
+			var rect:Rectangle=new Rectangle(0,0,mapW/24, mapH/24);
+			_minimapBitmapData.draw(_mapBitmapData,new Matrix(2,0,0,2,0,0),null,null,rect,false);
+			
 			this._map = new LBitmap(new BitmapData(SCREEN_WIDTH,SCREEN_HEIGHT,false));
 			drawMap();
 			_mapLayer.addChild(_map);
+			_minimapBitmapData = _mapBitmapData;
+			var minimap:LBitmap = new LBitmap(_minimapBitmapData)
+			_mapLayer.addChild(minimap);
 			_loadBar.removeFromParent();
 			
 			//this.drawGrid();

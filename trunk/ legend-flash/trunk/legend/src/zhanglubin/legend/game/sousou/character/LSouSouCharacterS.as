@@ -322,7 +322,7 @@ package zhanglubin.legend.game.sousou.character
 			this._targetCharacter = obj.charas;
 			this._skillViewOver = true;
 			this._skillRun = false;
-			if(this._aiForStrategy != null)setAttackNumber();
+			if(this._aiForStrategy == null)setAttackNumber();
 			LSouSouObject.sMap.moveToCoordinate(0,0,new LCoordinate(obj.nodeparent.x,obj.nodeparent.y));
 		}
 		public function get action_mode():String
@@ -1095,10 +1095,13 @@ package zhanglubin.legend.game.sousou.character
 				_attackNumber = 1;
 			}
 			var skillXml:XMLList;
+			
+			if(this.index == 35)trace("************************************************************************************************this.member.skill = " + this.member.skill);
+			
 			//特技测试
 			if(this.member.skill>0){
 				skillXml = LSouSouObject.skill["Skill"+this.member.skill];
-				
+				trace("************************************************************************************************skillXml = " + skillXml);
 				if(int(skillXml.Type.toString()) == 0){
 					var skillvalue:int = int(Math.random()*100);
 					switch(self.member.skill){
