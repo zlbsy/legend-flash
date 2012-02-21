@@ -34,21 +34,31 @@ package zhanglubin.legend.scripts.analysis
 			var end:int = value.indexOf(")");
 			var name:String = value.substring(point + 1,start);
 			var funArr:Array = script.scriptArray.funList[name];
-			if(funArr == null)return;
+			if(funArr == null){
+				script.analysis();
+				return;
+			}
 			_data = value.substring(start+1,end).split(",");
 			var param:Array = funArr["param"];
-			var i:uint;
+			var i:int;
 			for(i=0;i<param.length;i++){
 				script.scriptArray.varList[param[i]] = _data[i];
 			}
 			var funLineArr:Array = funArr["function"];
+			/**
 			var data:String = "";
 			for(i=0;i<funLineArr.length;i++){
 				data += funLineArr[i] + ";";
+				trace("ScriptFunction analysis funLineArr[i] = " + funLineArr[i]);
+				script.lineList.unshift(funLineArr[i]);
 			}
 			script.saveList();
 			script.dataList.unshift([data]);
 			script.toList(data);
+			*/
+			
+			for(i=funLineArr.length-1;i>=0;i--)script.lineList.unshift(funLineArr[i]);
+			script.analysis();
 		}
 		/**
 		 * 脚本解析

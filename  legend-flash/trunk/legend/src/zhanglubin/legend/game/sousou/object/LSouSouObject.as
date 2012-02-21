@@ -57,7 +57,6 @@ package zhanglubin.legend.game.sousou.object
 		public static var money:int;
 		public static var itemsList:XML = <data></data>;
 		public static var propsList:XML = <data></data>;
-		public static var isreading:String="";
 		
 		/**
 		public static var propsList:XML = <data>

@@ -11,6 +11,17 @@ package zhanglubin.legend.utils.transitions
 		public function LManager()
 		{
 		}
+
+		public static function get transitionList():Array
+		{
+			return _transitionList;
+		}
+
+		public static function set transitionList(value:Array):void
+		{
+			_transitionList = value;
+		}
+
 		public static function clear():void{
 			var i:uint,j:uint;
 			for(i=0;i<_transitionList.length;i++){

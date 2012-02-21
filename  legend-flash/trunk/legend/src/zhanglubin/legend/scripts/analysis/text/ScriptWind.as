@@ -53,7 +53,7 @@ package zhanglubin.legend.scripts.analysis.text
 		/**
 		 * 脚本解析
 		 * 添加label
-		 * Text.windChange(name,こんにちは、張です。);
+		 * Text.windChange(name,こんにちは、張です。,isall);
 		 * @param 脚本信息
 		 */
 		public static function windChange(value:String,start:int,end:int):void{
@@ -61,14 +61,35 @@ package zhanglubin.legend.scripts.analysis.text
 			var lArr:Array = value.substring(start+1,end).split(",");
 			var nameStr:String = lArr[0];
 			var textStr:String = lArr[1];
+			var isall:Boolean = false;
 			var label:LLabel = script.scriptArray.textList[nameStr];
 			while(textStr.indexOf("\\n")>=0)textStr = textStr.replace("\\n","\n");
 			label.setWindText(textStr,label.css);
-			label.addEventListener(LEvent.LTEXT_MAX,function (event:LEvent):void{
-				trace("windChange Max");
-				label.removeAllEventListener();
+			if(lArr.length > 2 && lArr[2] == "1"){
+				label.windOver();
 				script.analysis();
-			});
+			}else{
+				label.addEventListener(LEvent.LTEXT_MAX,function (event:LEvent):void{
+					
+					trace("windChange Max = " + event.target.text);
+					event.target.removeAllEventListener();
+					script.analysis();
+				});
+			}
+		}
+		/**
+		 * 脚本解析
+		 * 添加label
+		 * Text.windOver(name);
+		 * @param 脚本信息
+		 */
+		public static function windOver(value:String,start:int,end:int):void{
+			var script:LScript = LGlobal.script;
+			var lArr:Array = value.substring(start+1,end).split(",");
+			var nameStr:String = lArr[0];
+			var label:LLabel = script.scriptArray.textList[nameStr];
+			label.windOver();
+			script.analysis();
 		}
 		/**
 		 * 返回一个StyleSheet的Css

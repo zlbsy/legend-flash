@@ -125,21 +125,21 @@ package zhanglubin.legend.scripts.analysis
 		 */
 		private static function condition(value:String):Boolean{
 			var arr:Array;
-			if(value.indexOf("==") >= 0){
-				//==
-				arr=getCheckInt(value,"==");
-				return arr[0] == arr[1];
-			}else if(value.indexOf("===") >= 0){
+			if(value.indexOf("===") >= 0){
 				//===
 				arr=getCheckStr(value,"===");
+				return arr[0] == arr[1];
+			}else if(value.indexOf("!==") >= 0){
+				//!==
+				arr=getCheckStr(value,"!==");
+				return arr[0] != arr[1];
+			}else if(value.indexOf("==") >= 0){
+				//==
+				arr=getCheckInt(value,"==");
 				return arr[0] == arr[1];
 			}else if(value.indexOf("!=") >= 0){
 				//!=
 				arr=getCheckInt(value,"!=");
-				return arr[0] != arr[1];
-			}else if(value.indexOf("!==") >= 0){
-				//!==
-				arr=getCheckStr(value,"!==");
 				return arr[0] != arr[1];
 			}else if(value.indexOf(">=") >= 0){
 				//>=

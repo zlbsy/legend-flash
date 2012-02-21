@@ -134,7 +134,7 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 				LGlobal.script.scriptArray.varList[childxml.@name] = childxml.toString();
 			}
 			
-			LSouSouObject.isreading = start_word;
+			LGlobal.isreading = start_word;
 			//LGlobal.script.scriptArray.varList["isreading"] = start_word;
 			LGlobal.script.saveList();
 			
@@ -179,7 +179,7 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 			LSouSouObject.propsList = new XML(bytes.readUTF());
 			LSouSouObject.money = bytes.readInt();
 			
-			LSouSouObject.isreading = start_word;
+			LGlobal.isreading = start_word;
 			//LGlobal.script.scriptArray.varList["isreading"] = start_word;
 			LGlobal.script.saveList();
 			LGlobal.script.lineList.unshift("Exit.run();");
