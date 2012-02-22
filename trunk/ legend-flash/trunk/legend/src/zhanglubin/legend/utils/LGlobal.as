@@ -32,6 +32,7 @@ package zhanglubin.legend.utils
 		public function LGlobal()
 		{
 		}
+		public static var LWaveMouseDownFlag:Boolean = false;
 		public static var stage:Stage;
 		public static var script:LScript;
 		public static var isreading:String="";

@@ -181,7 +181,6 @@ package zhanglubin.legend.text
 		 * 移除所有事件
 		 */
 		public function removeAllEventListener():void{
-			trace("LTextField removeAllEventListener text = " + this.text);
 			this.deleteTimer();
 			if(this._textWind != null)this._textWind = null;
 			
@@ -189,7 +188,6 @@ package zhanglubin.legend.text
 			var eventList:Array;
 			for(var i:int = 0;i<eventListLength;i++){
 				eventList = this._eventList[0];
-				trace("LTextField removeAllEventListener eventList = " + eventList);
 				super.removeEventListener(eventList[0],eventList[1],eventList[2]);
 				this._eventList.splice(0,1);
 			}
