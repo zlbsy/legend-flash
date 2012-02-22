@@ -71,8 +71,14 @@ package zhanglubin.legend.game.sousou.map
 		private var _mapMove:Array = [];
 		private var _mapData:Array;
 		private var _map:LBitmap;
+		private var _miniMap:LBitmap;
 		private var _mapBitmapData:BitmapData;
 		private var _minimapBitmapData:BitmapData;
+		private var _miniScale:Number;
+		private var _miniSelf:BitmapData;
+		private var _miniFriend:BitmapData;
+		private var _miniEnemy:BitmapData;
+		private var _miniCoordinate:int;
 		private var _mapCoordinate:LCoordinate = new LCoordinate(0,0);
 		private var _mapToCoordinate:LCoordinate = new LCoordinate(0,0);
 		
@@ -651,21 +657,41 @@ package zhanglubin.legend.game.sousou.map
 			LSouSouObject.sStarQuery = new LSouSouStarS(_mapData);
 			this._mapBitmapData = new BitmapData(mapW, mapH, true, 0);
 			_mapBitmapData.setPixels(_mapBitmapData.rect, bytes);
-			_minimapBitmapData = new BitmapData(mapW/24, mapH/24, true, 0);
-			var rect:Rectangle=new Rectangle(0,0,mapW/24, mapH/24);
-			_minimapBitmapData.draw(_mapBitmapData,new Matrix(2,0,0,2,0,0),null,null,rect,false);
+			_miniScale = 200/mapW;
 			
+			_minimapBitmapData = new BitmapData(mapW*_miniScale, mapH*_miniScale, true, 0);
+			var rect:Rectangle=new Rectangle(0,0,mapW, mapH);
+			_minimapBitmapData.draw(_mapBitmapData,new Matrix(_miniScale,0,0,_miniScale,0,0),null,null,rect,false);
+			_miniSelf = new BitmapData(_miniScale*40,_miniScale*40,false,0xff0000);
+			_miniFriend = new BitmapData(_miniScale*40,_miniScale*40,false,0xf59249);
+			_miniEnemy = new BitmapData(_miniScale*40,_miniScale*40,false,0x0000ff);
+			_miniCoordinate = 5 + _miniScale*5;
 			this._map = new LBitmap(new BitmapData(SCREEN_WIDTH,SCREEN_HEIGHT,false));
-			drawMap();
+			//添加战场地图
 			_mapLayer.addChild(_map);
-			_minimapBitmapData = _mapBitmapData;
-			var minimap:LBitmap = new LBitmap(_minimapBitmapData)
-			_mapLayer.addChild(minimap);
+
+			_miniMap = new LBitmap(new BitmapData(_minimapBitmapData.width + 10,_minimapBitmapData.height + 10,false));
+			_miniMap.bitmapData.copyPixels(_minimapBitmapData,_minimapBitmapData.rect,new Point(5,5));
+			LSouSouObject.addBoxBitmapdata(_miniMap.bitmapData);
+	
+			//添加战场小地图
+			_mapLayer.addChild(_miniMap);
 			_loadBar.removeFromParent();
 			
 			//this.drawGrid();
 			//this.initialization();
 			this._sMapScript.initialization();
+			
+			drawMap();
+		}
+		private function drawMiniMap(charas:LSouSouCharacterS):void{
+			if(charas.belong == LSouSouObject.BELONG_SELF){
+				_miniMap.bitmapData.copyPixels(_miniSelf,_miniSelf.rect,new Point(_miniCoordinate + charas.x*_miniScale,_miniCoordinate + charas.y*_miniScale));
+			}else if(charas.belong == LSouSouObject.BELONG_FRIEND){
+				_miniMap.bitmapData.copyPixels(_miniFriend,_miniFriend.rect,new Point(_miniCoordinate + charas.x*_miniScale,_miniCoordinate + charas.y*_miniScale));
+			}else {
+				_miniMap.bitmapData.copyPixels(_miniEnemy,_miniEnemy.rect,new Point(_miniCoordinate + charas.x*_miniScale,_miniCoordinate + charas.y*_miniScale));
+			}
 		}
 		private function drawMap():void{
 			var node:Node;
@@ -677,6 +703,9 @@ package zhanglubin.legend.game.sousou.map
 
 			/**画地图*/
 			this._map.bitmapData.copyPixels(_mapBitmapData,new Rectangle(-_mapCoordinate.x,-_mapCoordinate.y,SCREEN_WIDTH,SCREEN_HEIGHT),new Point(0,0));
+			/**画小地图*/
+			_miniMap.bitmapData.copyPixels(_minimapBitmapData,_minimapBitmapData.rect,new Point(5,5));
+			
 			/*
 			var bmd:BitmapData = new BitmapData(SCREEN_WIDTH,SCREEN_HEIGHT, true, 0);
 			bmd.copyPixels(_mapBitmapData,new Rectangle(-_mapCoordinate.x,-_mapCoordinate.y,SCREEN_WIDTH,SCREEN_HEIGHT),new Point(0,0));
@@ -687,6 +716,7 @@ package zhanglubin.legend.game.sousou.map
 			for each(_characterS in _ourlist){
 				if(!_characterS.visible)continue;
 				_characterS.onFrame();
+				drawMiniMap(_characterS);
 				/**判断是否需要绘制人物*/
 				if(_characterS.x + _mapCoordinate.x >= 0 && _characterS.x + _mapCoordinate.x < SCREEN_WIDTH &&
 					_characterS.y + _mapCoordinate.y >= 0 && _characterS.y + _mapCoordinate.y < SCREEN_HEIGHT){
@@ -713,6 +743,7 @@ package zhanglubin.legend.game.sousou.map
 			for each(_characterS in _enemylist){
 				if(!_characterS.visible)continue;
 				_characterS.onFrame();
+				drawMiniMap(_characterS);
 				/**判断是否需要绘制人物*/
 				if(_characterS.x + _mapCoordinate.x >= 0 && _characterS.x + _mapCoordinate.x < SCREEN_WIDTH &&
 					_characterS.y + _mapCoordinate.y >= 0 && _characterS.y + _mapCoordinate.y < SCREEN_HEIGHT){
@@ -738,6 +769,7 @@ package zhanglubin.legend.game.sousou.map
 			for each(_characterS in _friendlist){
 				if(!_characterS.visible)continue;
 				_characterS.onFrame();
+				drawMiniMap(_characterS);
 				/**判断是否需要绘制人物*/
 				if(_characterS.x + _mapCoordinate.x >= 0 && _characterS.x + _mapCoordinate.x < SCREEN_WIDTH &&
 					_characterS.y + _mapCoordinate.y >= 0 && _characterS.y + _mapCoordinate.y < SCREEN_HEIGHT){
@@ -759,7 +791,10 @@ package zhanglubin.legend.game.sousou.map
 							new Point(_characterS.x + _mapCoordinate.x + _characterS.point.x,
 								_characterS.y + _mapCoordinate.y + (_nodeLength - _characterS.height)/2));
 				}
-			}	
+			}
+			//小地图框架
+			LSouSouObject.addBoxBitmapdata(_miniMap.bitmapData);
+			
 			/**画法术*/
 			if(_meff != null){
 				_meff.onFrame();

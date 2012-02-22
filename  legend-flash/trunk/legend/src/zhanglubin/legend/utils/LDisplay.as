@@ -4,9 +4,15 @@ package zhanglubin.legend.utils
 	import flash.display.DisplayObject;
 	import flash.display.GradientType;
 	import flash.display.Graphics;
+	import flash.filters.ConvolutionFilter;
+	import flash.filters.DisplacementMapFilter;
+	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	
+	import zhanglubin.legend.display.LBitmap;
+	import zhanglubin.legend.display.LSprite;
 
 	public class LDisplay
 	{
@@ -24,6 +30,64 @@ package zhanglubin.legend.utils
 			var retrunvalue:BitmapData = new BitmapData(rect.width, rect.height, true, 0x00ffffff);
 			retrunvalue.copyPixels(bitmapdata,rect,new Point(0,0));
 			return retrunvalue;
+		}
+		public static function setWater(screen:LSprite,startx:int,starty:int,w:int,h:int):Object{
+			
+			var damper:BitmapData = new BitmapData(w/2, h/2, false, 128);
+			var result:BitmapData = new BitmapData(w/2, h/2, false, 128);
+			var result2:BitmapData = new BitmapData(w, h, false, 128);
+			var source:BitmapData = new BitmapData(w/2, h/2, false, 128);
+			var buffer:BitmapData = new BitmapData(w/2, h/2, false, 128);
+			var output:BitmapData = new BitmapData(w, h, true, 128);
+			var surface:BitmapData = LDisplay.displayToBitmap(screen,new Rectangle(startx,starty,w,h));
+			var bounds:Rectangle = new Rectangle(0, 0, w/2, h/2);
+			var origin:Point = new Point();
+			var matrix:Matrix = new Matrix();
+			var matrix2:Matrix = new Matrix();
+			matrix2.a = matrix2.d = 2;
+			var wave:ConvolutionFilter = new ConvolutionFilter(3, 3, [1, 1, 1, 1, 1, 1, 1, 1, 1], 9, 0);
+			var damp:ColorTransform = new ColorTransform(0, 0, 9.960937E-001, 1, 0, 0, 2, 0);
+			var water:DisplacementMapFilter = new DisplacementMapFilter(result2, origin, 4, 4, 48, 48, "ignore");
+			
+			var _target:Object = new Object();
+			_target.bitmap = new LBitmap(output);
+			_target.source = source;
+			_target.result = result;
+			_target.bounds = bounds;
+			_target.origin = origin;
+			_target.wave = wave;
+			_target.matrix = matrix;
+			_target.buffer = buffer;
+			_target.damp = damp;
+			_target.result2 = result2;
+			_target.matrix2 = matrix2;
+			_target.output = output;
+			_target.surface = surface;
+			_target.w = w;
+			_target.h = h;
+			_target.water = water;
+			return _target;
+		}
+		public static function gotoWave(_target:Object,x:int,y:int):void{
+			if(_target == null)return;
+			if (LGlobal.LWaveMouseDownFlag)
+			{
+				var _loc2:int = x / 2;
+				var _loc1:int = y / 2;
+				_target.source.setPixel(_loc2 + 1, _loc1, 16777215);
+				_target.source.setPixel(_loc2 - 1, _loc1, 16777215);
+				_target.source.setPixel(_loc2, _loc1 + 1, 16777215);
+				_target.source.setPixel(_loc2, _loc1 - 1, 16777215);
+				_target.source.setPixel(_loc2, _loc1, 16777215);
+			} 
+			_target.result.applyFilter(_target.source, _target.bounds, _target.origin, _target.wave);
+			_target.result.draw(_target.result, _target.matrix, null, "add");
+			_target.result.draw(_target.buffer, _target.matrix, null, "difference");
+			_target.result.draw(_target.result, _target.matrix, _target.damp);
+			_target.result2.draw(_target.result, _target.matrix2, null, null, null, true);
+			_target.output.applyFilter(_target.surface, new Rectangle(0, 0, _target.w, _target.h), _target.origin, _target.water);
+			_target.buffer = _target.source;
+			_target.source = _target.result.clone();
 		}
 		/**
 		 * 画三角形

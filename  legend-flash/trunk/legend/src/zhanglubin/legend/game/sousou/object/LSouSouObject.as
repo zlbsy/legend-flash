@@ -1,9 +1,15 @@
 package zhanglubin.legend.game.sousou.object
 {
+	import flash.display.BitmapData;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
+	
 	import zhanglubin.legend.display.LSprite;
 	import zhanglubin.legend.game.sousou.character.LSouSouCharacterS;
 	import zhanglubin.legend.game.sousou.map.*;
 	import zhanglubin.legend.game.sousou.script.LSouSouSoundScript;
+	import zhanglubin.legend.utils.LGlobal;
+	import zhanglubin.legend.utils.LImage;
 
 	public class LSouSouObject
 	{
@@ -72,5 +78,31 @@ package zhanglubin.legend.game.sousou.object
 			<list index='1' num='10' />
 		</data>;
 		*/
+		public static function addBoxBitmapdata(_menuBitmapData:BitmapData):BitmapData{
+			var bar_h:int = 15;
+			var btn_h:int = 34;
+			var btn_w:int = 115;
+			var bar_w:int = 5;
+			var menu_w:int = _menuBitmapData.width,menu_h:int = _menuBitmapData.height;
+			
+			_menuBitmapData.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar02.png"),
+				new Rectangle(0,0,menu_w,bar_w),new Point(0,0));
+			_menuBitmapData.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar04.png"),
+				new Rectangle(0,0,bar_w,menu_h),new Point(0,0));
+			_menuBitmapData.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar05.png"),
+				new Rectangle(0,0,bar_w,menu_h),new Point(menu_w - bar_w,0));
+			_menuBitmapData.copyPixels(LImage.vertical(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar02.png")),
+				new Rectangle(0,0,menu_w,bar_w),new Point(0,menu_h - bar_w));
+			
+			_menuBitmapData.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar01.png"),
+				new Rectangle(0,0,bar_h,bar_h),new Point(0,0));
+			_menuBitmapData.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar03.png"),
+				new Rectangle(0,0,bar_h,bar_h),new Point(menu_w - bar_h,0));
+			_menuBitmapData.copyPixels(LImage.vertical(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar01.png")),
+				new Rectangle(0,0,bar_h,bar_h),new Point(0,menu_h - bar_h));
+			_menuBitmapData.copyPixels(LImage.vertical(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar03.png")),
+				new Rectangle(0,0,bar_h,bar_h),new Point(menu_w - bar_h,menu_h - bar_h));
+			return _menuBitmapData;
+		}
 	}
 }
