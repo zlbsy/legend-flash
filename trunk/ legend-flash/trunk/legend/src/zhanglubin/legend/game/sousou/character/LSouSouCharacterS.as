@@ -301,6 +301,7 @@ package zhanglubin.legend.game.sousou.character
 		 *人物智能AI
 		 */
 		public function ai():void{
+			LSouSouObject.sMap.setDetails(this.member.name + "行动");
 			LSouSouObject.charaSNow = this;
 			LSouSouSMapMethod.setLocation(true);
 			if(_statusArray[LSouSouCharacterS.STATUS_CHAOS][0] > 0){
@@ -809,6 +810,7 @@ package zhanglubin.legend.game.sousou.character
 						switch(charas.member.skill){
 							case 1:
 								if(skillvalue < int(skillXml.Probability.toString())){
+									LSouSouObject.sMap.setDetails(this.member.name + "特技["+skillXml.Name+"]发动");
 									hertValue = 0;
 								}
 								break;
@@ -1101,7 +1103,6 @@ package zhanglubin.legend.game.sousou.character
 			//特技测试
 			if(this.member.skill>0){
 				skillXml = LSouSouObject.skill["Skill"+this.member.skill];
-				trace("************************************************************************************************skillXml = " + skillXml);
 				if(int(skillXml.Type.toString()) == 0){
 					var skillvalue:int = int(Math.random()*100);
 					switch(self.member.skill){
@@ -1152,10 +1153,13 @@ package zhanglubin.legend.game.sousou.character
 				skillXml = LSouSouObject.skill["Skill"+this.member.skill];
 			}
 			if(_skillRun && int(skillXml.Type.toString()) == 0 && !self._skillViewOver){
+				LSouSouObject.sMap.setDetails(this.member.name + "特技["+skillXml.Name+"]发动");
+				
 				self._skillViewOver = true;
 				var anime:LSouSouSkill = new LSouSouSkill(self.toAttackStart);
 				LSouSouObject.sMap.skill = anime;
 			}else{
+				LSouSouObject.sMap.setDetails(this.member.name + "物理攻击");
 				self.toAttackStart();
 			}
 			
@@ -1274,6 +1278,8 @@ package zhanglubin.legend.game.sousou.character
 					this._animation.rowIndex = LSouSouCharacterS.MOVE_DOWN;
 				}
 			}
+			LSouSouObject.sMap.setDetails(LSouSouObject.charaSNow.member.name + "使用策略["+LSouSouObject.sMap.strategy.Name+"]");
+			
 			var costMp:int = int(LSouSouObject.sMap.strategy.Cost);
 			var skillXml:XMLList;
 			var self:LSouSouCharacterS = this;
@@ -1287,6 +1293,7 @@ package zhanglubin.legend.game.sousou.character
 						case 4:
 							if(skillvalue < int(skillXml.Probability.toString()))_skillRun = true;
 							if(_skillRun){
+								LSouSouObject.sMap.setDetails(this.member.name + "特技["+skillXml.Name+"]发动");
 								costMp = 0;
 								self._skillViewOver = false;
 							}
