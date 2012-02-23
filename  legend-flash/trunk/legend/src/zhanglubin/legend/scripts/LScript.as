@@ -22,11 +22,13 @@ package zhanglubin.legend.scripts
 		 */
 		public function LScript(scriptLayer:LSprite,value:String)
 		{
-			_scriptArray = new LScriptArray();
 			LGlobal.script = this;
 			_scriptLayer = scriptLayer;
 			LGlobal.stage = scriptLayer.stage;
+			
+			_scriptArray = new LScriptArray();
 			this._scriptArray.layerList["-"] = this._scriptLayer;
+			
 			_dataList = new Array();
 			value = removeComment(value);
 			var arr:Array=[value];
