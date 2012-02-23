@@ -1,6 +1,8 @@
 package zhanglubin.legend.scripts.analysis
 {
 	
+	import flash.events.Event;
+	
 	import zhanglubin.legend.components.LRadio;
 	import zhanglubin.legend.display.LBitmap;
 	import zhanglubin.legend.display.LButton;
@@ -230,43 +232,65 @@ package zhanglubin.legend.scripts.analysis
 		 * Layer.transition(name,fadeIn,0.1);
 		 * Layer.transition(name,fadeOut,0.1);
 		 * Layer.transition(name,fadeTo,0.1,0.5);
+		 * Layer.transition(name,fly,w,speed);
 		 * @param 脚本信息
 		 */
 		private static function transition(value:String,start:int,end:int):void{
-			var lArr:Array = value.substring(start+1,end).split(",");
-			var nameStr:String = lArr[0];
-			var modeStr:String = lArr[1];
-			var speedNum:Number = Number(lArr[2]);
+			var params:Array = value.substring(start+1,end).split(",");
+			var nameStr:String;
+			var modeStr:String;
+			nameStr = params[0];
+			modeStr = params[1];
+			
+			var speedNum:Number;
 			var gotoNum:Number;
-			if(lArr.length > 3){
-				gotoNum = Number(lArr[3]);
-			}
+			var widthNum:Number;
 			
 			var fun:Function;
 			var script:LScript = LGlobal.script;
 			var layer:LSprite;
 			layer = script.scriptArray.layerList[nameStr];
 			if(modeStr == "fadeIn"){
+				speedNum = Number(params[2]);
 				fun = function():void{
 					script.analysis();
 				}
 				LManager.fadeIn(layer,speedNum,fun);
 			}else if(modeStr == "fadeOut"){
+				speedNum = Number(params[2]);
 				fun = function():void{
 					script.analysis();
 				}
 				LManager.fadeOut(layer,speedNum,fun);
 			}else if(modeStr == "fadeTo"){
+				speedNum = Number(params[2]);
+				if(params.length > 3){
+					gotoNum = Number(params[3]);
+				}
 				fun = function():void{
 					script.analysis();
 				}
 				LManager.fadeTo(layer,gotoNum,speedNum,fun);
+			}else if(modeStr == "fly"){
+				widthNum = Number(params[2]);
+				speedNum = Number(params[3]);
+				var mask:LSprite = new LSprite();
+				LDisplay.drawRect(mask.graphics,[0,0,widthNum,layer.height],true);
+				script.scriptLayer.addChild(mask);
+				mask.x = layer.x;
+				mask.y = layer.y;
+				layer.mask = mask;
+				layer.addEventListener(Event.ENTER_FRAME,function(event:Event):void{
+					layer.x -= speedNum;
+					if(layer.x <= mask.x - layer.width)layer.x = mask.x + layer.mask.width;
+				});
+				script.analysis();
 			}
 		}
 		/**
 		 * 脚本解析
 		 * 添加层
-		 * Layer.removeLayer(name)
+		 * Layer.clearLayer(name)
 		 * @param 脚本信息
 		 */
 		private static function clearLayer(value:String,start:int,end:int):void{
@@ -314,6 +338,14 @@ package zhanglubin.legend.scripts.analysis
 			var layer:LSprite;
 			var parent:LSprite;
 			layer = script.scriptArray.layerList[nameStr];
+			if(layer == null){
+				script.analysis();
+				return;
+			}
+			try{
+				if(layer.mask != null && script.scriptLayer.getChildByName(layer.mask.name))script.scriptLayer.removeChild(layer.mask);
+			}catch(e:Error){
+			}
 			removeFromArray(layer);
 			layer.removeFromParent();
 			script.scriptArray.layerList[nameStr] = null;
