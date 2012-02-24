@@ -29,6 +29,12 @@ package zhanglubin.legend.scripts
 			_scriptArray = new LScriptArray();
 			this._scriptArray.layerList["-"] = this._scriptLayer;
 			
+			if(scriptLayer.root.loaderInfo.parameters){
+				for(var key:String in scriptLayer.root.loaderInfo.parameters){
+					this._scriptArray.varList[key] = scriptLayer.root.loaderInfo.parameters[key];
+				}
+			}
+			
 			_dataList = new Array();
 			value = removeComment(value);
 			var arr:Array=[value];
