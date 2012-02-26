@@ -7,10 +7,13 @@ package zhanglubin.legend.game.sousou.map
 	import flash.geom.Rectangle;
 	
 	import zhanglubin.legend.components.LLabel;
+	import zhanglubin.legend.components.LRadio;
+	import zhanglubin.legend.components.LRadioChild;
 	import zhanglubin.legend.display.LBitmap;
 	import zhanglubin.legend.display.LButton;
 	import zhanglubin.legend.display.LScrollbar;
 	import zhanglubin.legend.display.LSprite;
+	import zhanglubin.legend.events.LEvent;
 	import zhanglubin.legend.game.sousou.character.LSouSouCharacterS;
 	import zhanglubin.legend.game.sousou.object.LSouSouObject;
 	import zhanglubin.legend.text.LTextField;
@@ -22,6 +25,9 @@ package zhanglubin.legend.game.sousou.map
 	public class LSouSouCharacterProfile extends LSprite
 	{
 		private var _view:int;
+		private var _showLabel:LLabel;
+		private var _tabMenu:LRadio;
+		private var _tabLayer:LSprite;
 		public function LSouSouCharacterProfile(view:int = -1)
 		{
 			init(view);
@@ -31,13 +37,87 @@ package zhanglubin.legend.game.sousou.map
 			_view = value;
 			addBackground();
 			addFace();
-			addStatus();
+			addTab();
+			return;
 			addStrategy();
 			addSkill();
 			addArms();
 			addEquipment();
 			addButton();
 			if(_view>=0)showMemberList();
+		}
+		private function addTab():void{
+			LSouSouObject.setBox(299,32,400,400,this);
+			
+			_tabMenu = new LRadio();
+			var tab_menu_on:BitmapData = LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"tab_menu_on");
+			var tab_menu_over:BitmapData = LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"tab_menu_over");
+			
+			var btn_status:LButton = new LButton(tab_menu_on,tab_menu_over,tab_menu_over);
+			btn_status.labelColor = "#999999";
+			btn_status.label = "人物属性";
+			var tabChild:LRadioChild;
+			tabChild = new LRadioChild("status",new LBitmap(tab_menu_over),	btn_status);
+			_tabMenu.push(tabChild);
+			
+			var btn_arms:LButton = new LButton(tab_menu_on,tab_menu_over,tab_menu_over);
+			btn_arms.labelColor = "#999999";
+			btn_arms.label = "兵种属性";
+			tabChild = new LRadioChild("arms",new LBitmap(tab_menu_over),	btn_arms);
+			tabChild.x = 95;
+			_tabMenu.push(tabChild);
+			
+			var btn_strategy:LButton = new LButton(tab_menu_on,tab_menu_over,tab_menu_over);
+			btn_strategy.labelColor = "#999999";
+			btn_strategy.label = "策略属性";
+			tabChild = new LRadioChild("strategy",new LBitmap(tab_menu_over),	btn_strategy);
+			tabChild.x = 95*2;
+			_tabMenu.push(tabChild);
+			
+			var btn_equipment:LButton = new LButton(tab_menu_on,tab_menu_over,tab_menu_over);
+			btn_equipment.labelColor = "#999999";
+			btn_equipment.label = "装备属性";
+			tabChild = new LRadioChild("equipment",new LBitmap(tab_menu_over),	btn_equipment);
+			tabChild.x = 95*3;
+			_tabMenu.push(tabChild);
+			
+			_tabMenu.addEventListener(LEvent.CHANGE_VALUE,changeValue);
+			_tabMenu.x = 300;
+			_tabMenu.y = 10;
+			this.addChild(_tabMenu);
+			
+			_showLabel = new LLabel();
+			_showLabel.y = 12;
+			_showLabel.x = _tabMenu.x;
+			this.addChild(_showLabel);
+			
+			_tabLayer = new LSprite();
+			_tabLayer.x = 300;
+			_tabLayer.y = 50;
+			this.addChild(_tabLayer);
+			
+			_tabMenu.value = "status";
+		}
+		private function changeValue(event:LEvent):void{
+			switch(_tabMenu.value){
+				case "status":
+					addStatus();
+					_showLabel.htmlText = "<font color='#cccccc' size='15'><b>人物属性</b></font>";
+					_showLabel.x = _tabMenu.x + 14;
+					break;
+				case "arms":
+					_showLabel.x = _tabMenu.x + 14 + 95;
+					_showLabel.htmlText = "<font color='#cccccc' size='15'><b>兵种属性</b></font>";
+					break;
+				case "strategy":
+					_showLabel.x = _tabMenu.x + 14 + 95*2;
+					_showLabel.htmlText = "<font color='#cccccc' size='15'><b>策略属性</b></font>";
+					break;
+				case "equipment":
+					_showLabel.x = _tabMenu.x + 14 + 95*3;
+					_showLabel.htmlText = "<font color='#cccccc' size='15'><b>装备属性</b></font>";
+					break;
+			}
 		}
 		private function showMemberList():void{
 			var memLayer:LSprite;
@@ -67,50 +147,7 @@ package zhanglubin.legend.game.sousou.map
 			memScroll.alpha = 0.9;
 			memScroll.xy = new LCoordinate(5,5);
 			this.addChild(memScroll);
-			setBox(0,0,110,210,this);
-		}
-		private function setBox(_menuX:int,_menuY:int,_menuW:int,_menuH:int,layer:LSprite):void{
-			var _menuBitmap:LBitmap;
-			_menuBitmap = new LBitmap(new BitmapData(_menuW,5,true));
-			_menuBitmap.bitmapData.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar02.png"),
-				new Rectangle(0,0,_menuBitmap.width,_menuBitmap.height),new Point(0,0));
-			_menuBitmap.x = _menuX;
-			_menuBitmap.y = _menuY;
-			layer.addChild(_menuBitmap);
-			_menuBitmap = new LBitmap(new BitmapData(5,_menuH,true));
-			_menuBitmap.bitmapData.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar04.png"),
-				new Rectangle(0,0,_menuBitmap.width,_menuBitmap.height),new Point(0,0));
-			_menuBitmap.x = _menuX;
-			_menuBitmap.y = _menuY;
-			layer.addChild(_menuBitmap);
-			_menuBitmap = new LBitmap(new BitmapData(5,_menuH,true));
-			_menuBitmap.bitmapData.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar05.png"),
-				new Rectangle(0,0,_menuBitmap.width,_menuBitmap.height),new Point(0,0));
-			_menuBitmap.x = _menuW + _menuX - _menuBitmap.width;
-			_menuBitmap.y = _menuY;
-			layer.addChild(_menuBitmap);
-			_menuBitmap = new LBitmap(new BitmapData(_menuW,5,true));
-			_menuBitmap.bitmapData.copyPixels(LImage.vertical(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar02.png")),
-				new Rectangle(0,0,_menuBitmap.width,_menuBitmap.height),new Point(0,0));
-			_menuBitmap.x = _menuX;
-			_menuBitmap.y = _menuY + _menuH - 5;
-			layer.addChild(_menuBitmap);
-			_menuBitmap = new LBitmap(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar01.png"));
-			_menuBitmap.x = _menuX;
-			_menuBitmap.y = _menuY;
-			layer.addChild(_menuBitmap);
-			_menuBitmap = new LBitmap(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar03.png"));
-			_menuBitmap.x = _menuW + _menuX - 15;
-			_menuBitmap.y = _menuY;
-			layer.addChild(_menuBitmap);
-			_menuBitmap = new LBitmap(LImage.vertical(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar01.png")));
-			_menuBitmap.x = _menuX;
-			_menuBitmap.y = _menuY + _menuH - 15;
-			layer.addChild(_menuBitmap);
-			_menuBitmap = new LBitmap(LImage.vertical(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar03.png")));
-			_menuBitmap.x = _menuW + _menuX - 15;
-			_menuBitmap.y = _menuY + _menuH - 15;
-			layer.addChild(_menuBitmap);
+			LSouSouObject.setBox(0,0,110,210,this);
 		}
 		/**
 		 * 显示策略
@@ -439,112 +476,115 @@ package zhanglubin.legend.game.sousou.map
 		 * 显示基本状态
 		 */
 		private function addStatus():void{
-			LDisplay.drawRect(this.graphics,[260,10,240,240],false,0xffffff,1,2);
+			_tabLayer.die();
+			//LDisplay.drawRect(_tabLayer.graphics,[260,10,240,240],false,0xffffff,1,2);
 			
 			
-			var lblX:int = 400;
-			var lblY:int = 105;
-			var lblForce:LLabel = new LLabel();
-			lblForce.htmlText = "<font color='#ffffff' size='15'><b>武力</b></font>";
-			lblForce.x = lblX;
-			lblForce.y = lblY;
-			this.addChild(lblForce);
-			lblForce = new LLabel();
-			lblForce.htmlText = "<font color='#ffffff' size='15'>" + LSouSouObject.charaSNow.member.force+ "</font>";
-			lblForce.x = lblX + 50;
-			lblForce.y = lblY;
-			this.addChild(lblForce);
-			var lblIntelligence:LLabel = new LLabel();
-			lblIntelligence.htmlText = "<font color='#ffffff' size='15'><b>智力</b></font>";
-			lblIntelligence.x = lblX;
-			lblIntelligence.y = lblY + 30;
-			this.addChild(lblIntelligence);
-			lblIntelligence = new LLabel();
-			lblIntelligence.htmlText = "<font color='#ffffff' size='15'>" + LSouSouObject.charaSNow.member.intelligence+ "</font>";
-			lblIntelligence.x = lblX + 50;
-			lblIntelligence.y = lblY + 30;
-			this.addChild(lblIntelligence);
-			var lblCommand:LLabel = new LLabel();
-			lblCommand.htmlText = "<font color='#ffffff' size='15'><b>统帅</b></font>";
-			lblCommand.x = lblX;
-			lblCommand.y = lblY + 60;
-			this.addChild(lblCommand);
-			lblCommand = new LLabel();
-			lblCommand.htmlText = "<font color='#ffffff' size='15'>" + LSouSouObject.charaSNow.member.command+ "</font>";
-			lblCommand.x = lblX + 50;
-			lblCommand.y = lblY + 60;
-			this.addChild(lblCommand);
-			var lblAgile:LLabel = new LLabel();
-			lblAgile.htmlText = "<font color='#ffffff' size='15'><b>敏捷</b></font>";
-			lblAgile.x = lblX;
-			lblAgile.y = lblY + 90;
-			this.addChild(lblAgile);
-			lblAgile = new LLabel();
-			lblAgile.htmlText = "<font color='#ffffff' size='15'>" + LSouSouObject.charaSNow.member.agile+ "</font>";
-			lblAgile.x = lblX + 50;
-			lblAgile.y = lblY + 90;
-			this.addChild(lblAgile);
-			var lblLuck:LLabel = new LLabel();
-			lblLuck.htmlText = "<font color='#ffffff' size='15'><b>运气</b></font>";
-			lblLuck.x = lblX;
-			lblLuck.y = lblY + 120;
-			this.addChild(lblLuck);
-			lblLuck = new LLabel();
-			lblLuck.htmlText = "<font color='#ffffff' size='15'>" + LSouSouObject.charaSNow.member.luck+ "</font>";
-			lblLuck.x = lblX + 50;
-			lblLuck.y = lblY + 120;
-			this.addChild(lblLuck);
-			
-			lblX = 265;
+			lblX = 20;
 			lblY = 15;
 			var exp:LLabel = new LLabel();
 			exp.htmlText = "<font color='#ffffff' size='15'>Exp</font>";
 			exp.x = lblX;
 			exp.y = lblY;
-			this.addChild(exp);
-			this.graphics.lineStyle(0);
+			_tabLayer.addChild(exp);
+			_tabLayer.graphics.lineStyle(0);
 			LDisplay.drawRect(this.graphics,[lblX + 140 - LSouSouObject.charaSNow.member.exp,lblY + 5,LSouSouObject.charaSNow.member.exp,10],true,0xff0000,1,0);
 			LDisplay.drawRect(this.graphics,[lblX + 40,lblY + 5,100,10],false,0xcccccc,1,2);
 			var lblExp:LLabel = new LLabel();
 			lblExp.htmlText = "<font color='#ffffff' size='15'>" + LSouSouObject.charaSNow.member.exp + "/100</font>";
 			lblExp.x = lblX + 150;
 			lblExp.y = lblY;
-			this.addChild(lblExp);
+			_tabLayer.addChild(lblExp);
 			
 			var hertBitmap:LBitmap = new LBitmap(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"hert.png"));
 			hertBitmap.width = 20;
 			hertBitmap.height = 20;
 			hertBitmap.x = lblX;
 			hertBitmap.y = lblY + 30;
-			this.addChild(hertBitmap);
+			_tabLayer.addChild(hertBitmap);
 			var troops:int = LSouSouObject.charaSNow.member.troops;
 			var maxTroops:int = LSouSouObject.charaSNow.member.maxTroops;
-			this.graphics.lineStyle(0);
+			_tabLayer.graphics.lineStyle(0);
 			LDisplay.drawRect(this.graphics,[lblX + 140 - int(troops*100/maxTroops),lblY + 35,int(troops*100/maxTroops),10],true,0xff0000,1,0);
 			LDisplay.drawRect(this.graphics,[lblX + 40,lblY + 35,100,10],false,0xcccccc,1,2);
 			var lblTroops:LLabel = new LLabel();
 			lblTroops.htmlText = "<font color='#ffffff' size='15'>" + troops + "/" + maxTroops + "</font>";
 			lblTroops.x = lblX + 150;
 			lblTroops.y = lblY + 30;
-			this.addChild(lblTroops);
+			_tabLayer.addChild(lblTroops);
 			
+			var lblX:int = 20;
+			var lblY:int = 100;
+			var lblForce:LLabel = new LLabel();
+			lblForce.htmlText = "<font color='#ffffff' size='15'><b>武力</b></font>";
+			lblForce.x = lblX;
+			lblForce.y = lblY;
+			_tabLayer.addChild(lblForce);
+			lblForce = new LLabel();
+			lblForce.htmlText = "<font color='#ffffff' size='15'>" + LSouSouObject.charaSNow.member.force+ "</font>";
+			lblForce.x = lblX + 50;
+			lblForce.y = lblY;
+			_tabLayer.addChild(lblForce);
+			var lblIntelligence:LLabel = new LLabel();
+			lblIntelligence.htmlText = "<font color='#ffffff' size='15'><b>智力</b></font>";
+			lblIntelligence.x = lblX;
+			lblIntelligence.y = lblY + 30;
+			_tabLayer.addChild(lblIntelligence);
+			lblIntelligence = new LLabel();
+			lblIntelligence.htmlText = "<font color='#ffffff' size='15'>" + LSouSouObject.charaSNow.member.intelligence+ "</font>";
+			lblIntelligence.x = lblX + 50;
+			lblIntelligence.y = lblY + 30;
+			_tabLayer.addChild(lblIntelligence);
+			var lblCommand:LLabel = new LLabel();
+			lblCommand.htmlText = "<font color='#ffffff' size='15'><b>统帅</b></font>";
+			lblCommand.x = lblX;
+			lblCommand.y = lblY + 60;
+			_tabLayer.addChild(lblCommand);
+			lblCommand = new LLabel();
+			lblCommand.htmlText = "<font color='#ffffff' size='15'>" + LSouSouObject.charaSNow.member.command+ "</font>";
+			lblCommand.x = lblX + 50;
+			lblCommand.y = lblY + 60;
+			_tabLayer.addChild(lblCommand);
+			var lblAgile:LLabel = new LLabel();
+			lblAgile.htmlText = "<font color='#ffffff' size='15'><b>敏捷</b></font>";
+			lblAgile.x = lblX;
+			lblAgile.y = lblY + 90;
+			_tabLayer.addChild(lblAgile);
+			lblAgile = new LLabel();
+			lblAgile.htmlText = "<font color='#ffffff' size='15'>" + LSouSouObject.charaSNow.member.agile+ "</font>";
+			lblAgile.x = lblX + 50;
+			lblAgile.y = lblY + 90;
+			_tabLayer.addChild(lblAgile);
+			var lblLuck:LLabel = new LLabel();
+			lblLuck.htmlText = "<font color='#ffffff' size='15'><b>运气</b></font>";
+			lblLuck.x = lblX;
+			lblLuck.y = lblY + 120;
+			_tabLayer.addChild(lblLuck);
+			lblLuck = new LLabel();
+			lblLuck.htmlText = "<font color='#ffffff' size='15'>" + LSouSouObject.charaSNow.member.luck+ "</font>";
+			lblLuck.x = lblX + 50;
+			lblLuck.y = lblY + 120;
+			_tabLayer.addChild(lblLuck);
+			
+			lblX = 265;
+			lblY = 15;
 			var fanBitmap:LBitmap = new LBitmap(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"fan.png"));
 			fanBitmap.smoothing = true;
 			fanBitmap.width = 20;
 			fanBitmap.height = 20;
 			fanBitmap.x = lblX;
 			fanBitmap.y = lblY + 60;
-			this.addChild(fanBitmap);
+			_tabLayer.addChild(fanBitmap);
 			var strategy:int = LSouSouObject.charaSNow.member.strategy;
 			var maxStrategy:int = LSouSouObject.charaSNow.member.maxStrategy;
-			this.graphics.lineStyle(0);
+			_tabLayer.graphics.lineStyle(0);
 			LDisplay.drawRect(this.graphics,[lblX + 140 - int(strategy*100/maxStrategy),lblY + 65,int(strategy*100/maxStrategy),10],true,0xff0000,1,0);
 			LDisplay.drawRect(this.graphics,[lblX + 40,lblY + 65,100,10],false,0xcccccc,1,2);
 			var lblStrategy:LLabel = new LLabel();
 			lblStrategy.htmlText = "<font color='#ffffff' size='15'>" + strategy + "/" + maxStrategy + "</font>";
 			lblStrategy.x = lblX + 150;
 			lblStrategy.y = lblY + 60;
-			this.addChild(lblStrategy);
+			_tabLayer.addChild(lblStrategy);
 			
 			var attackBitmap:LBitmap = new LBitmap(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_icon_attack.png"));
 			attackBitmap.smoothing = true;
@@ -552,14 +592,14 @@ package zhanglubin.legend.game.sousou.map
 			attackBitmap.height = 20;
 			attackBitmap.x = lblX;
 			attackBitmap.y = lblY + 90;
-			this.addChild(attackBitmap);
+			_tabLayer.addChild(attackBitmap);
 			var attack:int = LSouSouObject.charaSNow.member.attack;
 			var addAtk:int = int(LSouSouObject.charaSNow.statusArray[LSouSouCharacterS.STATUS_ATTACK][2]);
 			var lblAttack:LLabel = new LLabel();
 			lblAttack.htmlText = "<font color='#ffffff' size='15'>" + (attack+addAtk) + "/" + attack + "("+addAtk+")" + "</font>";
 			lblAttack.x = lblX + 40;
 			lblAttack.y = lblY + 90;
-			this.addChild(lblAttack);
+			_tabLayer.addChild(lblAttack);
 			
 			var spiritBitmap:LBitmap = new LBitmap(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_icon_strategy.png"));
 			spiritBitmap.smoothing = true;
@@ -567,13 +607,13 @@ package zhanglubin.legend.game.sousou.map
 			spiritBitmap.height = 20;
 			spiritBitmap.x = lblX;
 			spiritBitmap.y = lblY + 120;
-			this.addChild(spiritBitmap);
+			_tabLayer.addChild(spiritBitmap);
 			var spirit:int = LSouSouObject.charaSNow.member.spirit;
 			var lblSpirit:LLabel = new LLabel();
 			lblSpirit.htmlText = "<font color='#ffffff' size='15'>" + spirit + "/" + spirit + "</font>";
 			lblSpirit.x = lblX + 40;
 			lblSpirit.y = lblY + 120;
-			this.addChild(lblSpirit);
+			_tabLayer.addChild(lblSpirit);
 			
 			var defenseBitmap:LBitmap = new LBitmap(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"shield.png"));
 			defenseBitmap.smoothing = true;
@@ -581,14 +621,14 @@ package zhanglubin.legend.game.sousou.map
 			defenseBitmap.height = 20;
 			defenseBitmap.x = lblX;
 			defenseBitmap.y = lblY + 150;
-			this.addChild(defenseBitmap);
+			_tabLayer.addChild(defenseBitmap);
 			var defense:int = LSouSouObject.charaSNow.member.defense;
 			var addDef:int = int(LSouSouObject.charaSNow.statusArray[LSouSouCharacterS.STATUS_DEFENSE][2]);
 			var lblDefense:LLabel = new LLabel();
 			lblDefense.htmlText = "<font color='#ffffff' size='15'>" + (defense + addDef) + "/" + defense + "("+addDef+")" + "</font>";
 			lblDefense.x = lblX + 40;
 			lblDefense.y = lblY + 150;
-			this.addChild(lblDefense);
+			_tabLayer.addChild(lblDefense);
 			
 			var breakoutBitmap:LBitmap = new LBitmap(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"ring.png"));
 			breakoutBitmap.smoothing = true;
@@ -596,13 +636,13 @@ package zhanglubin.legend.game.sousou.map
 			breakoutBitmap.height = 20;
 			breakoutBitmap.x = lblX;
 			breakoutBitmap.y = lblY + 180;
-			this.addChild(breakoutBitmap);
+			_tabLayer.addChild(breakoutBitmap);
 			var breakout:int = LSouSouObject.charaSNow.member.breakout;
 			var lblBreakout:LLabel = new LLabel();
 			lblBreakout.htmlText = "<font color='#ffffff' size='15'>" + breakout + "/" + breakout + "</font>";
 			lblBreakout.x = lblX + 40;
 			lblBreakout.y = lblY + 180;
-			this.addChild(lblBreakout);
+			_tabLayer.addChild(lblBreakout);
 			
 			var moraleBitmap:LBitmap = new LBitmap(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"flag.png"));
 			moraleBitmap.smoothing = true;
@@ -610,14 +650,14 @@ package zhanglubin.legend.game.sousou.map
 			moraleBitmap.height = 20;
 			moraleBitmap.x = lblX;
 			moraleBitmap.y = lblY + 210;
-			this.addChild(moraleBitmap);
+			_tabLayer.addChild(moraleBitmap);
 			var morale:int = LSouSouObject.charaSNow.member.morale;
 			var lblMorale:LLabel = new LLabel();
 			lblMorale.htmlText = "<font color='#ffffff' size='15'>" + morale + "/" + morale + "</font>";
 			lblMorale.width = 230;
 			lblMorale.x = lblX + 40;
 			lblMorale.y = lblY + 210;
-			this.addChild(lblMorale);
+			_tabLayer.addChild(lblMorale);
 		}
 		/**
 		 * 显示按钮
@@ -639,46 +679,51 @@ package zhanglubin.legend.game.sousou.map
 			
 			var facedata:BitmapData;
 			var faceIndex:int = LSouSouObject.chara["peo"+LSouSouObject.charaSNow.index]["Face"];
-			if(faceIndex >= LSouSouObject.charaFaceList.length){
-				facedata = new BitmapData(240,240,false,0x000000);
-			}else{
-				facedata = LSouSouObject.charaFaceList[faceIndex];
-			}
+			facedata = new BitmapData(120,120,true,0x000000);
+			facedata.copyPixels(LSouSouObject.charaFaceList[faceIndex],new Rectangle(0,0,120,120),new Point(0,0));
 			
-			//var facedata:BitmapData = LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["face"],
-				//"face" + LSouSouObject.charaSNow.member.face +"-0");
 			facedata.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar02.png"),
-				new Rectangle(0,0,240,5),new Point(0,0));
+				new Rectangle(0,0,120,5),new Point(0,0));
 			facedata.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar04.png"),
-				new Rectangle(0,0,5,240),new Point(0,0));
+				new Rectangle(0,0,5,120),new Point(0,0));
 			facedata.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar05.png"),
-				new Rectangle(0,0,5,240),new Point(235,0));
+				new Rectangle(0,0,5,120),new Point(115,0));
 			facedata.copyPixels(LImage.vertical(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar02.png")),
-				new Rectangle(0,0,240,5),new Point(0,235));
+				new Rectangle(0,0,120,5),new Point(0,115));
 			facedata.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar01.png"),
 				new Rectangle(0,0,15,15),new Point(0,0));
 			facedata.copyPixels(LImage.vertical(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar01.png")),
-				new Rectangle(0,0,15,15),new Point(0,225));
+				new Rectangle(0,0,15,15),new Point(0,105));
 			facedata.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar03.png"),
-				new Rectangle(0,0,15,15),new Point(225,0));
+				new Rectangle(0,0,15,15),new Point(105,0));
 			facedata.copyPixels(LImage.vertical(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar03.png")),
-				new Rectangle(0,0,15,15),new Point(225,225));
+				new Rectangle(0,0,15,15),new Point(105,105));
 			var face:LBitmap = new LBitmap(facedata);
-			face.x = 10;
+			face.x = 140;
 			face.y = 10;
 			this.addChild(face);
 			
-			LDisplay.drawRect(this.graphics,[10,260,240,29],false,0xffffff,1,2);
+			var nameBit:LBitmap = new LBitmap(LSouSouObject.getBoxBitmapData(120,30));
+			nameBit.x = 140;
+			nameBit.y = 135;
+			this.addChild(nameBit);
 			var lblName:LLabel = new LLabel();
 			lblName.htmlText = "<font color='#ffffff' size='20'><b>"+LSouSouObject.charaSNow.member.name+"</b></font>";
-			lblName.x = 15;
-			lblName.y = 261;
+			lblName.x = 150;
+			lblName.y = 137;
 			this.addChild(lblName);
+			
+			var lvBit:LBitmap = new LBitmap(LSouSouObject.getBoxBitmapData(120,30));
+			lvBit.x = 140;
+			lvBit.y = 170;
+			this.addChild(lvBit);
 			var lblLv:LLabel = new LLabel();
 			lblLv.htmlText = "<font color='#ffffff' size='20'><b>Lv."+LSouSouObject.charaSNow.member.lv+"</b></font>";
-			lblLv.x = 110;
-			lblLv.y = 261;
+			lblLv.x = 150;
+			lblLv.y = 172;
 			this.addChild(lblLv);
+			
+			LDisplay.drawRect(this.graphics,[10,260,240,29],false,0xffffff,1,2);
 			var lblBelong:LLabel = new LLabel();
 			lblBelong.htmlText = "<font color='#ffffff' size='20'><b>"+(LSouSouObject.charaSNow.belong==LSouSouObject.BELONG_SELF?"我军":(LSouSouObject.charaSNow.belong==LSouSouObject.BELONG_FRIEND?"友军":"敌军"))+"</b></font>";
 			lblBelong.x = 180;
