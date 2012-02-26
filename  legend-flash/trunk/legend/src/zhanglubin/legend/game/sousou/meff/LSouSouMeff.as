@@ -321,24 +321,28 @@ package zhanglubin.legend.game.sousou.meff
 		}
 		public function toChangeStatus(charas:LSouSouCharacterS):void{
 			var hitrate:Boolean =LSouSouCalculate.getHitrateStrategy(_meffCharacter,charas);
-			
+			var hitValueArray:Array,intStatus:int,numHert:Number;
 			if(hitrate){
 				charas.setReturnAction(LSouSouCharacterS.DOWN + charas.direction);
+				intStatus = int(LSouSouObject.sMap.strategy.Status.toString());
+				numHert = Number(LSouSouObject.sMap.strategy.Hert.toString());
+				hitValueArray = [];
+				hitValueArray[LSouSouCharacterS.STATUS_ATTACK] = int(charas.member.attack*numHert);
+				hitValueArray[LSouSouCharacterS.STATUS_DEFENSE] = int(charas.member.defense*numHert);
+				hitValueArray[LSouSouCharacterS.STATUS_BREAKOUT] = int(charas.member.breakout*numHert);
+				hitValueArray[LSouSouCharacterS.STATUS_MORALE] = int(charas.member.morale*numHert);
+				hitValueArray[LSouSouCharacterS.STATUS_SPIRIT] = int(charas.member.spirit*numHert);
 				if(LSouSouObject.sMap.strategy.Belong.toString() == "1"){
 					
 					charas.action = LSouSouCharacterS.HERT;
-					if(int(LSouSouObject.sMap.strategy.Status.toString()) == LSouSouCharacterS.STATUS_ATTACK){
-						charas.statusArray[LSouSouCharacterS.STATUS_ATTACK][0] = 1;
-						charas.statusArray[LSouSouCharacterS.STATUS_ATTACK][1] = 0;
-						charas.statusArray[LSouSouCharacterS.STATUS_ATTACK][2] = -int(charas.member.attack*0.2);
-					}
+					charas.statusArray[intStatus][0] = 1;
+					charas.statusArray[intStatus][1] = 0;
+					charas.statusArray[intStatus][2] = -hitValueArray[intStatus];
 				}else{
 					charas.action = LSouSouCharacterS.UPGRADE;
-					if(int(LSouSouObject.sMap.strategy.Status.toString()) == LSouSouCharacterS.STATUS_ATTACK){
-						charas.statusArray[LSouSouCharacterS.STATUS_ATTACK][0] = 1;
-						charas.statusArray[LSouSouCharacterS.STATUS_ATTACK][1] = 0;
-						charas.statusArray[LSouSouCharacterS.STATUS_ATTACK][2] = int(charas.member.attack*0.2);
-					}
+					charas.statusArray[intStatus][0] = 1;
+					charas.statusArray[intStatus][1] = 0;
+					charas.statusArray[intStatus][2] = hitValueArray[intStatus];
 				}
 			}else{
 				/**档格*/

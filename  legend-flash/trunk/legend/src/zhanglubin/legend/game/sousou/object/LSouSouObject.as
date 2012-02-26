@@ -4,6 +4,7 @@ package zhanglubin.legend.game.sousou.object
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
+	import zhanglubin.legend.display.LBitmap;
 	import zhanglubin.legend.display.LSprite;
 	import zhanglubin.legend.game.sousou.character.LSouSouCharacterS;
 	import zhanglubin.legend.game.sousou.map.*;
@@ -103,6 +104,75 @@ package zhanglubin.legend.game.sousou.object
 			_menuBitmapData.copyPixels(LImage.vertical(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar03.png")),
 				new Rectangle(0,0,bar_h,bar_h),new Point(menu_w - bar_h,menu_h - bar_h));
 			return _menuBitmapData;
+		}
+		public static function getBoxBitmapData(menu_w:int,menu_h:int):BitmapData{
+			var bar_h:int = 15;
+			var btn_h:int = 34;
+			var btn_w:int = 115;
+			var bar_w:int = 5;
+			var _menuBitmapData:BitmapData = new BitmapData(menu_w,menu_h,false,0x333333);
+			
+			_menuBitmapData.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar02.png"),
+				new Rectangle(0,0,menu_w,bar_w),new Point(0,0));
+			_menuBitmapData.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar04.png"),
+				new Rectangle(0,0,bar_w,menu_h),new Point(0,0));
+			_menuBitmapData.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar05.png"),
+				new Rectangle(0,0,bar_w,menu_h),new Point(menu_w - bar_w,0));
+			_menuBitmapData.copyPixels(LImage.vertical(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar02.png")),
+				new Rectangle(0,0,menu_w,bar_w),new Point(0,menu_h - bar_w));
+			
+			_menuBitmapData.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar01.png"),
+				new Rectangle(0,0,bar_h,bar_h),new Point(0,0));
+			_menuBitmapData.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar03.png"),
+				new Rectangle(0,0,bar_h,bar_h),new Point(menu_w - bar_h,0));
+			_menuBitmapData.copyPixels(LImage.vertical(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar01.png")),
+				new Rectangle(0,0,bar_h,bar_h),new Point(0,menu_h - bar_h));
+			_menuBitmapData.copyPixels(LImage.vertical(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar03.png")),
+				new Rectangle(0,0,bar_h,bar_h),new Point(menu_w - bar_h,menu_h - bar_h));
+			return _menuBitmapData;
+		}
+		public static function setBox(_menuX:int,_menuY:int,_menuW:int,_menuH:int,layer:LSprite):void{
+			var _menuBitmap:LBitmap;
+			_menuBitmap = new LBitmap(new BitmapData(_menuW,5,true));
+			_menuBitmap.bitmapData.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar02.png"),
+				new Rectangle(0,0,_menuBitmap.width,_menuBitmap.height),new Point(0,0));
+			_menuBitmap.x = _menuX;
+			_menuBitmap.y = _menuY;
+			layer.addChild(_menuBitmap);
+			_menuBitmap = new LBitmap(new BitmapData(5,_menuH,true));
+			_menuBitmap.bitmapData.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar04.png"),
+				new Rectangle(0,0,_menuBitmap.width,_menuBitmap.height),new Point(0,0));
+			_menuBitmap.x = _menuX;
+			_menuBitmap.y = _menuY;
+			layer.addChild(_menuBitmap);
+			_menuBitmap = new LBitmap(new BitmapData(5,_menuH,true));
+			_menuBitmap.bitmapData.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar05.png"),
+				new Rectangle(0,0,_menuBitmap.width,_menuBitmap.height),new Point(0,0));
+			_menuBitmap.x = _menuW + _menuX - _menuBitmap.width;
+			_menuBitmap.y = _menuY;
+			layer.addChild(_menuBitmap);
+			_menuBitmap = new LBitmap(new BitmapData(_menuW,5,true));
+			_menuBitmap.bitmapData.copyPixels(LImage.vertical(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar02.png")),
+				new Rectangle(0,0,_menuBitmap.width,_menuBitmap.height),new Point(0,0));
+			_menuBitmap.x = _menuX;
+			_menuBitmap.y = _menuY + _menuH - 5;
+			layer.addChild(_menuBitmap);
+			_menuBitmap = new LBitmap(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar01.png"));
+			_menuBitmap.x = _menuX;
+			_menuBitmap.y = _menuY;
+			layer.addChild(_menuBitmap);
+			_menuBitmap = new LBitmap(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar03.png"));
+			_menuBitmap.x = _menuW + _menuX - 15;
+			_menuBitmap.y = _menuY;
+			layer.addChild(_menuBitmap);
+			_menuBitmap = new LBitmap(LImage.vertical(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar01.png")));
+			_menuBitmap.x = _menuX;
+			_menuBitmap.y = _menuY + _menuH - 15;
+			layer.addChild(_menuBitmap);
+			_menuBitmap = new LBitmap(LImage.vertical(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"menu_bar03.png")));
+			_menuBitmap.x = _menuW + _menuX - 15;
+			_menuBitmap.y = _menuY + _menuH - 15;
+			layer.addChild(_menuBitmap);
 		}
 	}
 }
