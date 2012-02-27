@@ -28,22 +28,33 @@ package zhanglubin.legend.game.sousou.map
 		private var _showLabel:LLabel;
 		private var _tabMenu:LRadio;
 		private var _tabLayer:LSprite;
+		private var _backLayer:LSprite;
+		private var _listLayer:LSprite;
+		private var _memNameBitmap:Bitmap;
+		private var _memSelectBitmap:Bitmap;
+		
 		public function LSouSouCharacterProfile(view:int = -1)
 		{
 			init(view);
 		}
 		private function init(value:int):void{
-			this.die();
-			_view = value;
+			_backLayer = new LSprite();
+			this.addChild(_backLayer);
+			_listLayer = new LSprite();
+			this.addChild(_listLayer);
+			if(value>=0)showMemberList();
+			viewMember();
+		}
+		private function viewMember():void{
+			_backLayer.die();
 			addBackground();
 			addFace();
 			addSkill();
 			addTab();
 			addButton();
-			if(_view>=0)showMemberList();
 		}
 		private function addTab():void{
-			LSouSouObject.setBox(299,33,400,436,this);
+			LSouSouObject.setBox(299,33,400,436,_backLayer);
 			
 			_tabMenu = new LRadio();
 			var tab_menu_on:BitmapData = LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"tab_menu_on");
@@ -80,17 +91,17 @@ package zhanglubin.legend.game.sousou.map
 			_tabMenu.addEventListener(LEvent.CHANGE_VALUE,changeValue);
 			_tabMenu.x = 300;
 			_tabMenu.y = 10;
-			this.addChild(_tabMenu);
+			_backLayer.addChild(_tabMenu);
 			
 			_showLabel = new LLabel();
 			_showLabel.y = 12;
 			_showLabel.x = _tabMenu.x;
-			this.addChild(_showLabel);
+			_backLayer.addChild(_showLabel);
 			
 			_tabLayer = new LSprite();
 			_tabLayer.x = 300;
 			_tabLayer.y = 50;
-			this.addChild(_tabLayer);
+			_backLayer.addChild(_tabLayer);
 			
 			_tabMenu.value = "status";
 		}
@@ -123,37 +134,53 @@ package zhanglubin.legend.game.sousou.map
 			var memScroll:LScrollbar;
 			memLayer = new LSprite();
 			var bitmapName:BitmapData;
-			var btnName:LButton;
+			var lblName:LLabel;
+			_memNameBitmap = new LBitmap(new BitmapData(100,28,false,0xcccccc));
+			_memSelectBitmap = new LBitmap(new BitmapData(100,28,false,0x999999));
+			_memNameBitmap.visible = false;
+			_memNameBitmap.alpha = 0.5;
+			_memSelectBitmap.alpha = 0.5;
+			memLayer.addChild(_memNameBitmap);
+			memLayer.addChild(_memSelectBitmap);
+			
 			var i:int;
 			for(i=0;i<LSouSouObject.memberList.length;i++){
-				if(LSouSouObject.charaSNow.index == int(LSouSouObject.memberList[i].index)){
-					bitmapName = LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"btn_003.png");
-				}else{
-					bitmapName = LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"btn_002.png");
-				}
-				btnName = new LButton(bitmapName);
-				btnName.value = i;
-				btnName.addEventListener(MouseEvent.MOUSE_UP,function (event:MouseEvent):void{
-					LSouSouObject.charaSNow = new LSouSouCharacterS(LSouSouObject.memberList[event.target.value],0,0,0);
-					init(0);
-				});
-				btnName.label = LSouSouObject.memberList[i].name;
-				btnName.y = btnName.height*i;
-				memLayer.addChild(btnName);
+				lblName = new LLabel();
+				lblName.htmlText = "<font color='#cccccc' size='18'><b>" + LSouSouObject.memberList[i].name + "</b></font>";
+				lblName.x = 10;
+				lblName.y = 30*i + 2;
+				memLayer.addChild(lblName);
 			}
-			
+			LDisplay.drawRect(memLayer.graphics,[0,0,110,30*i],true,0,0);
+			memLayer.addEventListener(MouseEvent.MOUSE_UP,selectMember);
+			memLayer.addEventListener(MouseEvent.ROLL_OUT,outMember);
+			memLayer.addEventListener(MouseEvent.MOUSE_MOVE,moveMember);
 			memScroll = new LScrollbar(memLayer,105,225,20,false);
 			memScroll.alpha = 0.9;
 			memScroll.xy = new LCoordinate(5,5);
-			this.addChild(memScroll);
-			LSouSouObject.setBox(0,0,110,235,this);
+			_listLayer.addChild(memScroll);
+			LSouSouObject.setBox(0,0,110,235,_listLayer);
+		}
+		private function outMember(event:MouseEvent):void{
+			_memNameBitmap.visible = false;
+		}
+		private function moveMember(event:MouseEvent):void{
+			var index:int = int((event.currentTarget as LSprite).mouseY/30);
+			_memNameBitmap.y = index*30 + 1;
+			_memNameBitmap.visible = true;
+		}
+		private function selectMember(event:MouseEvent):void{
+			var index:int = int((event.currentTarget as LSprite).mouseY/30);
+			_memSelectBitmap.y = index*30 + 1;
+			LSouSouObject.charaSNow = new LSouSouCharacterS(LSouSouObject.memberList[index],0,0,0);
+			this.viewMember();
 		}
 		/**
 		 * 显示策略
 		 */
 		private function addStrategy():void{
 			_tabLayer.die();
-			//LDisplay.drawRect(this.graphics,[260,260,240,130],false,0xffffff,1,2);
+			//LDisplay.drawRect(_backLayer.graphics,[260,260,240,130],false,0xffffff,1,2);
 			var lblTitle:LLabel = new LLabel();
 			lblTitle.htmlText = "<font color='#ffffff' size='18'><b>策略名称</b></font>";
 			lblTitle.x = 15 + 30;
@@ -164,7 +191,7 @@ package zhanglubin.legend.game.sousou.map
 			lblTitle.x = 150;
 			lblTitle.y = 15;
 			_tabLayer.addChild(lblTitle);
-			//LDisplay.drawRect(this.graphics,[265,290,230,95],false,0xffffff,1,2);
+			//LDisplay.drawRect(_backLayer.graphics,[265,290,230,95],false,0xffffff,1,2);
 			
 			
 			var strategyLayer:LSprite = new LSprite();
@@ -205,7 +232,7 @@ package zhanglubin.legend.game.sousou.map
 		 */
 		private function addArms():void{
 			_tabLayer.die();
-			//LDisplay.drawRect(this.graphics,[510,10,250,240],false,0xffffff,1,2);
+			//LDisplay.drawRect(_backLayer.graphics,[510,10,250,240],false,0xffffff,1,2);
 			
 			var lblX:int = 20;
 			var lblY:int = 10;
@@ -308,7 +335,7 @@ package zhanglubin.legend.game.sousou.map
 			lblMove.y = lblY + 240;
 			_tabLayer.addChild(lblMove);
 			
-			//LDisplay.drawRect(this.graphics,[620,80,120,120],true,0xffffff,0.5,0);
+			//LDisplay.drawRect(_backLayer.graphics,[620,80,120,120],true,0xffffff,0.5,0);
 			var attRect:XMLList = LSouSouObject.charaSNow.rangeAttack;
 			var attRectsWidth:int = 120;
 			var attRectCount:int = 3;
@@ -629,16 +656,16 @@ package zhanglubin.legend.game.sousou.map
 			var skillNameBit:LBitmap = new LBitmap(LSouSouObject.getBoxBitmapData(65,30));
 			skillNameBit.x = lblX;
 			skillNameBit.y = lblY;
-			this.addChild(skillNameBit);
+			_backLayer.addChild(skillNameBit);
 			skillNameBit = new LBitmap(LSouSouObject.getBoxBitmapData(160,30));
 			skillNameBit.x = lblX + 80;
 			skillNameBit.y = lblY;
-			this.addChild(skillNameBit);
+			_backLayer.addChild(skillNameBit);
 			
 			var skillBit:LBitmap = new LBitmap(LSouSouObject.getBoxBitmapData(260,100));
 			skillBit.x = lblX;
 			skillBit.y = lblY + 35;
-			this.addChild(skillBit);
+			_backLayer.addChild(skillBit);
 			
 			var notSkill:Boolean;
 			if(int(LSouSouObject.charaSNow.member.skill.toString()) <= 0)notSkill = true;
@@ -648,7 +675,7 @@ package zhanglubin.legend.game.sousou.map
 			lblTitle.htmlText = "<font color='#ffffff' size='20'><b>特技</b></font>";
 			lblTitle.x = lblX + 10;
 			lblTitle.y = lblY + 2;
-			this.addChild(lblTitle);
+			_backLayer.addChild(lblTitle);
 			
 			var lblComment:LLabel;
 			if(!notSkill){
@@ -656,7 +683,7 @@ package zhanglubin.legend.game.sousou.map
 				lblSkill.htmlText = "<font color='#ffffff' size='20'><b>"+skill.Name+"</b></font>";
 				lblSkill.x = lblX + 90;
 				lblSkill.y = lblY + 2;
-				this.addChild(lblSkill);
+				_backLayer.addChild(lblSkill);
 				
 				lblComment = new LLabel();
 				lblComment.htmlText = "<font color='#ffffff' size='15'>"+skill.Introduction+"</font>";
@@ -665,7 +692,7 @@ package zhanglubin.legend.game.sousou.map
 				lblComment.wordWrap = true;
 				lblComment.x = lblX + 5;
 				lblComment.y = lblY + 40;
-				this.addChild(lblComment);
+				_backLayer.addChild(lblComment);
 			}
 		}
 		/**
@@ -679,7 +706,7 @@ package zhanglubin.legend.game.sousou.map
 			btnClose.addEventListener(MouseEvent.MOUSE_UP,function (event:MouseEvent):void{
 				removeFromParent();
 			});
-			this.addChild(btnClose);
+			_backLayer.addChild(btnClose);
 		}
 		/**
 		 * 显示头像姓名简介
@@ -691,50 +718,50 @@ package zhanglubin.legend.game.sousou.map
 			var face:LBitmap = new LBitmap(facedata);
 			face.x = 140;
 			face.y = 10;
-			this.addChild(face);
+			_backLayer.addChild(face);
 			
 			var nameBit:LBitmap = new LBitmap(LSouSouObject.getBoxBitmapData(130,30));
 			nameBit.x = 140;
 			nameBit.y = 145;
-			this.addChild(nameBit);
+			_backLayer.addChild(nameBit);
 			var lblName:LLabel = new LLabel();
 			lblName.htmlText = "<font color='#ffffff' size='20'><b>"+LSouSouObject.charaSNow.member.name+"</b></font>";
 			lblName.x = 150;
 			lblName.y = 147;
-			this.addChild(lblName);
+			_backLayer.addChild(lblName);
 			
 			var lvBit:LBitmap = new LBitmap(LSouSouObject.getBoxBitmapData(130,30));
 			lvBit.x = 140;
 			lvBit.y = 175;
-			this.addChild(lvBit);
+			_backLayer.addChild(lvBit);
 			var lblLv:LLabel = new LLabel();
 			lblLv.htmlText = "<font color='#ffffff' size='20'><b>Lv."+LSouSouObject.charaSNow.member.lv+"</b></font>";
 			lblLv.x = 150;
 			lblLv.y = 177;
-			this.addChild(lblLv);
+			_backLayer.addChild(lblLv);
 			
 			var belongBit:LBitmap = new LBitmap(LSouSouObject.getBoxBitmapData(130,30));
 			belongBit.x = 140;
 			belongBit.y = 205;
-			this.addChild(belongBit);
+			_backLayer.addChild(belongBit);
 			var lblBelong:LLabel = new LLabel();
 			lblBelong.htmlText = "<font color='#ffffff' size='20'><b>"+(LSouSouObject.charaSNow.belong==LSouSouObject.BELONG_SELF?"我军":(LSouSouObject.charaSNow.belong==LSouSouObject.BELONG_FRIEND?"友军":"敌军"))+"</b></font>";
 			lblBelong.x = 150;
 			lblBelong.y = 207;
-			this.addChild(lblBelong);
+			_backLayer.addChild(lblBelong);
 			
 			//状态
 			var statusBit:LBitmap = new LBitmap(LSouSouObject.getBoxBitmapData(260,80));
 			statusBit.x = 10;
 			statusBit.y = 240;
-			this.addChild(statusBit);
+			_backLayer.addChild(statusBit);
 		}
 		/**
 		 * 显示背景
 		 */
 		private function addBackground():void{
-			LDisplay.drawRect(this.graphics,[0,0,800,480],true,0x000000,0.7,5);
-			LSouSouObject.setBox(0,0,LGlobal.stage.stageWidth,LGlobal.stage.stageHeight,this);
+			LDisplay.drawRect(_backLayer.graphics,[0,0,800,480],true,0x000000,0.7,5);
+			LSouSouObject.setBox(0,0,LGlobal.stage.stageWidth,LGlobal.stage.stageHeight,_backLayer);
 		}
 	}
 }

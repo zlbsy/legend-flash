@@ -8,6 +8,7 @@ package zhanglubin.legend.game.sousou.character
 	
 	import zhanglubin.legend.display.LBitmap;
 	import zhanglubin.legend.events.LEvent;
+	import zhanglubin.legend.game.sousou.character.characterS.LSouSouCharacterSAI;
 	import zhanglubin.legend.game.sousou.meff.LSouSouMeff;
 	import zhanglubin.legend.game.sousou.meff.LSouSouMeffShow;
 	import zhanglubin.legend.game.sousou.meff.LSouSouSkill;
@@ -22,7 +23,6 @@ package zhanglubin.legend.game.sousou.character
 	import zhanglubin.legend.utils.LGlobal;
 	import zhanglubin.legend.utils.LImage;
 	import zhanglubin.legend.utils.math.LCoordinate;
-	import zhanglubin.legend.game.sousou.character.characterS.LSouSouCharacterSAI;
 
 	public class LSouSouCharacterS extends LSouSouCharacter
 	{
@@ -208,7 +208,9 @@ package zhanglubin.legend.game.sousou.character
 			
 			setImage();
 		}
-
+		public function getSaveData():XML{
+			return new XML("<s>abc</s>");
+		}
 		public function get skillRun():Boolean
 		{
 			return _skillRun;
