@@ -720,218 +720,6 @@ package zhanglubin.legend.game.sousou.map
 				_miniMap.bitmapData.copyPixels(_miniEnemy,_miniEnemy.rect,new Point(_miniCoordinate + charas.x*_miniScale,_miniCoordinate + charas.y*_miniScale));
 			}
 		}
-		private function drawMap():void{
-			var node:Node;
-			var nodeStr:String;
-			var nodeArr:Array;
-			var statusBit:BitmapData;
-			var meffShow:LSouSouMeffShow,i:int;
-			_drawLayer.graphics.clear();
-
-			/**画地图*/
-			this._map.bitmapData.copyPixels(_mapBitmapData,new Rectangle(-_mapCoordinate.x,-_mapCoordinate.y,SCREEN_WIDTH,SCREEN_HEIGHT),new Point(0,0));
-			/**画小地图*/
-			_miniMap.bitmapData.copyPixels(_minimapBitmapData,_minimapBitmapData.rect,new Point(5,5));
-			if(mouseX < 300){
-				_miniWindow.x = SCREEN_WIDTH - _miniMap.width;
-			}else if(mouseX > 500){
-				_miniWindow.x = 0;
-			}
-			/*
-			var bmd:BitmapData = new BitmapData(SCREEN_WIDTH,SCREEN_HEIGHT, true, 0);
-			bmd.copyPixels(_mapBitmapData,new Rectangle(-_mapCoordinate.x,-_mapCoordinate.y,SCREEN_WIDTH,SCREEN_HEIGHT),new Point(0,0));
-			this._map.bitmapData.copyPixels(bmd,new Rectangle(0,0,335,bmd.height),new Point(465,0));
-			this._map.bitmapData.copyPixels(bmd,new Rectangle(335,0,465,bmd.height),new Point(0,0));
-			*/
-			/**画人物*/
-			for each(_characterS in _ourlist){
-				if(!_characterS.visible)continue;
-				_characterS.onFrame();
-				drawMiniMap(_characterS);
-				/**判断是否需要绘制人物*/
-				if(_characterS.x + _mapCoordinate.x >= 0 && _characterS.x + _mapCoordinate.x < SCREEN_WIDTH &&
-					_characterS.y + _mapCoordinate.y >= 0 && _characterS.y + _mapCoordinate.y < SCREEN_HEIGHT){
-					
-					if(_characterS.action_mode == LSouSouCharacterS.MODE_STOP)_characterS.colorTrans(-70);
-					if(_characterS.action_mode == LSouSouCharacterS.MODE_BREAKOUT)_characterS.colorTrans(100);
-					this._map.bitmapData.copyPixels(_characterS.bitmapData,
-					new Rectangle(0,0,_characterS.width,_characterS.height),
-					new Point(_characterS.x + _mapCoordinate.x + _characterS.point.x,
-						_characterS.y + _mapCoordinate.y + (_nodeLength - _characterS.height)/2));
-					statusBit = _characterS.drawStatus();
-					if(statusBit)_map.bitmapData.copyPixels(statusBit,statusBit.rect,
-						new Point(_characterS.x + _mapCoordinate.x + _characterS.point.x + _characterS.statusX,
-							_characterS.y + _mapCoordinate.y + (_nodeLength - _characterS.height)/2));
-					//船
-					if(LSouSouObject.sMap.mapData[_characterS.locationY][_characterS.locationX] == 13)
-						this._map.bitmapData.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["stage"],"boatmask"+(_characterS.animation.currentframe + 2) % 2),
-							new Rectangle(0,0,_characterS.width,_characterS.height),
-							new Point(_characterS.x + _mapCoordinate.x + _characterS.point.x,
-								_characterS.y + _mapCoordinate.y + (_nodeLength - _characterS.height)/2));
-				}
-			}
-
-			for each(_characterS in _enemylist){
-				if(!_characterS.visible)continue;
-				_characterS.onFrame();
-				drawMiniMap(_characterS);
-				/**判断是否需要绘制人物*/
-				if(_characterS.x + _mapCoordinate.x >= 0 && _characterS.x + _mapCoordinate.x < SCREEN_WIDTH &&
-					_characterS.y + _mapCoordinate.y >= 0 && _characterS.y + _mapCoordinate.y < SCREEN_HEIGHT){
-					
-					if(_characterS.action_mode == LSouSouCharacterS.MODE_STOP)_characterS.colorTrans(-70);
-					if(_characterS.action_mode == LSouSouCharacterS.MODE_BREAKOUT)_characterS.colorTrans(100);
-					this._map.bitmapData.copyPixels(_characterS.bitmapData,
-						new Rectangle(0,0,_characterS.width,_characterS.height),
-						new Point(_characterS.x + _mapCoordinate.x + _characterS.point.x,
-							_characterS.y + _mapCoordinate.y + _characterS.point.y));
-					statusBit = _characterS.drawStatus();
-					if(statusBit)_map.bitmapData.copyPixels(statusBit,statusBit.rect,
-						new Point(_characterS.x + _mapCoordinate.x + _characterS.point.x + _characterS.statusX,
-							_characterS.y + _mapCoordinate.y + (_nodeLength - _characterS.height)/2));
-					//船
-					if(LSouSouObject.sMap.mapData[_characterS.locationY][_characterS.locationX] == 13)
-						this._map.bitmapData.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["stage"],"boatmask" + (_characterS.animation.currentframe + 2) % 2),
-							new Rectangle(0,0,_characterS.width,_characterS.height),
-							new Point(_characterS.x + _mapCoordinate.x + _characterS.point.x,
-								_characterS.y + _mapCoordinate.y + (_nodeLength - _characterS.height)/2));
-				}
-			}
-			for each(_characterS in _friendlist){
-				if(!_characterS.visible)continue;
-				_characterS.onFrame();
-				drawMiniMap(_characterS);
-				/**判断是否需要绘制人物*/
-				if(_characterS.x + _mapCoordinate.x >= 0 && _characterS.x + _mapCoordinate.x < SCREEN_WIDTH &&
-					_characterS.y + _mapCoordinate.y >= 0 && _characterS.y + _mapCoordinate.y < SCREEN_HEIGHT){
-					
-					if(_characterS.action_mode == LSouSouCharacterS.MODE_STOP)_characterS.colorTrans(-70);
-					if(_characterS.action_mode == LSouSouCharacterS.MODE_BREAKOUT)_characterS.colorTrans(100);
-					this._map.bitmapData.copyPixels(_characterS.bitmapData,
-						new Rectangle(0,0,_characterS.width,_characterS.height),
-						new Point(_characterS.x + _mapCoordinate.x + _characterS.point.x,
-							_characterS.y + _mapCoordinate.y + (_nodeLength - _characterS.height)/2));
-					statusBit = _characterS.drawStatus();
-					if(statusBit)_map.bitmapData.copyPixels(statusBit,statusBit.rect,
-						new Point(_characterS.x + _mapCoordinate.x + _characterS.point.x + _characterS.statusX,
-							_characterS.y + _mapCoordinate.y + (_nodeLength - _characterS.height)/2));
-					//船
-					if(LSouSouObject.sMap.mapData[_characterS.locationY][_characterS.locationX] == 13)
-						this._map.bitmapData.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["stage"],"boatmask" + (_characterS.animation.currentframe + 2) % 2),
-							new Rectangle(0,0,_characterS.width,_characterS.height),
-							new Point(_characterS.x + _mapCoordinate.x + _characterS.point.x,
-								_characterS.y + _mapCoordinate.y + (_nodeLength - _characterS.height)/2));
-				}
-			}
-			//小地图框架
-			LSouSouObject.addBoxBitmapdata(_miniMap.bitmapData);
-			
-			/**画法术*/
-			if(_meff != null){
-				_meff.onFrame();
-				var meffarr:Array;
-				for each(meffarr in _meff.animationList){
-					this._map.bitmapData.copyPixels(meffarr[0].dataBMP,meffarr[0].dataBMP.rect,
-						new Point(_meff.x + meffarr[2] + _mapCoordinate.x,_meff.y + meffarr[3] + _mapCoordinate.y));
-				}
-				
-				_meff.checkOver();
-			}
-			/**画绝招*/
-			if(_skill != null){
-				this._map.bitmapData.copyPixels(_skill.bitmapData,_skill.bitmapData.rect,
-					new Point(_skill.x,_skill.y));
-				_skill.onFrame();
-			}
-			/**画法术演示*/
-			i=0;
-			for each(meffShow in _meffShowList){
-				this._map.bitmapData.copyPixels(meffShow.bitmapData,meffShow.bitmapData.rect,
-					new Point(meffShow.x + _mapCoordinate.x,meffShow.y + _mapCoordinate.y));
-				meffShow.onFrame(i);
-				i++;
-			}
-			/**画路径*/
-			if(this._roadList != null){
-				for each(node in this._roadList){
-					LDisplay.drawRect(_drawLayer.graphics,
-						[node.x*_nodeLength + _mapCoordinate.x,node.y*_nodeLength + _mapCoordinate.y,
-							_nodeLength-1,_nodeLength-1],
-						true,0x0000FF,0.5,3);
-				}
-				for each(nodeStr in LSouSouObject.charaSNow.rangeAttack){
-					nodeArr = nodeStr.split(",");
-					LDisplay.drawRect(_drawLayer.graphics,
-						[LSouSouObject.charaSNow.x + nodeArr[0]*_nodeLength + _mapCoordinate.x,
-						LSouSouObject.charaSNow.y + nodeArr[1]*_nodeLength + _mapCoordinate.y,
-						_nodeLength,_nodeLength],
-						false,0xFF0000,0.5,5);
-				}
-			}else if(_attackRange != null){
-				for each(nodeStr in _attackRange){
-					nodeArr = nodeStr.split(",");
-					LDisplay.drawRect(_drawLayer.graphics,
-						[LSouSouObject.charaSNow.x + nodeArr[0]*_nodeLength + _mapCoordinate.x,
-							LSouSouObject.charaSNow.y + nodeArr[1]*_nodeLength + _mapCoordinate.y,
-							_nodeLength-1,_nodeLength-1],
-						true,0xFF0000,0.5,1);
-				}
-				for each(nodeStr in this._attackTargetRange){
-					nodeArr = nodeStr.split(",");
-					LDisplay.drawRect(_drawLayer.graphics,
-						[int(mouseX/this._nodeLength)*_nodeLength + nodeArr[0]*_nodeLength,
-							int(mouseY/this._nodeLength)*_nodeLength + nodeArr[1]*_nodeLength,
-							_nodeLength,_nodeLength],
-						false,0xFF0000,1,2);
-				}
-			}else if(_strategy != null && _meff == null && LSouSouObject.charaSNow.belong == LSouSouObject.BELONG_SELF){
-				for each(nodeStr in _strategy.Range.elements()){
-					nodeArr = nodeStr.split(",");
-					LDisplay.drawRect(_drawLayer.graphics,
-						[LSouSouObject.charaSNow.x + nodeArr[0]*_nodeLength + _mapCoordinate.x,
-							LSouSouObject.charaSNow.y + nodeArr[1]*_nodeLength + _mapCoordinate.y,
-							_nodeLength-1,_nodeLength-1],
-						true,0xFF0000,0.5,1);
-				}
-				for each(nodeStr in _strategy.Att.elements()){
-					nodeArr = nodeStr.split(",");
-					LDisplay.drawRect(_drawLayer.graphics,
-						[int(mouseX/this._nodeLength)*_nodeLength + nodeArr[0]*_nodeLength,
-							int(mouseY/this._nodeLength)*_nodeLength + nodeArr[1]*_nodeLength,
-							_nodeLength,_nodeLength],
-						false,0xFF0000,1,2);
-				}
-			}
-			/**画方框*/
-			if(mouseX<SCREEN_WIDTH)LDisplay.drawRect(_drawLayer.graphics,[int(mouseX/_nodeLength)*_nodeLength,int(mouseY/_nodeLength)*_nodeLength,_nodeLength,_nodeLength],false,0xffffff,0.8,3);
-			/**画战场物件*/
-			if(_stageList.length > 0){
-				////战场物件，火，船等[icon,index,maxindex,x，y，fun,stageindex]
-				for each(nodeArr in _stageList){
-					var stageImg:BitmapData = LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["stage"],nodeArr[0] + nodeArr[1]);
-					var upX:int = int((stageImg.width/2)/this._nodeLength)*this._nodeLength;
-					var upY:int = int((stageImg.height/2)/this._nodeLength)*this._nodeLength;
-					this._map.bitmapData.copyPixels(stageImg,stageImg.rect,	
-						new Point(nodeArr[3] + _mapCoordinate.x - upX,nodeArr[4] + _mapCoordinate.y - upY));
-					nodeArr[1] = int(nodeArr[1]) + 1;
-					if(int(nodeArr[1]) > nodeArr[2])(nodeArr[5] as Function)(nodeArr);
-				}
-			}
-			/**画伤害值等*/
-			if(_numList.length > 0)drawNum();
-			
-			/**画回合*/
-			if(_round_bitmap)roundShow();
-			
-			/**画menu*/
-			if(_menu != null){
-				_sMenu.onMove(_menu,mouseX,mouseY);
-			}
-			/**画单条*/
-			if(LSouSouObject.window != null && LSouSouObject.window.name == "singled"){
-				LSouSouObject.window.windowSingled.draw();
-			}
-		}
 		private function drawNum():void{
 			var i:int,j:int;
 			var child:Array;
@@ -1432,121 +1220,218 @@ package zhanglubin.legend.game.sousou.map
 				}
 			}
 		}
-
-		/**
-		 * 控制人物移动
-		 * 
-		 * @param param [类型（0相对，1绝对），人物编号，方向(0:down,1:left,2:up,3:right)，坐标]
-		 */
-		public function moveTo(param:Array):void{
-
-		}
-		/**
-		 * 画网格
-		 * 
-		 * @param type 网格类型
-		 */
-		private function drawGrid(type:int = 0):void{
-			var i:int,j:int;
-			this.addChild(grid);
-			return;
-			if(type == 0){
-				grid.graphics.lineStyle(1,0x000000,1);
-				for(i = 0;i<_mapData.length;i++){
-					for(j = 0;j<_mapData[i].length;j++){
-						if((i+j) %2 == 0 && _mapData[i][j] == 1){
-							drawTriangle2(j,i);
-						}
-					}
+		
+		private function drawMap():void{
+			var node:Node;
+			var nodeStr:String;
+			var nodeArr:Array;
+			var statusBit:BitmapData;
+			var meffShow:LSouSouMeffShow,i:int;
+			_drawLayer.graphics.clear();
+			
+			/**画地图*/
+			this._map.bitmapData.copyPixels(_mapBitmapData,new Rectangle(-_mapCoordinate.x,-_mapCoordinate.y,SCREEN_WIDTH,SCREEN_HEIGHT),new Point(0,0));
+			/**画小地图*/
+			_miniMap.bitmapData.copyPixels(_minimapBitmapData,_minimapBitmapData.rect,new Point(5,5));
+			if(mouseX < 300){
+				_miniWindow.x = SCREEN_WIDTH - _miniMap.width;
+			}else if(mouseX > 500){
+				_miniWindow.x = 0;
+			}
+			/*
+			var bmd:BitmapData = new BitmapData(SCREEN_WIDTH,SCREEN_HEIGHT, true, 0);
+			bmd.copyPixels(_mapBitmapData,new Rectangle(-_mapCoordinate.x,-_mapCoordinate.y,SCREEN_WIDTH,SCREEN_HEIGHT),new Point(0,0));
+			this._map.bitmapData.copyPixels(bmd,new Rectangle(0,0,335,bmd.height),new Point(465,0));
+			this._map.bitmapData.copyPixels(bmd,new Rectangle(335,0,465,bmd.height),new Point(0,0));
+			*/
+			/**画人物*/
+			for each(_characterS in _ourlist){
+				if(!_characterS.visible)continue;
+				_characterS.onFrame();
+				drawMiniMap(_characterS);
+				/**判断是否需要绘制人物*/
+				if(_characterS.x + _mapCoordinate.x >= 0 && _characterS.x + _mapCoordinate.x < SCREEN_WIDTH &&
+					_characterS.y + _mapCoordinate.y >= 0 && _characterS.y + _mapCoordinate.y < SCREEN_HEIGHT){
+					
+					if(_characterS.action_mode == LSouSouCharacterS.MODE_STOP)_characterS.colorTrans(-70);
+					if(_characterS.action_mode == LSouSouCharacterS.MODE_BREAKOUT)_characterS.colorTrans(100);
+					this._map.bitmapData.copyPixels(_characterS.bitmapData,
+						new Rectangle(0,0,_characterS.width,_characterS.height),
+						new Point(_characterS.x + _mapCoordinate.x + _characterS.point.x,
+							_characterS.y + _mapCoordinate.y + (_nodeLength - _characterS.height)/2));
+					statusBit = _characterS.drawStatus();
+					if(statusBit)_map.bitmapData.copyPixels(statusBit,statusBit.rect,
+						new Point(_characterS.x + _mapCoordinate.x + _characterS.point.x + _characterS.statusX,
+							_characterS.y + _mapCoordinate.y + (_nodeLength - _characterS.height)/2));
+					//船
+					if(LSouSouObject.sMap.mapData[_characterS.locationY][_characterS.locationX] == 13)
+						this._map.bitmapData.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["stage"],"boatmask"+(_characterS.animation.currentframe + 2) % 2),
+							new Rectangle(0,0,_characterS.width,_characterS.height),
+							new Point(_characterS.x + _mapCoordinate.x + _characterS.point.x,
+								_characterS.y + _mapCoordinate.y + (_nodeLength - _characterS.height)/2));
 				}
-				grid.graphics.lineStyle(_linesize,_linecolor,1);
-				for(i = 0;i<_mapData.length;i++){
-					if(i % 2 == 1){
-						grid.graphics.moveTo( 0, i*_nodeLength );
-						grid.graphics.lineTo(_mapData.length * _nodeLength - i*_nodeLength ,_mapData.length * _nodeLength);
-					}
+			}
+			
+			for each(_characterS in _enemylist){
+				if(!_characterS.visible)continue;
+				_characterS.onFrame();
+				drawMiniMap(_characterS);
+				/**判断是否需要绘制人物*/
+				if(_characterS.x + _mapCoordinate.x >= 0 && _characterS.x + _mapCoordinate.x < SCREEN_WIDTH &&
+					_characterS.y + _mapCoordinate.y >= 0 && _characterS.y + _mapCoordinate.y < SCREEN_HEIGHT){
+					
+					if(_characterS.action_mode == LSouSouCharacterS.MODE_STOP)_characterS.colorTrans(-70);
+					if(_characterS.action_mode == LSouSouCharacterS.MODE_BREAKOUT)_characterS.colorTrans(100);
+					this._map.bitmapData.copyPixels(_characterS.bitmapData,
+						new Rectangle(0,0,_characterS.width,_characterS.height),
+						new Point(_characterS.x + _mapCoordinate.x + _characterS.point.x,
+							_characterS.y + _mapCoordinate.y + _characterS.point.y));
+					statusBit = _characterS.drawStatus();
+					if(statusBit)_map.bitmapData.copyPixels(statusBit,statusBit.rect,
+						new Point(_characterS.x + _mapCoordinate.x + _characterS.point.x + _characterS.statusX,
+							_characterS.y + _mapCoordinate.y + (_nodeLength - _characterS.height)/2));
+					//船
+					if(LSouSouObject.sMap.mapData[_characterS.locationY][_characterS.locationX] == 13)
+						this._map.bitmapData.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["stage"],"boatmask" + (_characterS.animation.currentframe + 2) % 2),
+							new Rectangle(0,0,_characterS.width,_characterS.height),
+							new Point(_characterS.x + _mapCoordinate.x + _characterS.point.x,
+								_characterS.y + _mapCoordinate.y + (_nodeLength - _characterS.height)/2));
 				}
-				grid.graphics.lineStyle(_linesize,_linecolor,1);
-				for(i = 0;i<_mapData[0].length;i++){
-					if(i % 2 == 1){
-						grid.graphics.moveTo(i*_nodeLength ,0);
-						if(_mapData[0].length * _nodeLength - i*_nodeLength >= _mapData.length*_nodeLength){
-							grid.graphics.lineTo(_mapData.length * _nodeLength + i*_nodeLength,_mapData.length * _nodeLength);
-						}else{
-							grid.graphics.lineTo(_mapData[0].length * _nodeLength,_mapData[0].length * _nodeLength-i*_nodeLength);
-						}
-					}
+			}
+			for each(_characterS in _friendlist){
+				if(!_characterS.visible)continue;
+				_characterS.onFrame();
+				drawMiniMap(_characterS);
+				/**判断是否需要绘制人物*/
+				if(_characterS.x + _mapCoordinate.x >= 0 && _characterS.x + _mapCoordinate.x < SCREEN_WIDTH &&
+					_characterS.y + _mapCoordinate.y >= 0 && _characterS.y + _mapCoordinate.y < SCREEN_HEIGHT){
+					
+					if(_characterS.action_mode == LSouSouCharacterS.MODE_STOP)_characterS.colorTrans(-70);
+					if(_characterS.action_mode == LSouSouCharacterS.MODE_BREAKOUT)_characterS.colorTrans(100);
+					this._map.bitmapData.copyPixels(_characterS.bitmapData,
+						new Rectangle(0,0,_characterS.width,_characterS.height),
+						new Point(_characterS.x + _mapCoordinate.x + _characterS.point.x,
+							_characterS.y + _mapCoordinate.y + (_nodeLength - _characterS.height)/2));
+					statusBit = _characterS.drawStatus();
+					if(statusBit)_map.bitmapData.copyPixels(statusBit,statusBit.rect,
+						new Point(_characterS.x + _mapCoordinate.x + _characterS.point.x + _characterS.statusX,
+							_characterS.y + _mapCoordinate.y + (_nodeLength - _characterS.height)/2));
+					//船
+					if(LSouSouObject.sMap.mapData[_characterS.locationY][_characterS.locationX] == 13)
+						this._map.bitmapData.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["stage"],"boatmask" + (_characterS.animation.currentframe + 2) % 2),
+							new Rectangle(0,0,_characterS.width,_characterS.height),
+							new Point(_characterS.x + _mapCoordinate.x + _characterS.point.x,
+								_characterS.y + _mapCoordinate.y + (_nodeLength - _characterS.height)/2));
+				}
+			}
+			//小地图框架
+			LSouSouObject.addBoxBitmapdata(_miniMap.bitmapData);
+			
+			/**画法术*/
+			if(_meff != null){
+				_meff.onFrame();
+				var meffarr:Array;
+				for each(meffarr in _meff.animationList){
+					this._map.bitmapData.copyPixels(meffarr[0].dataBMP,meffarr[0].dataBMP.rect,
+						new Point(_meff.x + meffarr[2] + _mapCoordinate.x,_meff.y + meffarr[3] + _mapCoordinate.y));
 				}
 				
-				grid.graphics.lineStyle(_linesize,_linecolor,1);
-				for(i = 0;i<_mapData[0].length;i++){
-					if(i % 2 == 0){
-						grid.graphics.moveTo(i*_nodeLength + _nodeLength ,0);
-						if(i*_nodeLength + _nodeLength > _mapData.length*_nodeLength){
-							grid.graphics.lineTo(i*_nodeLength + _nodeLength - _mapData.length*_nodeLength,_mapData.length*_nodeLength);
-						}else{
-							grid.graphics.lineTo(0,i*_nodeLength + _nodeLength);
-						}
-					}
+				_meff.checkOver();
+			}
+			/**画绝招*/
+			if(_skill != null){
+				this._map.bitmapData.copyPixels(_skill.bitmapData,_skill.bitmapData.rect,
+					new Point(_skill.x,_skill.y));
+				_skill.onFrame();
+			}
+			/**画法术演示*/
+			i=0;
+			for each(meffShow in _meffShowList){
+				this._map.bitmapData.copyPixels(meffShow.bitmapData,meffShow.bitmapData.rect,
+					new Point(meffShow.x + _mapCoordinate.x,meffShow.y + _mapCoordinate.y));
+				meffShow.onFrame(i);
+				i++;
+			}
+			/**画路径*/
+			if(this._roadList != null){
+				for each(node in this._roadList){
+					LDisplay.drawRect(_drawLayer.graphics,
+						[node.x*_nodeLength + _mapCoordinate.x,node.y*_nodeLength + _mapCoordinate.y,
+							_nodeLength-1,_nodeLength-1],
+						true,0x0000FF,0.5,3);
 				}
-				grid.graphics.lineStyle(_linesize,_linecolor,1);
-				var add:int = _nodeLength;
-				if(_mapData[0].length % 2 == 1)add = 0;
-				for(i = 0;i<_mapData.length;i++){
-					if(i % 2 == 0){
-						grid.graphics.moveTo( _mapData[0].length * _nodeLength, i*_nodeLength + add);
-						
-						grid.graphics.lineTo(_mapData[0].length * _nodeLength - (_mapData.length * _nodeLength - i*_nodeLength) + add, _mapData.length * _nodeLength);
-					}
+				for each(nodeStr in LSouSouObject.charaSNow.rangeAttack){
+					nodeArr = nodeStr.split(",");
+					LDisplay.drawRect(_drawLayer.graphics,
+						[LSouSouObject.charaSNow.x + nodeArr[0]*_nodeLength + _mapCoordinate.x,
+							LSouSouObject.charaSNow.y + nodeArr[1]*_nodeLength + _mapCoordinate.y,
+							_nodeLength,_nodeLength],
+						false,0xFF0000,0.5,5);
 				}
-			}else{
-				var tex:LTextField;
-				for( i = 0;i<_mapData[0].length;i++){
-					
-					for(j = 0;j<_mapData.length;j++){
-						if(_mapData[j][i] == 1){
-							
-							grid.graphics.beginFill(0xff0000,0.2);
-							grid.graphics.lineStyle(2, 0xff0000,0.8);     
-							grid.graphics.drawRect(i*24,j*24,24,24);
-							grid.graphics.endFill(); 
-						}else{
-							grid.graphics.beginFill(0xffffff,0.2);
-							grid.graphics.lineStyle(2, 0xffffff,0.8);     
-							grid.graphics.drawRect(i*24,j*24,24,24);
-							grid.graphics.endFill(); 
-							
-							tex = new LTextField();
-							tex.x = i*24 + 5;
-							tex.y = j*24 + 5;
-							tex.selectable = false;
-							tex.htmlText = "<font size='9' color='#000000'>" + i + "," + j + "</font>";
-							this.addChild(tex);
-						}
-					}
-					
+			}else if(_attackRange != null){
+				for each(nodeStr in _attackRange){
+					nodeArr = nodeStr.split(",");
+					LDisplay.drawRect(_drawLayer.graphics,
+						[LSouSouObject.charaSNow.x + nodeArr[0]*_nodeLength + _mapCoordinate.x,
+							LSouSouObject.charaSNow.y + nodeArr[1]*_nodeLength + _mapCoordinate.y,
+							_nodeLength-1,_nodeLength-1],
+						true,0xFF0000,0.5,1);
+				}
+				for each(nodeStr in this._attackTargetRange){
+					nodeArr = nodeStr.split(",");
+					LDisplay.drawRect(_drawLayer.graphics,
+						[int(mouseX/this._nodeLength)*_nodeLength + nodeArr[0]*_nodeLength,
+							int(mouseY/this._nodeLength)*_nodeLength + nodeArr[1]*_nodeLength,
+							_nodeLength,_nodeLength],
+						false,0xFF0000,1,2);
+				}
+			}else if(_strategy != null && _meff == null && LSouSouObject.charaSNow.belong == LSouSouObject.BELONG_SELF){
+				for each(nodeStr in _strategy.Range.elements()){
+					nodeArr = nodeStr.split(",");
+					LDisplay.drawRect(_drawLayer.graphics,
+						[LSouSouObject.charaSNow.x + nodeArr[0]*_nodeLength + _mapCoordinate.x,
+							LSouSouObject.charaSNow.y + nodeArr[1]*_nodeLength + _mapCoordinate.y,
+							_nodeLength-1,_nodeLength-1],
+						true,0xFF0000,0.5,1);
+				}
+				for each(nodeStr in _strategy.Att.elements()){
+					nodeArr = nodeStr.split(",");
+					LDisplay.drawRect(_drawLayer.graphics,
+						[int(mouseX/this._nodeLength)*_nodeLength + nodeArr[0]*_nodeLength,
+							int(mouseY/this._nodeLength)*_nodeLength + nodeArr[1]*_nodeLength,
+							_nodeLength,_nodeLength],
+						false,0xFF0000,1,2);
 				}
 			}
-		}
-		private function drawTriangle2(nx:int,ny:int):void{
-			drawTriangle(nx - 1,ny - 1,4);
-			drawTriangle(nx,ny - 1,2);
-			drawTriangle(nx - 1,ny,1);
-			drawTriangle(nx,ny,0);
-		}
-		private function drawTriangle(nx:int,ny:int,type:int):void{
-			if(nx < 0 || nx >= _mapData[0].length || ny < 0 || ny >= _mapData.length)return;
-			
-			if(type == 0){//left up
-				LDisplay.drawTriangle(grid.graphics,[nx*_nodeLength,ny*_nodeLength,nx*_nodeLength + _nodeLength,ny*_nodeLength,nx*_nodeLength,ny*_nodeLength + _nodeLength],true,_linecolor,0.5);
-			}else if(type == 1){//right up
-				LDisplay.drawTriangle(grid.graphics,[nx*_nodeLength,ny*_nodeLength,nx*_nodeLength + _nodeLength,ny*_nodeLength,nx*_nodeLength + _nodeLength,ny*_nodeLength + _nodeLength],true,_linecolor,0.5);
-			}else if(type == 2){//left down
-				LDisplay.drawTriangle(grid.graphics,[nx*_nodeLength,ny*_nodeLength,nx*_nodeLength + _nodeLength,ny*_nodeLength + _nodeLength,nx*_nodeLength,ny*_nodeLength + _nodeLength],true,_linecolor,0.5);
-			}else{//right down
-				LDisplay.drawTriangle(grid.graphics,[nx*_nodeLength,ny*_nodeLength + _nodeLength,nx*_nodeLength + _nodeLength,ny*_nodeLength + _nodeLength,nx*_nodeLength + _nodeLength,ny*_nodeLength],true,_linecolor,0.5);
+			/**画方框*/
+			if(mouseX<SCREEN_WIDTH)LDisplay.drawRect(_drawLayer.graphics,[int(mouseX/_nodeLength)*_nodeLength,int(mouseY/_nodeLength)*_nodeLength,_nodeLength,_nodeLength],false,0xffffff,0.8,3);
+			/**画战场物件*/
+			if(_stageList.length > 0){
+				////战场物件，火，船等[icon,index,maxindex,x，y，fun,stageindex]
+				for each(nodeArr in _stageList){
+					var stageImg:BitmapData = LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["stage"],nodeArr[0] + nodeArr[1]);
+					var upX:int = int((stageImg.width/2)/this._nodeLength)*this._nodeLength;
+					var upY:int = int((stageImg.height/2)/this._nodeLength)*this._nodeLength;
+					this._map.bitmapData.copyPixels(stageImg,stageImg.rect,	
+						new Point(nodeArr[3] + _mapCoordinate.x - upX,nodeArr[4] + _mapCoordinate.y - upY));
+					nodeArr[1] = int(nodeArr[1]) + 1;
+					if(int(nodeArr[1]) > nodeArr[2])(nodeArr[5] as Function)(nodeArr);
+				}
 			}
+			/**画伤害值等*/
+			if(_numList.length > 0)drawNum();
 			
+			/**画回合*/
+			if(_round_bitmap)roundShow();
+			
+			/**画menu*/
+			if(_menu != null){
+				_sMenu.onMove(_menu,mouseX,mouseY);
+			}
+			/**画单条*/
+			if(LSouSouObject.window != null && LSouSouObject.window.name == "singled"){
+				LSouSouObject.window.windowSingled.draw();
+			}
 		}
 	}
 }
