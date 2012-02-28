@@ -140,6 +140,10 @@ package zhanglubin.legend.utils
 			}else{
 				_target.lineStyle(thickness,color,alpha);
 			}
+			if(pointArray.length < 5){
+				pointArray[4] = 10;
+				pointArray[5] = 10;
+			}
 			_target.drawRoundRect(pointArray[0],pointArray[1],pointArray[2],pointArray[3],pointArray[4],pointArray[5]);
 			if(fill){
 				_target.endFill();

@@ -5,6 +5,7 @@ package zhanglubin.legend.game.sousou.character
 	import flash.geom.ColorTransform;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.xml.XMLDocument;
 	
 	import zhanglubin.legend.display.LBitmap;
 	import zhanglubin.legend.events.LEvent;
@@ -209,7 +210,30 @@ package zhanglubin.legend.game.sousou.character
 			setImage();
 		}
 		public function getSaveData():XML{
-			return new XML("<s>abc</s>");
+			var xmldata:XML =  new XML("<charas></charas>");
+			xmldata.index = this.index;
+			xmldata.visible = this.visible;
+			xmldata.mode = this.mode;
+			xmldata.direction = this.direction;
+			xmldata.x = this.x;
+			xmldata.y = this.y;
+			xmldata.action = this.action;
+			
+			xmldata.status = new XMLList();
+			xmldata.status.chaos = _statusArray[LSouSouCharacterS.STATUS_CHAOS];
+			xmldata.status.fixed = _statusArray[LSouSouCharacterS.STATUS_FIXED];
+			xmldata.status.poison = _statusArray[LSouSouCharacterS.STATUS_POISON];
+			xmldata.status.stategy = _statusArray[LSouSouCharacterS.STATUS_STATEGY];
+			xmldata.status.attack = _statusArray[LSouSouCharacterS.STATUS_ATTACK];
+			xmldata.status.spirit = _statusArray[LSouSouCharacterS.STATUS_SPIRIT];
+			xmldata.status.defense = _statusArray[LSouSouCharacterS.STATUS_DEFENSE];
+			xmldata.status.breakout = _statusArray[LSouSouCharacterS.STATUS_BREAKOUT];
+			xmldata.status.morale = _statusArray[LSouSouCharacterS.STATUS_MORALE];
+			xmldata.status.move = _statusArray[LSouSouCharacterS.STATUS_MOVE];
+			xmldata.status.noatk = _statusArray[LSouSouCharacterS.STATUS_NOATK];
+			
+			xmldata.appendChild(this.member.data);
+			return xmldata;
 		}
 		public function get skillRun():Boolean
 		{

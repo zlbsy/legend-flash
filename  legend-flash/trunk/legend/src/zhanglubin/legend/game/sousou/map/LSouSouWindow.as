@@ -83,8 +83,10 @@ package zhanglubin.legend.game.sousou.map
 			saveList.push(LGlobal.script.scriptLayer["readGame"]("save1.slf"));
 			expLbl = new LLabel();
 			expLbl.xy = new LCoordinate(30,80);
+			trace("saveList[0].length - 1 = ",saveList,saveList[0]);
+			trace("saveList[0].length - 1 = ",(saveList[0] as Array).length - 1);
 			expLbl.htmlText = "<font color='#ffffff' size='18'>"+
-				"存档一："+(saveList[0] == null?"空":saveList[0][7])
+				"存档一："+(saveList[0] == null?"空":saveList[0][saveList[0].length - 1])
 			"<b></b></font>";
 			systemArray.push(expLbl);
 			this.addChild(expLbl);
@@ -93,7 +95,7 @@ package zhanglubin.legend.game.sousou.map
 			expLbl = new LLabel();
 			expLbl.xy = new LCoordinate(30,160);
 			expLbl.htmlText = "<font color='#ffffff' size='18'>"+
-				"存档二："+(saveList[1] == null?"空":saveList[1][7])
+				"存档二："+(saveList[1] == null?"空":saveList[1][saveList[1].length - 1])
 			"<b></b></font>";
 			systemArray.push(expLbl);
 			this.addChild(expLbl);
@@ -102,7 +104,7 @@ package zhanglubin.legend.game.sousou.map
 			expLbl = new LLabel();
 			expLbl.xy = new LCoordinate(30,240);
 			expLbl.htmlText = "<font color='#ffffff' size='18'>"+
-				"存档三："+(saveList[2] == null?"空":saveList[2][7])
+				"存档三："+(saveList[2] == null?"空":saveList[2][saveList[2].length - 1])
 			"<b></b></font>";
 			systemArray.push(expLbl);
 			this.addChild(expLbl);
@@ -111,7 +113,7 @@ package zhanglubin.legend.game.sousou.map
 			expLbl = new LLabel();
 			expLbl.xy = new LCoordinate(30,320);
 			expLbl.htmlText = "<font color='#ffffff' size='18'>"+
-				"存档四："+(saveList[3] == null?"空":saveList[3][7])
+				"存档四："+(saveList[3] == null?"空":saveList[3][saveList[3].length - 1])
 			"<b></b></font>";
 			systemArray.push(expLbl);
 			this.addChild(expLbl);
@@ -120,7 +122,7 @@ package zhanglubin.legend.game.sousou.map
 			expLbl = new LLabel();
 			expLbl.xy = new LCoordinate(30,400);
 			expLbl.htmlText = "<font color='#ffffff' size='18'>"+
-				"存档五："+(saveList[4] == null?"空":saveList[4][7])
+				"存档五："+(saveList[4] == null?"空":saveList[4][saveList[4].length - 1])
 			"<b></b></font>";
 			systemArray.push(expLbl);
 			this.addChild(expLbl);
@@ -215,15 +217,15 @@ package zhanglubin.legend.game.sousou.map
 		private function readGame(event:MouseEvent):void{
 			trace("readGame event"+event.target.name);
 			if(event.target.name == "read01"){
-				ScriptSouSouSave.readGameAsFile("save1");
+				ScriptSouSouSave.readGameAsFile("save1.slf");
 			}else if(event.target.name == "read02"){
-				ScriptSouSouSave.readGameAsFile("save2");
+				ScriptSouSouSave.readGameAsFile("save2.slf");
 			}else if(event.target.name == "read03"){
-				ScriptSouSouSave.readGameAsFile("save3");
+				ScriptSouSouSave.readGameAsFile("save3.slf");
 			}else if(event.target.name == "read04"){
-				ScriptSouSouSave.readGameAsFile("save4");
+				ScriptSouSouSave.readGameAsFile("save4.slf");
 			}else if(event.target.name == "read05"){
-				ScriptSouSouSave.readGameAsFile("save5");
+				ScriptSouSouSave.readGameAsFile("save5.slf");
 			}
 		}
 		private function saveGame(event:MouseEvent):void{
