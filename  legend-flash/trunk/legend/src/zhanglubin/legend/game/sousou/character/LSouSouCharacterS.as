@@ -212,12 +212,14 @@ package zhanglubin.legend.game.sousou.character
 		public function getSaveData():XML{
 			var xmldata:XML =  new XML("<charas></charas>");
 			xmldata.index = this.index;
+			xmldata.belong = this.belong;
 			xmldata.visible = this.visible;
 			xmldata.mode = this.mode;
 			xmldata.direction = this.direction;
 			xmldata.x = this.x;
 			xmldata.y = this.y;
 			xmldata.action = this.action;
+			xmldata.command = this.command;
 			
 			xmldata.status = new XMLList();
 			xmldata.status.chaos = _statusArray[LSouSouCharacterS.STATUS_CHAOS];
@@ -377,6 +379,10 @@ package zhanglubin.legend.game.sousou.character
 		public function get belong():int
 		{
 			return _belong;
+		}
+		public function set belong(value:int):void
+		{
+			_belong = value;
 		}
 		public function get rangeAttack():XMLList{
 			return this._member.rangeAttack;
