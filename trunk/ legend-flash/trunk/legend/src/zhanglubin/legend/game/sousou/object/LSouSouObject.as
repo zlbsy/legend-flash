@@ -65,6 +65,10 @@ package zhanglubin.legend.game.sousou.object
 		public static var itemsList:XML = <data></data>;
 		public static var propsList:XML = <data></data>;
 		
+		/** 
+		 *S存档回复用xml
+		 */
+		public static var sMapSaveXml:XML;
 		/**
 		public static var propsList:XML = <data>
 			<list index='0' num='6' />

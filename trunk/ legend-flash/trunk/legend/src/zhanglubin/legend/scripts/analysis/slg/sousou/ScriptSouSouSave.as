@@ -114,7 +114,7 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 					charaXml.appendChild(charas.getSaveData());
 				}
 				mapXml.appendChild(charaXml);
-				trace("mapXml = " + mapXml);
+				//trace("mapXml = " + mapXml);
 				saveArray = [
 					"S",
 					start_file,
@@ -123,12 +123,14 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 					LSouSouObject.itemsList.toXMLString(),
 					LSouSouObject.propsList.toXMLString(),
 					LSouSouObject.money,
-					varlable
+					varlable,
+					mapXml.toXMLString()
 				];
 				
 			}
+			//trace("saveGameAsFile saveArray = " + saveArray);
 			var savepath:String = LGlobal.script.scriptArray.varList["savepath"];
-			return "ScriptSouSouSave saveGameAsFile over";
+			//return "ScriptSouSouSave saveGameAsFile over";
 			return LGlobal.script.scriptLayer["saveGame"](saveArray,name + ".slf",savepath);
 		}
 		/**
@@ -138,12 +140,13 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 		 */
 		public static function readGameAsFile(name:String = "save1"):void{
 			var savepath:String = LGlobal.script.scriptArray.varList["savepath"];
-			var saveArray:Array = LGlobal.script.scriptLayer["readGame"](name+".slf",savepath);
+			var saveArray:Array = LGlobal.script.scriptLayer["readGame"](name,savepath);
 			
 			
-			var start_file:String = saveArray[0];
-			var start_word:String = saveArray[1];
-			var member_str:String = saveArray[2];
+			var type:String = saveArray[0];
+			var start_file:String = saveArray[1];
+			var start_word:String = saveArray[2];
+			var member_str:String = saveArray[3];
 			if(!LSouSouObject.memberList)LSouSouObject.memberList = new Array();
 			LSouSouObject.memberList.splice(0,LSouSouObject.memberList.length);
 			var mbr:LSouSouMember,cxml:XML,xml:XML = new XML(member_str);
@@ -152,67 +155,26 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 				mbr.data = new XML(cxml.toXMLString());
 				LSouSouObject.memberList.push(mbr);
 			}
-			LSouSouObject.itemsList = new XML(saveArray[3]);
-			LSouSouObject.propsList = new XML(saveArray[4]);
-			LSouSouObject.money = saveArray[5];
-			var varlable:XML = new XML(saveArray[6]);
+			LSouSouObject.itemsList = new XML(saveArray[4]);
+			LSouSouObject.propsList = new XML(saveArray[5]);
+			LSouSouObject.money = saveArray[6];
+			var varlable:XML = new XML(saveArray[7]);
 			var childxml:XML;
 			for each(childxml in varlable.elements()){
 				LGlobal.script.scriptArray.varList[childxml.@name] = childxml.toString();
 			}
-			
 			LGlobal.isreading = start_word;
-			//LGlobal.script.scriptArray.varList["isreading"] = start_word;
+			
+			if(type == "S"){
+				LSouSouObject.sMapSaveXml = new XML(saveArray[8]);
+			}
+			//存档数据读取完毕，开始读取相关RS文件
 			LGlobal.script.saveList();
-			
-			
 			LGlobal.script.lineList.unshift("Exit.run();");
 			LGlobal.script.lineList.unshift("Load.script(script/"+start_file+".lf);");
 			LGlobal.script.lineList.unshift("Text.label(-,load,Loading……,280,230,30,#ffffff);");
 			LGlobal.script.lineList.unshift("Layer.drawRect(-,0,0,800,480,0x000000,1);");
 			LGlobal.script.lineList.unshift("Layer.clear(-);");
-			//LGlobal.script.lineList.unshift("Mark.goto("+start_word+");");
-			LGlobal.script.analysis();
-			
-			/**
-			trace("readGameAsFile is run");
-			_file = new FileReference();
-			_file.browse([new FileFilter("save files", "*.slf")] );
-			_file.addEventListener(Event.SELECT,openSaveFile);
-			*/
-		}
-		public static function openSaveFile(event:Event):void{
-			_file.removeEventListener(Event.SELECT,openSaveFile);
-			_file.load();
-			_file.addEventListener(Event.COMPLETE,readFile);
-		}
-		public static function readFile(event:Event):void{
-			_file.removeEventListener(Event.COMPLETE,readFile);
-			
-			var bytes:ByteArray = event.target.data as ByteArray;
-			//bytes.uncompress();
-			var start_file:String = bytes.readUTF();
-			var start_word:String = bytes.readUTF();
-			var member_str:String = bytes.readUTF();
-			if(!LSouSouObject.memberList)LSouSouObject.memberList = new Array();
-			LSouSouObject.memberList.splice(0,LSouSouObject.memberList.length);
-			var mbr:LSouSouMember,cxml:XML,xml:XML = new XML(member_str);
-			for each(cxml in xml.elements()){
-				mbr = new LSouSouMember();
-				mbr.data = new XML(cxml.toXMLString());
-				LSouSouObject.memberList.push(mbr);
-			}
-			LSouSouObject.itemsList = new XML(bytes.readUTF());
-			LSouSouObject.propsList = new XML(bytes.readUTF());
-			LSouSouObject.money = bytes.readInt();
-			
-			LGlobal.isreading = start_word;
-			//LGlobal.script.scriptArray.varList["isreading"] = start_word;
-			LGlobal.script.saveList();
-			LGlobal.script.lineList.unshift("Exit.run();");
-			LGlobal.script.lineList.unshift("Load.script(script/"+start_file+".lf);");
-			LGlobal.script.lineList.unshift("Layer.clear(-);");
-			//LGlobal.script.lineList.unshift("Mark.goto("+start_word+");");
 			LGlobal.script.analysis();
 		}
 	}

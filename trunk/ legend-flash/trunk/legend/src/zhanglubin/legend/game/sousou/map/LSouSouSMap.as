@@ -39,6 +39,7 @@ package zhanglubin.legend.game.sousou.map
 	import zhanglubin.legend.objects.LAnimation;
 	import zhanglubin.legend.scripts.LScript;
 	import zhanglubin.legend.scripts.analysis.ScriptFunction;
+	import zhanglubin.legend.scripts.analysis.slg.sousou.ScriptSouSouSCharacter;
 	import zhanglubin.legend.text.LTextField;
 	import zhanglubin.legend.utils.LDisplay;
 	import zhanglubin.legend.utils.LFilter;
@@ -157,18 +158,21 @@ package zhanglubin.legend.game.sousou.map
 		public function LSouSouSMap()
 		{
 			LSouSouObject.sMap = this;
-			for(var i:int = 0;i< 300;i++){
-				LGlobal.script.scriptArray.varList["adjacent" + i] = null;
-				LGlobal.script.scriptArray.varList["atBelongCoordinate" + i] = null;
-				LGlobal.script.scriptArray.varList["atBelongCoordinates" + i] = null;
-				LGlobal.script.scriptArray.varList["checkHp" + i] = null;
-				LGlobal.script.scriptArray.varList["checkround" + i] = null;
-				
-				LGlobal.script.scriptArray.varList["param_adjacent" + i] = null;
-				LGlobal.script.scriptArray.varList["param_atBelongCoordinate" + i] = null;
-				LGlobal.script.scriptArray.varList["param_atBelongCoordinates" + i] = null;
-				LGlobal.script.scriptArray.varList["param_checkHp" + i] = null;
-				LGlobal.script.scriptArray.varList["param_checkround" + i] = null;
+			//如果不是存档文件，则将变量进行初始化
+			if(LSouSouObject.sMapSaveXml == null){
+				for(var i:int = 0;i< 300;i++){
+					LGlobal.script.scriptArray.varList["adjacent" + i] = null;
+					LGlobal.script.scriptArray.varList["atBelongCoordinate" + i] = null;
+					LGlobal.script.scriptArray.varList["atBelongCoordinates" + i] = null;
+					LGlobal.script.scriptArray.varList["checkHp" + i] = null;
+					LGlobal.script.scriptArray.varList["checkround" + i] = null;
+					
+					LGlobal.script.scriptArray.varList["param_adjacent" + i] = null;
+					LGlobal.script.scriptArray.varList["param_atBelongCoordinate" + i] = null;
+					LGlobal.script.scriptArray.varList["param_atBelongCoordinates" + i] = null;
+					LGlobal.script.scriptArray.varList["param_checkHp" + i] = null;
+					LGlobal.script.scriptArray.varList["param_checkround" + i] = null;
+				}
 			}
 			LSouSouObject.dieIsRuning = false;
 			LSouSouObject.runSChara = null;
@@ -182,15 +186,39 @@ package zhanglubin.legend.game.sousou.map
 			_menuLayer = new LSprite();
 			_drawLayer = new LShape();
 			
-			//LSouSouObject.R_CLICK_MODE = false;
-			trace("LSouSouSMap LSouSouObject.memberList = ",LSouSouObject.memberList);
-			var mbr:LSouSouMember;
-			for each(mbr in LSouSouObject.memberList){
-				trace("mbr = ",mbr.data.toXMLString());
-				mbr.troops = mbr.maxTroops;
-				mbr.strategy = mbr.maxStrategy;
+			//如果不是存档文件，则HP和MP初始化
+			if(LSouSouObject.sMapSaveXml == null){
+				var mbr:LSouSouMember;
+				for each(mbr in LSouSouObject.memberList){
+					mbr.troops = mbr.maxTroops;
+					mbr.strategy = mbr.maxStrategy;
+				}
+			}else{
+				//存档数据恢复
+				var xmldata:XML,charas:LSouSouCharacterS;
+				for each(xmldata in LSouSouObject.sMapSaveXml.charalist){
+					charas = ScriptSouSouSCharacter.getCharacterS(xmldata.index);
+					if(charas == null)continue;
+					charas.visible = xmldata.visible == "true"?true:false;
+					charas.mode = xmldata.mode;
+					charas.direction = xmldata.direction;
+					charas.x = xmldata.x;
+					charas.y = xmldata.y;
+					charas.action = xmldata.action;
+					charas.statusArray[LSouSouCharacterS.STATUS_CHAOS] = (xmldata.status.chaos as String).split(",");
+					charas.statusArray[LSouSouCharacterS.STATUS_FIXED] = (xmldata.status.fixed as String).split(",");
+					charas.statusArray[LSouSouCharacterS.STATUS_POISON] = (xmldata.status.poison as String).split(",");
+					charas.statusArray[LSouSouCharacterS.STATUS_STATEGY] = (xmldata.status.stategy as String).split(",");
+					charas.statusArray[LSouSouCharacterS.STATUS_ATTACK] = (xmldata.status.attack as String).split(",");
+					charas.statusArray[LSouSouCharacterS.STATUS_SPIRIT] = (xmldata.status.spirit as String).split(",");
+					charas.statusArray[LSouSouCharacterS.STATUS_DEFENSE] = (xmldata.status.defense as String).split(",");
+					charas.statusArray[LSouSouCharacterS.STATUS_BREAKOUT] = (xmldata.status.breakout as String).split(",");
+					charas.statusArray[LSouSouCharacterS.STATUS_MORALE] = (xmldata.status.morale as String).split(",");
+					charas.statusArray[LSouSouCharacterS.STATUS_MOVE] = (xmldata.status.move as String).split(",");
+					charas.statusArray[LSouSouCharacterS.STATUS_NOATK] = (xmldata.status.noatk as String).split(",");
+					charas.member.data = xmldata["peo" + xmldata.index];
+				}
 			}
-			
 			this.addChild(_mapLayer);
 			this.addChild(_characterLayer);
 			this.addChild(_drawLayer);
@@ -515,6 +543,12 @@ package zhanglubin.legend.game.sousou.map
 			this.addEventListener(Event.ENTER_FRAME,onFrame);
 			this.addEventListener(MouseEvent.MOUSE_UP,onUp);
 			this.addEventListener(MouseEvent.MOUSE_DOWN,onDown);
+			
+			
+			//如果是存档文件，不进行S初始剧情
+			if(LSouSouObject.sMapSaveXml == null){
+				LGlobal.script.lineList.unshift("Exit.run();");
+			}
 			LGlobal.script.analysis();
 		}
 		private function gameClose(event:MouseEvent):void{
