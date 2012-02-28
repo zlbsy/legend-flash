@@ -141,7 +141,7 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 		public static function readGameAsFile(name:String = "save1"):void{
 			var savepath:String = LGlobal.script.scriptArray.varList["savepath"];
 			var saveArray:Array = LGlobal.script.scriptLayer["readGame"](name,savepath);
-			
+			trace("-- read --" ,saveArray);
 			
 			var type:String = saveArray[0];
 			var start_file:String = saveArray[1];

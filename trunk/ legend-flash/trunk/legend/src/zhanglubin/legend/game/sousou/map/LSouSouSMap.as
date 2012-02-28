@@ -158,6 +158,11 @@ package zhanglubin.legend.game.sousou.map
 		public function LSouSouSMap()
 		{
 			LSouSouObject.sMap = this;
+			_mapLayer = new LSprite();
+			_characterLayer = new LSprite();
+			_menuLayer = new LSprite();
+			_drawLayer = new LShape();
+			
 			//如果不是存档文件，则将变量进行初始化
 			if(LSouSouObject.sMapSaveXml == null){
 				for(var i:int = 0;i< 300;i++){
@@ -181,10 +186,6 @@ package zhanglubin.legend.game.sousou.map
 			_sMapScript.analysis();
 			//analysis();
 			LGlobal.script.scriptLayer.addChild(this);
-			_mapLayer = new LSprite();
-			_characterLayer = new LSprite();
-			_menuLayer = new LSprite();
-			_drawLayer = new LShape();
 			
 			//如果不是存档文件，则HP和MP初始化
 			if(LSouSouObject.sMapSaveXml == null){
@@ -194,37 +195,13 @@ package zhanglubin.legend.game.sousou.map
 					mbr.strategy = mbr.maxStrategy;
 				}
 			}else{
-				//存档数据恢复
-				var xmldata:XML,charas:LSouSouCharacterS;
-				for each(xmldata in LSouSouObject.sMapSaveXml.charalist){
-					charas = ScriptSouSouSCharacter.getCharacterS(xmldata.index);
-					if(charas == null)continue;
-					charas.visible = xmldata.visible == "true"?true:false;
-					charas.mode = xmldata.mode;
-					charas.direction = xmldata.direction;
-					charas.x = xmldata.x;
-					charas.y = xmldata.y;
-					charas.action = xmldata.action;
-					charas.statusArray[LSouSouCharacterS.STATUS_CHAOS] = (xmldata.status.chaos as String).split(",");
-					charas.statusArray[LSouSouCharacterS.STATUS_FIXED] = (xmldata.status.fixed as String).split(",");
-					charas.statusArray[LSouSouCharacterS.STATUS_POISON] = (xmldata.status.poison as String).split(",");
-					charas.statusArray[LSouSouCharacterS.STATUS_STATEGY] = (xmldata.status.stategy as String).split(",");
-					charas.statusArray[LSouSouCharacterS.STATUS_ATTACK] = (xmldata.status.attack as String).split(",");
-					charas.statusArray[LSouSouCharacterS.STATUS_SPIRIT] = (xmldata.status.spirit as String).split(",");
-					charas.statusArray[LSouSouCharacterS.STATUS_DEFENSE] = (xmldata.status.defense as String).split(",");
-					charas.statusArray[LSouSouCharacterS.STATUS_BREAKOUT] = (xmldata.status.breakout as String).split(",");
-					charas.statusArray[LSouSouCharacterS.STATUS_MORALE] = (xmldata.status.morale as String).split(",");
-					charas.statusArray[LSouSouCharacterS.STATUS_MOVE] = (xmldata.status.move as String).split(",");
-					charas.statusArray[LSouSouCharacterS.STATUS_NOATK] = (xmldata.status.noatk as String).split(",");
-					charas.member.data = xmldata["peo" + xmldata.index];
-				}
 			}
 			this.addChild(_mapLayer);
 			this.addChild(_characterLayer);
 			this.addChild(_drawLayer);
 			this.addChild(_menuLayer);
+			
 		}
-
 		public function get meffShowList():Array
 		{
 			return _meffShowList;
@@ -544,10 +521,11 @@ package zhanglubin.legend.game.sousou.map
 			this.addEventListener(MouseEvent.MOUSE_UP,onUp);
 			this.addEventListener(MouseEvent.MOUSE_DOWN,onDown);
 			
-			
 			//如果是存档文件，不进行S初始剧情
-			if(LSouSouObject.sMapSaveXml == null){
+			if(LSouSouObject.sMapSaveXml != null){
+				LSouSouObject.sMapSaveXml = null;
 				LGlobal.script.lineList.unshift("Exit.run();");
+				LGlobal.script.lineList.unshift("SouSouRunMode.set(0);");
 			}
 			LGlobal.script.analysis();
 		}
@@ -646,6 +624,47 @@ package zhanglubin.legend.game.sousou.map
 			this._ourlist.push(_characterS);
 			//this.initialization();
 			this._sMapScript.initialization();
+		}
+		public function setSaveCharas():void{
+			//存档数据恢复
+			var xmldata:XML,charas:LSouSouCharacterS;
+			for each(xmldata in LSouSouObject.sMapSaveXml.charalist.elements()){
+				trace("xmldata = " + xmldata);
+				trace("xxx = " + xmldata["peo" + xmldata.index]);
+				var mbr:LSouSouMember = new LSouSouMember(new XML(xmldata["peo" + xmldata.index].toXMLString()));
+				
+				charas = new LSouSouCharacterS(mbr,xmldata.belong,xmldata.direction,xmldata.command);
+				charas.xy = new LCoordinate(xmldata.x,xmldata.y);
+				charas.tagerCoordinate = charas.xy;
+				
+				if(int(xmldata.belong) == LSouSouObject.BELONG_SELF){
+					this._ourlist.push(charas);
+				}else if(int(xmldata.belong) == LSouSouObject.BELONG_FRIEND){
+					this._friendlist.push(charas);
+				}else{
+					this._enemylist.push(charas);
+				}
+				
+				charas.belong = xmldata.belong;
+				charas.visible = xmldata.visible == "true"?true:false;
+				charas.mode = xmldata.mode;
+				charas.direction = xmldata.direction;
+				charas.action = xmldata.action;
+				charas.statusArray[LSouSouCharacterS.STATUS_CHAOS] = (xmldata.status.chaos.toString()).split(",");
+				charas.statusArray[LSouSouCharacterS.STATUS_FIXED] = (xmldata.status.fixed .toString()).split(",");
+				charas.statusArray[LSouSouCharacterS.STATUS_POISON] = (xmldata.status.poison.toString()).split(",");
+				charas.statusArray[LSouSouCharacterS.STATUS_STATEGY] = (xmldata.status.stategy.toString()).split(",");
+				charas.statusArray[LSouSouCharacterS.STATUS_ATTACK] = (xmldata.status.attack.toString()).split(",");
+				charas.statusArray[LSouSouCharacterS.STATUS_SPIRIT] = (xmldata.status.spirit.toString()).split(",");
+				charas.statusArray[LSouSouCharacterS.STATUS_DEFENSE] = (xmldata.status.defense.toString()).split(",");
+				charas.statusArray[LSouSouCharacterS.STATUS_BREAKOUT] = (xmldata.status.breakout.toString()).split(",");
+				charas.statusArray[LSouSouCharacterS.STATUS_MORALE] = (xmldata.status.morale .toString()).split(",");
+				charas.statusArray[LSouSouCharacterS.STATUS_MOVE] = (xmldata.status.move.toString()).split(",");
+				charas.statusArray[LSouSouCharacterS.STATUS_NOATK] = (xmldata.status.noatk.toString()).split(",");
+				//charas.member.data = xmldata["peo" + xmldata.index];
+				
+				//this._sMapScript.initialization();
+			}
 		}
 		/**
 		 * 读取地图

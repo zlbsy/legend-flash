@@ -42,6 +42,7 @@ package zhanglubin.legend.game.sousou.script
 					analysis();
 			}
 		}
+		
 		private function loop():void{
 			var script:LScript = LGlobal.script;
 			var lineValue:String = LString.trim(script.lineList.shift());
@@ -346,6 +347,8 @@ package zhanglubin.legend.game.sousou.script
 		public function initialization():void{
 			var script:LScript = LGlobal.script;
 			var lineValue:String = LString.trim(script.lineList.shift());
+			trace(" initialization.substr(0,start) = " + lineValue.substr(0,start));
+			trace("script.lineList = " + script.lineList);
 			if(lineValue.length == 0){
 				initialization();
 				return;
@@ -357,18 +360,32 @@ package zhanglubin.legend.game.sousou.script
 			
 			var start:int = lineValue.indexOf("(");
 			var end:int = lineValue.indexOf(")");
+			trace(" lineValue.substr(0,start) = " + lineValue.substr(0,start));
 			switch(lineValue.substr(0,start)){
 				case "addMap":
+					if(LSouSouObject.sMapSaveXml != null)LSouSouObject.sMap.setSaveCharas();
 					LSouSouObject.sMap.addMap(lineValue.substring(start+1,end).split(","));
 					break;
 				case "SouSouSCharacter.addOur":
-					LSouSouObject.sMap.addOurCharacter(lineValue.substring(start+1,end).split(","));
+					if(LSouSouObject.sMapSaveXml == null){
+						LSouSouObject.sMap.addOurCharacter(lineValue.substring(start+1,end).split(","));
+					}else{
+						initialization();
+					}
 					break;
 				case "SouSouSCharacter.addEnemy":
-					LSouSouObject.sMap.addEnemyCharacter(lineValue.substring(start+1,end).split(","));
+					if(LSouSouObject.sMapSaveXml == null){
+						LSouSouObject.sMap.addEnemyCharacter(lineValue.substring(start+1,end).split(","));
+					}else{
+						initialization();
+					}
 					break;
 				case "SouSouSCharacter.addFriend":
-					LSouSouObject.sMap.addFriendCharacter(lineValue.substring(start+1,end).split(","));
+					if(LSouSouObject.sMapSaveXml == null){
+						LSouSouObject.sMap.addFriendCharacter(lineValue.substring(start+1,end).split(","));
+					}else{
+						initialization();
+					}
 					break;
 				default:
 					initialization();

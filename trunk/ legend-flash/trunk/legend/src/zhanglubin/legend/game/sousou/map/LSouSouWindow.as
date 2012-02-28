@@ -83,8 +83,6 @@ package zhanglubin.legend.game.sousou.map
 			saveList.push(LGlobal.script.scriptLayer["readGame"]("save1.slf"));
 			expLbl = new LLabel();
 			expLbl.xy = new LCoordinate(30,80);
-			trace("saveList[0].length - 1 = ",saveList,saveList[0]);
-			trace("saveList[0].length - 1 = ",(saveList[0] as Array).length - 1);
 			expLbl.htmlText = "<font color='#ffffff' size='18'>"+
 				"存档一："+(saveList[0] == null?"空":saveList[0][saveList[0].length - 1])
 			"<b></b></font>";
