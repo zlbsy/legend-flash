@@ -117,8 +117,8 @@ package zhanglubin.legend.game.sousou.meff
 				this._animation.rowIndex = 0;
 				this._animation.run(LAnimation.POSITIVE);
 				this.bitmapData = this._animation.dataBMP;
-				ax = (_meffCharacter.targetCharacter.width - bitmapData.width)/2 + nodeArr[0]*LSouSouObject.sMap._nodeLength;
-				ay = (_meffCharacter.targetCharacter.height - bitmapData.height) + nodeArr[1]*LSouSouObject.sMap._nodeLength;
+				ax = (_meffCharacter.targetCharacter.width - bitmapData.width)/2 + nodeArr[0]*LSouSouObject.sMap.nodeLength;
+				ay = (_meffCharacter.targetCharacter.height - bitmapData.height) + nodeArr[1]*LSouSouObject.sMap.nodeLength;
 				_animationList.push([this._animation,charas,ax,ay]);
 			}
 			/*

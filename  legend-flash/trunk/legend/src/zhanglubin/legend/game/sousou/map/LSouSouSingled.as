@@ -250,7 +250,7 @@ package zhanglubin.legend.game.sousou.map
 			}else{
 				LSouSouObject.sound.play("Se23");
 			}
-			_characterS.tagerCoordinate=new LCoordinate(_characterS.x + tox*LSouSouObject.sMap._nodeLength,_characterS.y);
+			_characterS.tagerCoordinate=new LCoordinate(_characterS.x + tox*LSouSouObject.sMap.nodeLength,_characterS.y);
 			_characterS.path = new Array();
 			//_characterS.path = new Array(new Node(_characterS.tagerCoordinate.x,_characterS.tagerCoordinate.y));
 			trace(_characterS.xy,_characterS.tagerCoordinate,_characterS.path);
@@ -274,7 +274,7 @@ package zhanglubin.legend.game.sousou.map
 			}else{
 				LSouSouObject.sound.play("Se23");
 			}
-			_characterS.tagerCoordinate=new LCoordinate(_characterS.x + tox*LSouSouObject.sMap._nodeLength,_characterS.y);
+			_characterS.tagerCoordinate=new LCoordinate(_characterS.x + tox*LSouSouObject.sMap.nodeLength,_characterS.y);
 			LManager.moveTo(_characterS,_characterS.tagerCoordinate.x,_characterS.tagerCoordinate.y,speed,function ():void{
 				trace("move2 over");
 				LGlobal.script.analysis();

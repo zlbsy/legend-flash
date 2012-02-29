@@ -31,8 +31,8 @@ package zhanglubin.legend.game.sousou.object
 			var nodeArr:Array;
 			for(i=0;i<LSouSouObject.sMap.stageList.length;i++){
 				nodeArr = LSouSouObject.sMap.stageList[i];
-				if(int(params[0])*LSouSouObject.sMap._nodeLength == int(nodeArr[3]) && 
-					int(params[1])*LSouSouObject.sMap._nodeLength == int(nodeArr[4])){
+				if(int(params[0])*LSouSouObject.sMap.nodeLength == int(nodeArr[3]) && 
+					int(params[1])*LSouSouObject.sMap.nodeLength == int(nodeArr[4])){
 					LSouSouObject.sMap.stageList.splice(i,1);
 				}
 			}
@@ -43,7 +43,7 @@ package zhanglubin.legend.game.sousou.object
 			var stageXml:XMLList = LSouSouObject.mapStage["Stage" + stageIndex];
 			if(stageXml == null){LGlobal.script.analysis();return;}
 			var fun:Function;
-			setLocationAtXY(new LCoordinate(int(params[1])*LSouSouObject.sMap._nodeLength,int(params[2])*LSouSouObject.sMap._nodeLength));
+			setLocationAtXY(new LCoordinate(int(params[1])*LSouSouObject.sMap.nodeLength,int(params[2])*LSouSouObject.sMap.nodeLength));
 			
 			if(params.length > 3 && int(params[3]) == 1){
 				fun = function (arr:Array):void{
@@ -62,8 +62,8 @@ package zhanglubin.legend.game.sousou.object
 					[stageXml.Img.toString(),
 						0,
 						stageXml.MaxIndex.toString(),
-						int(params[1])*LSouSouObject.sMap._nodeLength,
-						int(params[2])*LSouSouObject.sMap._nodeLength,
+						int(params[1])*LSouSouObject.sMap.nodeLength,
+						int(params[2])*LSouSouObject.sMap.nodeLength,
 						fun,
 						stageIndex,
 						int(stageXml.Cost.toString())]);
@@ -75,8 +75,8 @@ package zhanglubin.legend.game.sousou.object
 					[stageXml.Img.toString(),
 						0,
 						stageXml.MaxIndex.toString(),
-						int(params[1])*LSouSouObject.sMap._nodeLength,
-						int(params[2])*LSouSouObject.sMap._nodeLength,
+						int(params[1])*LSouSouObject.sMap.nodeLength,
+						int(params[2])*LSouSouObject.sMap.nodeLength,
 						fun,
 						stageIndex,
 						int(stageXml.Cost.toString())]);

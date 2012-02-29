@@ -209,6 +209,9 @@ package zhanglubin.legend.game.sousou.character
 			
 			setImage();
 		}
+		/**
+		 * 将人物数据化返回
+		 */
 		public function getSaveData():XML{
 			var xmldata:XML =  new XML("<charas></charas>");
 			xmldata.index = this.index;
@@ -216,6 +219,7 @@ package zhanglubin.legend.game.sousou.character
 			xmldata.visible = this.visible;
 			xmldata.mode = this.mode;
 			xmldata.direction = this.direction;
+			xmldata.action_mode = this.action_mode;
 			xmldata.x = this.x;
 			xmldata.y = this.y;
 			xmldata.action = this.action;
@@ -930,8 +934,8 @@ package zhanglubin.legend.game.sousou.character
 					}else{
 						LSouSouObject.sound.play("Se23");
 					}
-					this._tagerCoordinate.x = this._path[0].x*LSouSouObject.sMap._nodeLength;
-					this._tagerCoordinate.y = this._path[0].y*LSouSouObject.sMap._nodeLength;
+					this._tagerCoordinate.x = this._path[0].x*LSouSouObject.sMap.nodeLength;
+					this._tagerCoordinate.y = this._path[0].y*LSouSouObject.sMap.nodeLength;
 					this._path.shift();
 					
 				}
@@ -1110,10 +1114,10 @@ package zhanglubin.legend.game.sousou.character
 		}
 
 		public function get locationX():int{
-			return int(this.x/LSouSouObject.sMap._nodeLength);
+			return int(this.x/LSouSouObject.sMap.nodeLength);
 		}
 		public function get locationY():int{
-			return int(this.y/LSouSouObject.sMap._nodeLength);
+			return int(this.y/LSouSouObject.sMap.nodeLength);
 		}
 		/**
 		 *取得攻击次数

@@ -26,6 +26,8 @@ package zhanglubin.legend.game.sousou.map
 	import zhanglubin.legend.game.sousou.character.LSouSouCharacterR;
 	import zhanglubin.legend.game.sousou.character.LSouSouCharacterS;
 	import zhanglubin.legend.game.sousou.character.LSouSouMember;
+	import zhanglubin.legend.game.sousou.map.smap.LSouSouCtrlMenuLayer;
+	import zhanglubin.legend.game.sousou.map.smap.LSouSouRound;
 	import zhanglubin.legend.game.sousou.meff.LSouSouMeff;
 	import zhanglubin.legend.game.sousou.meff.LSouSouMeffShow;
 	import zhanglubin.legend.game.sousou.meff.LSouSouSkill;
@@ -58,15 +60,19 @@ package zhanglubin.legend.game.sousou.map
 		public const SCREEN_HEIGHT:int = 480;
 		public var belong_mode:int = 100;
 		
-		public var _nodeLength:int = 48;
+		private var _nodeLength:int = 48;
 		
 		private var _speed:int = 0;
 		private var _speed2:int = 0;
+		/**
+		 *回合显示，设定等相关 
+		 */
+		private var _roundCtrl:LSouSouRound;
 		private var _round_show:int = 0;
-		private var _round_bitmap:LBitmap;
-		private var _round_x:int = 0;
-		private var _roundText:LLabel = new LLabel();
 		private var _roundCount:int = 1;
+		//private var _round_bitmap:LBitmap;
+		//private var _round_x:int = 0;
+		//private var _roundText:LLabel = new LLabel();
 
 		private var _mouseIsDown:Boolean;
 		private var _mapMove:Array = [];
@@ -116,6 +122,7 @@ package zhanglubin.legend.game.sousou.map
 		private var _mapLayer:LSprite;
 		private var _characterLayer:LSprite;
 		private var _menuLayer:LSprite;
+		private var _rightMenu:LSouSouCtrlMenuLayer;
 		private var _drawLayer:LShape;
 		
 		//行动结束时测试
@@ -130,7 +137,6 @@ package zhanglubin.legend.game.sousou.map
 		private var _attackTargetRange:XMLList;
 		private var _strategy:XMLList;
 		private var _props:XMLList;
-		private var _cancel_menu:LButton;
 		
 		private var _sMapScript:LSouSouSMapScript = new LSouSouSMapScript();
 		
@@ -143,24 +149,17 @@ package zhanglubin.legend.game.sousou.map
 		//战场物件，火，船等[icon,index,x，y，stageindex]
 		private var _stageList:Array = new Array();
 		
-		public var condition:Array = ["****","****"];
+		private var _condition:Array = ["****","****"];
 		
 		
-		//menu
-		private var _btn_lib:LButton;
-		private var _btn_game:LButton;
-		private var _btn_zk:LButton;
-		private var _btn_member:LButton;
-		private var _btn_equipment:LButton;
-		private var _btn_luggage:LButton;
-		private var _btn_system:LButton;
-		private var _btn_gameclose:LButton;
 		public function LSouSouSMap()
 		{
 			LSouSouObject.sMap = this;
 			_mapLayer = new LSprite();
 			_characterLayer = new LSprite();
 			_menuLayer = new LSprite();
+			_rightMenu = new LSouSouCtrlMenuLayer();
+			_menuLayer.addChild(_rightMenu);
 			_drawLayer = new LShape();
 			
 			//如果不是存档文件，则将变量进行初始化
@@ -202,6 +201,35 @@ package zhanglubin.legend.game.sousou.map
 			this.addChild(_menuLayer);
 			
 		}
+
+		public function get nodeLength():int
+		{
+			return _nodeLength;
+		}
+
+		public function set condition(value:Array):void
+		{
+			_condition = value;
+		}
+
+		/**
+		 * 战况
+		 * 胜利条件，失败条件等
+		 * */
+		public function get condition():Array
+		{
+			return _condition;
+		}
+
+		public function get rightMenu():LSprite
+		{
+			return _rightMenu;
+		}
+		public function get menuLayer():LSprite
+		{
+			return _menuLayer;
+		}
+
 		public function get meffShowList():Array
 		{
 			return _meffShowList;
@@ -375,34 +403,18 @@ package zhanglubin.legend.game.sousou.map
 		public function set round_show(value:int):void
 		{
 			_round_show = value;
-			_round_bitmap = new LBitmap(new BitmapData(600,150,true));
-			_roundText.htmlText = "<font size='60' color='#ff0000'>第" + _roundCount + "回合</font>";
 			
-			_round_bitmap.bitmapData.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"round0" + (_round_show - 1) + ".png"),
-				new Rectangle(0,0,600,150),new Point(0,0));
-			_round_bitmap.bitmapData.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"round03.png"),
-				new Rectangle(0,0,600,150),new Point(150,0));
-			_round_bitmap.bitmapData.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"round04.png"),
-				new Rectangle(0,0,600,150),new Point(300,0));
-			_round_bitmap.bitmapData.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"round05.png"),
-				new Rectangle(0,0,600,150),new Point(450,0));
-			_roundText.x = 84;
-			_roundText.y = 160;
-			_round_bitmap.x = 84;
-			_round_bitmap.y = 220;
-			this.addChild(_roundText);
-			this.addChild(_round_bitmap);
-			_roundText.height = 1;
-			_round_bitmap.height = 1;
-		}
-		public function set cancel_menu(value:LButton):void
-		{
-			_cancel_menu = value;
+			
+			_roundCtrl = new LSouSouRound(_round_show == 1?0:(_round_show == 2?1:0),_roundCount);
+			_roundCtrl.x = 84;
+			_roundCtrl.y = 220;
+			this.addChild(_roundCtrl);
+			_roundCtrl.scaleY = 0.1;
 		}
 
 		public function get cancel_menu():LButton
 		{
-			return _cancel_menu;
+			return _rightMenu.cancel_menu;
 		}
 
 		public function set attackRange(value:XMLList):void
@@ -471,50 +483,7 @@ package zhanglubin.legend.game.sousou.map
 		public function setMenu():void{
 			LSouSouObject.perWarList = null;
 			this.addChild(text);
-			
-			_btn_lib = new LButton(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"lib"));
-			_btn_lib.filters = [new GlowFilter()];
-			_btn_lib.xy = new LCoordinate(755,0);
-			_btn_lib.addEventListener(MouseEvent.MOUSE_UP,libExplanation);
-			_menuLayer.addChild(_btn_lib);
-			
-			_btn_game = new LButton(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"game"));
-			_btn_game.filters = [new GlowFilter()];
-			_btn_game.xy = new LCoordinate(755,45);
-			_btn_game.addEventListener(MouseEvent.MOUSE_UP,libGameExplanation);
-			_menuLayer.addChild(_btn_game);
-			
-			_btn_zk = new LButton(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"zk"));
-			_btn_zk.filters = [new GlowFilter()];
-			_btn_zk.xy = new LCoordinate(755,90);
-			_btn_zk.addEventListener(MouseEvent.MOUSE_UP,zkView);
-			_menuLayer.addChild(_btn_zk);
-			
-			_btn_luggage = new LButton(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"luggage_menu.png"));
-			_btn_luggage.filters = [new GlowFilter()];
-			_btn_luggage.xy = new LCoordinate(755,135);
-			_btn_luggage.addEventListener(MouseEvent.MOUSE_UP,luggageShow);
-			_menuLayer.addChild(_btn_luggage);
-			
-			_btn_system = new LButton(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"system_menu.png"));
-			_btn_system.filters = [new GlowFilter()];
-			_btn_system.xy = new LCoordinate(755,180);
-			_btn_system.addEventListener(MouseEvent.MOUSE_UP,systemShow);
-			_menuLayer.addChild(_btn_system);
-			//_btn_system.visible = false;
-			
-			_btn_gameclose = new LButton(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"gameclose"));
-			_btn_gameclose.filters = [new GlowFilter()];
-			_btn_gameclose.xy = new LCoordinate(755,400);
-			_btn_gameclose.addEventListener(MouseEvent.MOUSE_UP,gameClose);
-			_menuLayer.addChild(_btn_gameclose);
-			
-			_cancel_menu = new LButton(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"cancel"));
-			_cancel_menu.filters = [new GlowFilter()];
-			_cancel_menu.xy = new LCoordinate(755,225);
-			_cancel_menu.visible = false;
-			_menuLayer.addChild(_cancel_menu);
-			
+			_rightMenu.addMenu();
 			_menuLayer.x = 6;
 
 			this.addEventListener(Event.ENTER_FRAME,onFrame);
@@ -524,49 +493,13 @@ package zhanglubin.legend.game.sousou.map
 			//如果是存档文件，不进行S初始剧情
 			if(LSouSouObject.sMapSaveXml != null){
 				LSouSouObject.sMapSaveXml = null;
+				
+				this.belong_mode = LSouSouObject.BELONG_SELF;
 				LGlobal.script.lineList.unshift("Exit.run();");
+				LGlobal.script.lineList.unshift("SouSouRunMode.start(0);");
 				LGlobal.script.lineList.unshift("SouSouRunMode.set(0);");
 			}
 			LGlobal.script.analysis();
-		}
-		private function gameClose(event:MouseEvent):void{
-			if(LSouSouObject.storyCtrl)return;
-			LGlobal.script.lineList.unshift("endif;");
-			LGlobal.script.lineList.unshift("SouSouGame.close();");
-			LGlobal.script.lineList.unshift("if(@select==0);");
-			LGlobal.script.lineList.unshift("SouSouTalk.select(1.关闭游戏,2.继续游戏);");
-			LGlobal.script.analysis();
-		}
-		private function luggageShow(event:MouseEvent):void{
-			if(LSouSouObject.storyCtrl)return;
-			var window:LSouSouWindow = new LSouSouWindow();
-			window.luggage();
-			LGlobal.script.scriptLayer.addChild(window);
-		}
-		private function zkView(event:MouseEvent):void{
-			if(LSouSouObject.storyCtrl)return;
-			var window:LSouSouWindow = new LSouSouWindow();
-			window.condition(condition,true);
-			LGlobal.script.scriptLayer.addChild(window);
-		}
-		private function systemShow(event:MouseEvent):void{
-			if(LSouSouObject.storyCtrl)return;
-			var window:LSouSouWindow = new LSouSouWindow();
-			//window.systemShow("read");
-			window.systemShow();
-			LGlobal.script.scriptLayer.addChild(window);
-		}
-		private function libGameExplanation(event:MouseEvent):void{
-			if(LSouSouObject.storyCtrl)return;
-			var window:LSouSouWindow = new LSouSouWindow();
-			window.libGameExplanation();
-			LGlobal.script.scriptLayer.addChild(window);
-		}
-		private function libExplanation(event:MouseEvent):void{
-			if(LSouSouObject.storyCtrl)return;
-			var window:LSouSouWindow = new LSouSouWindow();
-			window.libExplanation();
-			LGlobal.script.scriptLayer.addChild(window);
 		}
 
 		public function addFriendCharacter(param:Array):void{
@@ -635,6 +568,7 @@ package zhanglubin.legend.game.sousou.map
 				
 				charas = new LSouSouCharacterS(mbr,xmldata.belong,xmldata.direction,xmldata.command);
 				charas.xy = new LCoordinate(xmldata.x,xmldata.y);
+				trace("charas.xy = " + charas.xy);
 				charas.tagerCoordinate = charas.xy;
 				
 				if(int(xmldata.belong) == LSouSouObject.BELONG_SELF){
@@ -650,6 +584,7 @@ package zhanglubin.legend.game.sousou.map
 				charas.mode = xmldata.mode;
 				charas.direction = xmldata.direction;
 				charas.action = xmldata.action;
+				charas.action_mode = xmldata.action_mode;
 				charas.statusArray[LSouSouCharacterS.STATUS_CHAOS] = (xmldata.status.chaos.toString()).split(",");
 				charas.statusArray[LSouSouCharacterS.STATUS_FIXED] = (xmldata.status.fixed .toString()).split(",");
 				charas.statusArray[LSouSouCharacterS.STATUS_POISON] = (xmldata.status.poison.toString()).split(",");
@@ -794,14 +729,19 @@ package zhanglubin.legend.game.sousou.map
 			}
 		}
 		/**
-		 * 回合显示
+		 * 回合显示_roundCtrl
 		 * */
 		private function roundShow():void{
 			LSouSouObject.storyCtrl = true;
+			
+			if(_roundCtrl.scaleY >= 1){
+				_roundCtrl.removeFromParent();
+				_roundCtrl = null;
+			/**
 			if(_round_bitmap.height >= 150){
 				_roundText.removeFromParent();
 				_round_bitmap.removeFromParent();
-				_round_bitmap = null;
+				_round_bitmap = null;*/
 				
 				LSouSouSMapScript.loopListCheck();
 				if(LSouSouObject.sMap.loopIsRun){
@@ -891,10 +831,12 @@ package zhanglubin.legend.game.sousou.map
 				LSouSouObject.storyCtrl = false;
 				return;
 			}
+			_roundCtrl.scaleY += 0.05;
+			/**
 			_roundText.height += 8;
 			_roundText.y -= 4;
 			_round_bitmap.height += 8;
-			_round_bitmap.y -= 4;
+			_round_bitmap.y -= 4;*/
 		}
 		private function findRoad(mx:int,my:int):void{
 			var intX:int = int((mx - _mapCoordinate.x)/_nodeLength);
@@ -1089,7 +1031,7 @@ package zhanglubin.legend.game.sousou.map
 		 */
 		private function onUp(event:MouseEvent):void{
 			if(LSouSouObject.storyCtrl)return;
-			if(_round_bitmap)return;
+			if(_roundCtrl)return;
 			if(this.belong_mode != LSouSouObject.BELONG_SELF)return;
 			var charaList:Vector.<LSouSouCharacterS>;
 			var getcharacter:Boolean;
@@ -1097,7 +1039,6 @@ package zhanglubin.legend.game.sousou.map
 			var nodeArr:Array;
 			
 			this._mouseIsDown = false;
-			if(_round_bitmap)return;
 			if(this._roadList != null){
 				findRoad(mouseX,mouseY);
 			}else if(this._attackRange != null){
@@ -1291,12 +1232,6 @@ package zhanglubin.legend.game.sousou.map
 			}else if(mouseX > 500){
 				_miniWindow.x = 0;
 			}
-			/*
-			var bmd:BitmapData = new BitmapData(SCREEN_WIDTH,SCREEN_HEIGHT, true, 0);
-			bmd.copyPixels(_mapBitmapData,new Rectangle(-_mapCoordinate.x,-_mapCoordinate.y,SCREEN_WIDTH,SCREEN_HEIGHT),new Point(0,0));
-			this._map.bitmapData.copyPixels(bmd,new Rectangle(0,0,335,bmd.height),new Point(465,0));
-			this._map.bitmapData.copyPixels(bmd,new Rectangle(335,0,465,bmd.height),new Point(0,0));
-			*/
 			/**画人物*/
 			for each(_characterS in _ourlist){
 				if(!_characterS.visible)continue;
@@ -1475,7 +1410,7 @@ package zhanglubin.legend.game.sousou.map
 			if(_numList.length > 0)drawNum();
 			
 			/**画回合*/
-			if(_round_bitmap)roundShow();
+			if(_roundCtrl)roundShow();
 			
 			/**画menu*/
 			if(_menu != null){

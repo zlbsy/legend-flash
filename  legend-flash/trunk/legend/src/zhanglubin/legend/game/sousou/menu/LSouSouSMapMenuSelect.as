@@ -37,8 +37,8 @@ package zhanglubin.legend.game.sousou.menu
 			var menu_w:int=135;
 			var menu_h:int = 20 + btn_h*4;
 			_menuBitmap = new LBitmap(new BitmapData(menu_w,menu_h,false,0x333333));
-			charaCoordinate.x += LSouSouObject.sMap._nodeLength;
-			if(charaCoordinate.x + LSouSouObject.sMap.mapCoordinate.x + _menuBitmap.width > LSouSouObject.sMap.SCREEN_WIDTH)charaCoordinate.x -= (_menuBitmap.width + LSouSouObject.sMap._nodeLength); 
+			charaCoordinate.x += LSouSouObject.sMap.nodeLength;
+			if(charaCoordinate.x + LSouSouObject.sMap.mapCoordinate.x + _menuBitmap.width > LSouSouObject.sMap.SCREEN_WIDTH)charaCoordinate.x -= (_menuBitmap.width + LSouSouObject.sMap.nodeLength); 
 			if(charaCoordinate.y + LSouSouObject.sMap.mapCoordinate.y + _menuBitmap.height > LSouSouObject.sMap.SCREEN_HEIGHT)charaCoordinate.y = LSouSouObject.sMap.SCREEN_HEIGHT-_menuBitmap.height - LSouSouObject.sMap.mapCoordinate.y;
 			//this.xy = charaCoordinate;
 			this.x = charaCoordinate.x + LSouSouObject.sMap.mapCoordinate.x;
@@ -110,8 +110,8 @@ package zhanglubin.legend.game.sousou.menu
 			var menu_w:int=135;
 			var menu_h:int = 20 + btn_h*2;
 			_menuBitmap = new LBitmap(new BitmapData(menu_w,menu_h,false,0x333333));
-			charaCoordinate.x += LSouSouObject.sMap._nodeLength;
-			if(charaCoordinate.x + LSouSouObject.sMap.mapCoordinate.x + _menuBitmap.width > LSouSouObject.sMap.SCREEN_WIDTH)charaCoordinate.x -= (_menuBitmap.width + LSouSouObject.sMap._nodeLength); 
+			charaCoordinate.x += LSouSouObject.sMap.nodeLength;
+			if(charaCoordinate.x + LSouSouObject.sMap.mapCoordinate.x + _menuBitmap.width > LSouSouObject.sMap.SCREEN_WIDTH)charaCoordinate.x -= (_menuBitmap.width + LSouSouObject.sMap.nodeLength); 
 			if(charaCoordinate.y + LSouSouObject.sMap.mapCoordinate.y + _menuBitmap.height > LSouSouObject.sMap.SCREEN_HEIGHT)charaCoordinate.y = LSouSouObject.sMap.SCREEN_HEIGHT-_menuBitmap.height - LSouSouObject.sMap.mapCoordinate.y;
 			//this.xy = charaCoordinate;
 			this.x = charaCoordinate.x + LSouSouObject.sMap.mapCoordinate.x;
