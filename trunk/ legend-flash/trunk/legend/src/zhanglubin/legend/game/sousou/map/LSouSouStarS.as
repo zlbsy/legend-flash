@@ -125,11 +125,12 @@ package zhanglubin.legend.game.sousou.map
 			}
 			var nodeArr:Array;
 			for each(nodeArr in LSouSouObject.sMap.stageList){
-				setPathAll(int(nodeArr[3]/LSouSouObject.sMap._nodeLength) ,int(nodeArr[4]/LSouSouObject.sMap._nodeLength) , nodeArr[7]);
+				setPathAll(int(nodeArr[3]/LSouSouObject.sMap.nodeLength) ,int(nodeArr[4]/LSouSouObject.sMap.nodeLength) , nodeArr[7]);
 			}
 			_starPoint = _map[Math.floor(chara.locationY)][Math.floor(chara.locationX)];
 			_starPoint.moveLong = chara.member.distance;
-			_starPoint.moveLong += chara.statusArray[LSouSouCharacterS.STATUS_MOVE][0]?chara.statusArray[LSouSouCharacterS.STATUS_MOVE][2]:0;
+			_starPoint.moveLong += int(chara.statusArray[LSouSouCharacterS.STATUS_MOVE][0]?chara.statusArray[LSouSouCharacterS.STATUS_MOVE][2]:0);
+			//trace("chara = ",_chara.index," , _starPoint="+_starPoint,",_starPoint.moveLong="+_starPoint.moveLong);
 			loopPath(_starPoint);
 			
 			return _path;

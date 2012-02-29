@@ -4,6 +4,8 @@
     <classEntry path="zhanglubin.legend.components.LComboBox"/>
     <classEntry path="zhanglubin.legend.objects.LAnimationMovie"/>
     <classEntry path="zhanglubin.legend.game.sousou.character.characterS.LSouSouCharacterSAI"/>
+    <classEntry path="zhanglubin.legend.game.sousou.map.smap.LSouSouCtrlMenuLayer"/>
+    <classEntry path="zhanglubin.legend.game.sousou.map.smap.LSouSouRound"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

@@ -1,6 +1,7 @@
 package zhanglubin.legend.game.sousou.script
 {
 	import zhanglubin.legend.game.sousou.character.LSouSouCharacterS;
+	import zhanglubin.legend.game.sousou.character.LSouSouMember;
 	import zhanglubin.legend.game.sousou.object.LSouSouObject;
 	import zhanglubin.legend.scripts.LScript;
 	import zhanglubin.legend.scripts.analysis.ScriptFunction;
@@ -223,7 +224,7 @@ package zhanglubin.legend.game.sousou.script
 			var arr:Array = new Array();
 			arr["type"] = "SouSouSCharacter.atCoordinate";
 			arr["character"] = coordinateCharacter;
-			arr["at"] = new LCoordinate(int(param[1])*LSouSouObject.sMap._nodeLength,int(param[2])*LSouSouObject.sMap._nodeLength);
+			arr["at"] = new LCoordinate(int(param[1])*LSouSouObject.sMap.nodeLength,int(param[2])*LSouSouObject.sMap.nodeLength);
 			LSouSouObject.sMap.loopList.push(arr);
 			loop();
 		}
@@ -264,7 +265,7 @@ package zhanglubin.legend.game.sousou.script
 					if(coordinateCharacter.xy.x == atCoordinate.x && coordinateCharacter.xy.y == atCoordinate.y){
 						if(LSouSouObject.sMap.loopIsRun)return;
 						LSouSouObject.sMap.loopIsRun = true;
-						ScriptFunction.analysis("Call.characterAt_" + coordinateCharacter.index + "_" + int(atCoordinate.x/LSouSouObject.sMap._nodeLength) + "_" +  int(atCoordinate.y/LSouSouObject.sMap._nodeLength) + "();");
+						ScriptFunction.analysis("Call.characterAt_" + coordinateCharacter.index + "_" + int(atCoordinate.x/LSouSouObject.sMap.nodeLength) + "_" +  int(atCoordinate.y/LSouSouObject.sMap.nodeLength) + "();");
 						return;
 					}
 				}else if(arr["type"] == "SouSouSCharacter.atBelongCoordinate"){
@@ -391,6 +392,23 @@ package zhanglubin.legend.game.sousou.script
 					initialization();
 			}
 			
+		}
+		private function addFriendCharacter(param:Array):void{
+			var mbr:LSouSouMember;
+			var memberxml:XMLList = LSouSouObject.chara["peo"+param[0]];
+			memberxml.Index = param[0];
+			memberxml.Lv = param[1];
+			mbr = new LSouSouMember(new XML(memberxml.toString()));
+			var charas:LSouSouCharacterS;
+			charas = new LSouSouCharacterS(mbr,-1,int(param[2]),int(param[6]));
+			charas.xy = new LCoordinate(int(param[3])*LSouSouObject.sMap.nodeLength,int(param[4])*LSouSouObject.sMap.nodeLength);
+			charas.tagerCoordinate = charas.xy;
+			if(param[5] == "0")charas.visible = false;
+			charas.member.troops = charas.member.maxTroops;
+			charas.member.strategy = charas.member.maxStrategy;
+			LSouSouObject.sMap.friendlist.push(charas);
+			
+			this.initialization();
 		}
 		private function addFunction():void{
 			var script:LScript = LGlobal.script;
