@@ -211,6 +211,7 @@ package zhanglubin.legend.game.sousou.map
 			LGlobal.script.analysis();
 		}
 		private function memberView(event:MouseEvent):void{
+			if(LSouSouObject.storyCtrl)return;
 			LSouSouObject.charaSNow = new LSouSouCharacterS(LSouSouObject.memberList[0],0,0,0);
 			var profile:LSouSouCharacterProfile = new LSouSouCharacterProfile(0);
 			LGlobal.script.scriptLayer.addChild(profile);
