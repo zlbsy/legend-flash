@@ -507,6 +507,11 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 					charas.action = LSouSouCharacterS.HERT;
 					charas.animation.addEventListener(LEvent.ANIMATION_COMPLETE,actionOver);
 					break;
+				case "DEFENSE":
+					charas.action = LSouSouCharacterS.BLOCK_DOWN + charas.direction;
+					charas.setReturnAction(charas.action);
+					charas.animation.addEventListener(LEvent.ANIMATION_COMPLETE,actionOver);
+					break;
 				case "DIE":
 					charas.setReturnAction(charas.action);
 					charas.action = LSouSouCharacterS.DIE;

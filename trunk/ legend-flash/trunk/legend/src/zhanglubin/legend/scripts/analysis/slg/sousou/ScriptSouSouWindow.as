@@ -1,6 +1,7 @@
 package zhanglubin.legend.scripts.analysis.slg.sousou
 {
 	import zhanglubin.legend.game.sousou.map.LSouSouWindow;
+	import zhanglubin.legend.game.sousou.map.window.LSouSouWindwoCondition;
 	import zhanglubin.legend.game.sousou.map.window.LSouSouWindwoSupport;
 	import zhanglubin.legend.game.sousou.map.window.LSouSouWindwoSystem;
 	import zhanglubin.legend.game.sousou.object.LSouSouObject;
@@ -32,8 +33,8 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 					break;
 				case "SouSouWindow.setCondition":
 					trace("SouSouWindow.setCondition run");
-					window = new LSouSouWindow();
-					window.condition(param);
+					window = new LSouSouWindwoCondition();
+					(window as LSouSouWindwoCondition).show(param);
 					LGlobal.script.scriptLayer.addChild(window);
 					break;
 				case "SouSouWindow.shop":

@@ -6,6 +6,7 @@ package zhanglubin.legend.game.sousou.map.smap
 	import zhanglubin.legend.display.LButton;
 	import zhanglubin.legend.display.LSprite;
 	import zhanglubin.legend.game.sousou.map.LSouSouWindow;
+	import zhanglubin.legend.game.sousou.map.window.LSouSouWindwoCondition;
 	import zhanglubin.legend.game.sousou.object.LSouSouObject;
 	import zhanglubin.legend.utils.LGlobal;
 	import zhanglubin.legend.utils.math.LCoordinate;
@@ -94,8 +95,8 @@ package zhanglubin.legend.game.sousou.map.smap
 		}
 		private function zkView(event:MouseEvent):void{
 			if(LSouSouObject.storyCtrl)return;
-			var window:LSouSouWindow = new LSouSouWindow();
-			window.condition(LSouSouObject.sMap.condition,true);
+			var window:LSouSouWindwoCondition = new LSouSouWindwoCondition();
+			window.show(LSouSouObject.sMap.condition,true);
 			LGlobal.script.scriptLayer.addChild(window);
 		}
 		private function systemShow(event:MouseEvent):void{
