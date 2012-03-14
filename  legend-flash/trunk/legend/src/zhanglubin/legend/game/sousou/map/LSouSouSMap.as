@@ -28,6 +28,7 @@ package zhanglubin.legend.game.sousou.map
 	import zhanglubin.legend.game.sousou.character.LSouSouMember;
 	import zhanglubin.legend.game.sousou.map.smap.LSouSouCtrlMenuLayer;
 	import zhanglubin.legend.game.sousou.map.smap.LSouSouRound;
+	import zhanglubin.legend.game.sousou.map.window.LSouSouWindwoTerrain;
 	import zhanglubin.legend.game.sousou.meff.LSouSouMeff;
 	import zhanglubin.legend.game.sousou.meff.LSouSouMeffShow;
 	import zhanglubin.legend.game.sousou.meff.LSouSouSkill;
@@ -70,11 +71,27 @@ package zhanglubin.legend.game.sousou.map
 		private var _roundCtrl:LSouSouRound;
 		private var _round_show:int = 0;
 		private var _roundCount:int = 1;
-		//private var _round_bitmap:LBitmap;
-		//private var _round_x:int = 0;
-		//private var _roundText:LLabel = new LLabel();
-
+		/**
+		 * 最大回合数
+		 * */
+		private var _roundMax:int = 100;
+		/**
+		 * 天气
+		 * */
+		private var _weatherIndex:int = 0;
+		/**
+		 * 天气数组
+		 * */
+		private var _weather:Array = [
+		["晴",60],
+		["阴",30],
+		["雨",10],
+		["豪雨",0],
+		["雪",0]
+		];
+		
 		private var _mouseIsDown:Boolean;
+		private var _mapIsMove:Boolean;
 		private var _mapMove:Array = [];
 		private var _mapData:Array;
 		private var _map:LBitmap;
@@ -200,6 +217,36 @@ package zhanglubin.legend.game.sousou.map
 			this.addChild(_drawLayer);
 			this.addChild(_menuLayer);
 			
+		}
+
+		public function get map():LBitmap
+		{
+			return _map;
+		}
+
+		public function get weather():Array
+		{
+			return _weather;
+		}
+
+		public function get weatherIndex():int
+		{
+			return _weatherIndex;
+		}
+
+		public function set weatherIndex(value:int):void
+		{
+			_weatherIndex = value;
+		}
+
+		public function get roundMax():int
+		{
+			return _roundMax;
+		}
+
+		public function set roundMax(value:int):void
+		{
+			_roundMax = value;
 		}
 
 		public function get nodeLength():int
@@ -952,12 +999,14 @@ package zhanglubin.legend.game.sousou.map
 		}
 		private function mapMove():void{
 			if(_mapMove["left"]){
+				_mapIsMove = true;
 				_mapCoordinate.x += this._nodeLength/4;
 				_mapToCoordinate.x = _mapCoordinate.x;
 				if(_mapCoordinate.x % this._nodeLength == 0){
 					_mapMove["left"] = false;
 				}
 			}else if(_mapMove["right"]){
+				_mapIsMove = true;
 				_mapCoordinate.x -= this._nodeLength/4;
 				_mapToCoordinate.x = _mapCoordinate.x;
 				if(_mapCoordinate.x % this._nodeLength == 0){
@@ -965,12 +1014,14 @@ package zhanglubin.legend.game.sousou.map
 				}
 			}
 			if(_mapMove["up"]){
+				_mapIsMove = true;
 				_mapCoordinate.y += this._nodeLength/4;
 				_mapToCoordinate.y = _mapCoordinate.y;
 				if(_mapCoordinate.y % this._nodeLength == 0){
 					_mapMove["up"] = false;
 				}
 			}else if(_mapMove["down"]){
+				_mapIsMove = true;
 				_mapCoordinate.y -= this._nodeLength/4;
 				_mapToCoordinate.y = _mapCoordinate.y;
 				if(_mapCoordinate.y % this._nodeLength == 0){
@@ -994,6 +1045,7 @@ package zhanglubin.legend.game.sousou.map
 		}
 		private function onDown(event:MouseEvent):void{
 			if(_menu == null)this._mouseIsDown = true;
+			_mapIsMove = false;
 		}
 		private function findAttackTarget(mx:int,my:int):void{
 			var nodeStr:String;
@@ -1037,7 +1089,7 @@ package zhanglubin.legend.game.sousou.map
 			var getcharacter:Boolean;
 			var nodeStr:String;
 			var nodeArr:Array;
-			
+			var window:LSouSouWindow;
 			this._mouseIsDown = false;
 			if(this._roadList != null){
 				findRoad(mouseX,mouseY);
@@ -1086,7 +1138,7 @@ package zhanglubin.legend.game.sousou.map
 				var intX:int = int((mouseX - _mapCoordinate.x)/_nodeLength);
 				var intY:int = int((mouseY - _mapCoordinate.y)/_nodeLength);
 				if(!LSouSouCalculate.canUseMeff(intX,intY,_strategy)){
-					var window:LSouSouWindow = new LSouSouWindow();
+					window = new LSouSouWindow();
 					window.setMsg(["此地形无法使用",1,30]);
 					LGlobal.script.scriptLayer.addChild(window);
 					return;
@@ -1107,12 +1159,6 @@ package zhanglubin.legend.game.sousou.map
 						charaList.push(_characterS);
 					}
 				}
-				/*
-				for each(_characterS in this._ourlist){
-				}
-				for each(_characterS in this._friendlist){
-				}
-				*/
 				for each(_characterS in charaList){
 					if(!_characterS.visible)continue;
 					if(mouseX > _characterS.x + this._mapCoordinate.x && mouseX < _characterS.x + this._mapCoordinate.x + this._nodeLength && 
@@ -1145,6 +1191,7 @@ package zhanglubin.legend.game.sousou.map
 					var sx:int;
 					var sy:int;
 					var act:int;
+					//是否点击我军
 					for each(_characterS in this._ourlist){
 						if(!_characterS.visible)continue;
 						if(mouseX > _characterS.x + this._mapCoordinate.x && mouseX < _characterS.x + this._mapCoordinate.x + this._nodeLength && 
@@ -1167,6 +1214,7 @@ package zhanglubin.legend.game.sousou.map
 							return;
 						}
 					}
+					//是否点击友军
 					for each(_characterS in this._friendlist){
 						if(!_characterS.visible)continue;
 						if(mouseX > _characterS.x + this._mapCoordinate.x && mouseX < _characterS.x + this._mapCoordinate.x + this._nodeLength && 
@@ -1189,6 +1237,7 @@ package zhanglubin.legend.game.sousou.map
 							return;
 						}
 					}
+					//是否点击敌军
 					for each(_characterS in this._enemylist){
 						if(!_characterS.visible)continue;
 						if(mouseX > _characterS.x + this._mapCoordinate.x && mouseX < _characterS.x + this._mapCoordinate.x + this._nodeLength && 
@@ -1211,6 +1260,12 @@ package zhanglubin.legend.game.sousou.map
 							return;
 						}
 					}
+					//点击战场，显示地形
+					if(LSouSouObject.storyCtrl || _menu || _mapIsMove || mouseX > 760)return;
+					
+					window = new LSouSouWindwoTerrain();
+					(window as LSouSouWindwoTerrain).show(mouseX,mouseY);
+					LGlobal.script.scriptLayer.addChild(window);
 				}
 			}
 		}
