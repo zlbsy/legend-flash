@@ -71,6 +71,27 @@ package zhanglubin.legend.game.sousou.map
 		private var _roundCtrl:LSouSouRound;
 		private var _round_show:int = 0;
 		private var _roundCount:int = 1;
+<<<<<<< .mine
+		/**
+		 * 最大回合数
+		 * */
+		private var _roundMax:int = 100;
+		/**
+		 * 天气
+		 * */
+		private var _weatherIndex:int = 2;
+		/**
+		 * 天气数组
+		 * */
+		private var _weather:Array = [
+		["晴",60],
+		["阴",30],
+		["雨",10],
+		["豪雨",0],
+		["雪",0]
+		];
+		
+=======
 		/**
 		 * 最大回合数
 		 * */
@@ -90,6 +111,7 @@ package zhanglubin.legend.game.sousou.map
 		["雪",0]
 		];
 		
+>>>>>>> .r41
 		private var _mouseIsDown:Boolean;
 		private var _mapIsMove:Boolean;
 		private var _mapMove:Array = [];
