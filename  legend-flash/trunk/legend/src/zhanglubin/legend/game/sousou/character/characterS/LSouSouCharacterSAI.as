@@ -258,7 +258,7 @@ package zhanglubin.legend.game.sousou.character.characterS
 						//如果mp不够，则跳过
 						if(aiChara.member.strategy < int(strategyXMLList.Cost))continue;
 						if(obj.type == "troops"){
-							if(int(strategyXMLList.Type.toString()) != 4)continue;
+							if(int(strategyXMLList.Type.toString()) != 8)continue;
 						}else{
 							if(objSupply != null || int(strategyXMLList.Type.toString()) != 7)continue;
 						}
@@ -318,7 +318,12 @@ package zhanglubin.legend.game.sousou.character.characterS
 						if(slist.@lv > aiChara.member.lv)continue;
 						//获取策略
 						strategyXMLList = LSouSouObject.strategy["Strategy" + slist];
+						//己方策略则跳过
 						if(int(strategyXMLList.Belong.toString()) == 0)continue;
+						//非攻击性策略则跳过
+						if(int(strategyXMLList.Type.toString()) >= 7)continue;
+						//天气因素
+						if(int(strategyXMLList.Type.toString()) == 1 && LSouSouObject.sMap.weatherIndex >= 2)continue;
 						//如果mp不够，则跳过
 						if(aiChara.member.strategy < int(strategyXMLList.Cost))continue;
 						//获取策略可视范围
