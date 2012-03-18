@@ -28,6 +28,7 @@ package zhanglubin.legend.game.sousou.map
 	import zhanglubin.legend.objects.LAnimation;
 	import zhanglubin.legend.scripts.LScript;
 	import zhanglubin.legend.scripts.analysis.ScriptFunction;
+	import zhanglubin.legend.scripts.analysis.ScriptVarlable;
 	import zhanglubin.legend.text.LTextField;
 	import zhanglubin.legend.utils.LDisplay;
 	import zhanglubin.legend.utils.LGlobal;
@@ -362,6 +363,7 @@ package zhanglubin.legend.game.sousou.map
 				analysis();
 				return;
 			}
+			lineValue = ScriptVarlable.getVarlable(lineValue);
 			var start:int = lineValue.indexOf("(");
 			var end:int = lineValue.indexOf(")");
 			switch(lineValue.substr(0,start)){
@@ -555,6 +557,7 @@ package zhanglubin.legend.game.sousou.map
 		 */
 		private function onUp(event:MouseEvent):void{
 			if(LSouSouObject.storyCtrl)return;
+			if(event.target is LButton)return;
 			var isChara:Boolean;
 			for each(_characterR in _characterList){
 				if(_characterR.inHitPoint(mouseX - _characterR.x,mouseY - _characterR.y)){
@@ -569,7 +572,7 @@ package zhanglubin.legend.game.sousou.map
 			var indexX:int = Math.floor(mouseX/_nodeLength);
 			var indexY:int = Math.floor(mouseY/_nodeLength);
 			
-			if(this._hero == null || indexX == this._hero.tagerCoordinate.x && indexY == this._hero.tagerCoordinate.y)return;
+			if(this._hero == null || (this._hero.path != null && this._hero.path.length > 0) || indexX == this._hero.tagerCoordinate.x && indexY == this._hero.tagerCoordinate.y)return;
 			
 			var mx:int = mouseX - indexX*_nodeLength;
 			var my:int = mouseY - indexY*_nodeLength;
