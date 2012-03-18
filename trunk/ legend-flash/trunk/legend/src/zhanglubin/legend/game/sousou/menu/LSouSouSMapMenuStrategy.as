@@ -10,6 +10,7 @@ package zhanglubin.legend.game.sousou.menu
 	import zhanglubin.legend.display.LScrollbar;
 	import zhanglubin.legend.display.LSprite;
 	import zhanglubin.legend.game.sousou.character.LSouSouCharacterS;
+	import zhanglubin.legend.game.sousou.map.LSouSouWindow;
 	import zhanglubin.legend.game.sousou.object.LSouSouObject;
 	import zhanglubin.legend.game.sousou.object.LSouSouSMapMethod;
 	import zhanglubin.legend.utils.LGlobal;
@@ -120,6 +121,13 @@ package zhanglubin.legend.game.sousou.menu
 			if(mx >= this.x + 10 && mx <= this.x + 125){
 				strategyIndex = int((my - _menuBack.y - bar_w - 5)/btn_h);
 				if(strategyIndex < this._strategyList.length){
+					if(LSouSouObject.strategy["Strategy" + _strategyList[strategyIndex]].Type == "1" && 
+						LSouSouObject.sMap.weatherIndex >= 2){
+						var window:LSouSouWindow = new LSouSouWindow();
+						window.setMsg(["此天气无法使用",1,30]);
+						LGlobal.script.scriptLayer.addChild(window);
+						return;
+					}
 					LSouSouObject.sMap.menu.name = "";
 					LSouSouObject.sMap.menu.removeFromParent();
 					LSouSouObject.sMap.menu = null;
