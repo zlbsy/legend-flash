@@ -1,7 +1,9 @@
 package zhanglubin.legend.scripts.analysis.slg.sousou
 {
 	import zhanglubin.legend.game.sousou.map.LSouSouWindow;
+	import zhanglubin.legend.game.sousou.map.window.LSouSouWindwoArchive;
 	import zhanglubin.legend.game.sousou.map.window.LSouSouWindwoCondition;
+	import zhanglubin.legend.game.sousou.map.window.LSouSouWindwoShop;
 	import zhanglubin.legend.game.sousou.map.window.LSouSouWindwoSupport;
 	import zhanglubin.legend.game.sousou.map.window.LSouSouWindwoSystem;
 	import zhanglubin.legend.game.sousou.object.LSouSouObject;
@@ -39,8 +41,8 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 					break;
 				case "SouSouWindow.shop":
 					trace("SouSouWindow.shop run");
-					window = new LSouSouWindow();
-					window.shop();
+					window = new LSouSouWindwoShop();
+					(window as LSouSouWindwoShop).show();
 					LGlobal.script.scriptLayer.addChild(window);
 					break;
 				case "SouSouWindow.addMoney":
@@ -65,7 +67,7 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 					break;
 				case "SouSouWindow.addItem":
 					var itemXml:XMLList = LSouSouObject.item["Child" + param[0]];
-					LSouSouObject.itemsList.appendChild(new XMLList("<list index='"+param[0]+"' lv='"+param[1]+"' />"));
+					LSouSouObject.itemsList.appendChild(new XMLList("<list id='"+LSouSouObject.itemObjectId+"' index='"+param[0]+"' lv='"+param[1]+"' exp='0' />"));
 					LGlobal.script.analysis();
 					break;
 				case "SouSouWindow.msg":
@@ -93,8 +95,8 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 						window = new LSouSouWindwoSupport();
 						(window as LSouSouWindwoSupport).show();
 					}else{
-						window = new LSouSouWindow();
-						window.systemShow(param[0]);
+						window = new LSouSouWindwoArchive();
+						(window as LSouSouWindwoArchive).show(param[0]);
 					}
 					LGlobal.script.scriptLayer.addChild(window);
 				default:

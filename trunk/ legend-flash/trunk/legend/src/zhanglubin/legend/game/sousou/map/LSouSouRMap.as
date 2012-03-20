@@ -23,6 +23,7 @@ package zhanglubin.legend.game.sousou.map
 	import zhanglubin.legend.game.map.LMap;
 	import zhanglubin.legend.game.sousou.character.LSouSouCharacterR;
 	import zhanglubin.legend.game.sousou.character.LSouSouCharacterS;
+	import zhanglubin.legend.game.sousou.map.rmap.LSouSouCtrlMenuLayer;
 	import zhanglubin.legend.game.sousou.object.LSouSouObject;
 	import zhanglubin.legend.load.LLoading;
 	import zhanglubin.legend.objects.LAnimation;
@@ -71,6 +72,7 @@ package zhanglubin.legend.game.sousou.map
 		private var _mapLayer:LSprite;
 		private var _characterLayer:LSprite;
 		private var _menuLayer:LSprite;
+		private var _rightMenu:LSouSouCtrlMenuLayer;
 		
 		private var _loopList:Array = new Array();
 		private var _loopIsRun:Boolean;
@@ -93,6 +95,8 @@ package zhanglubin.legend.game.sousou.map
 			_mapLayer = new LSprite();
 			_characterLayer = new LSprite();
 			_menuLayer = new LSprite();
+			_rightMenu = new LSouSouCtrlMenuLayer();
+			_menuLayer.addChild(_rightMenu);
 			
 			//LSouSouObject.R_CLICK_MODE = false;
 			LSouSouObject.storyCtrl = true;
@@ -105,6 +109,11 @@ package zhanglubin.legend.game.sousou.map
 			this.addChild(_mapLayer);
 			this.addChild(_characterLayer);
 			this.addChild(_menuLayer);
+		}
+
+		public function get menuLayer():LSprite
+		{
+			return _menuLayer;
 		}
 
 		public function get characterList():Vector.<LSouSouCharacterR>
@@ -138,12 +147,7 @@ package zhanglubin.legend.game.sousou.map
 					setMenu();
 					this.addEventListener(Event.ENTER_FRAME,onFrame);
 					this.addEventListener(MouseEvent.MOUSE_UP,onUp);
-					/**
-					LGlobal.script.scriptArray.varList["isreading"] = LGlobal.script.scriptArray.varList["isreading"] + "";
-					if(LGlobal.script.scriptArray.varList["isreading"].length > 0 && LString.trim(LGlobal.script.scriptArray.varList["isreading"]) != "null"){
-						LGlobal.script.lineList.unshift("Mark.goto("+LGlobal.script.scriptArray.varList["isreading"]+");");
-						LGlobal.script.scriptArray.varList["isreading"] = "";
-					}*/
+
 					LGlobal.script.analysis();
 					return;
 				case "initialization.start":
@@ -160,92 +164,8 @@ package zhanglubin.legend.game.sousou.map
 			}
 		}
 		private function setMenu():void{
-			_btn_lib = new LButton(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"lib"));
-			_btn_lib.filters = [new GlowFilter()];
-			_btn_lib.xy = new LCoordinate(755,0);
-			_btn_lib.addEventListener(MouseEvent.MOUSE_UP,libExplanation);
-			_menuLayer.addChild(_btn_lib);
-
-			_btn_game = new LButton(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"game"));
-			_btn_game.filters = [new GlowFilter()];
-			_btn_game.xy = new LCoordinate(755,45);
-			_btn_game.addEventListener(MouseEvent.MOUSE_UP,libGameExplanation);
-			_menuLayer.addChild(_btn_game);
-			
-			_btn_member = new LButton(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"member"));
-			_btn_member.filters = [new GlowFilter()];
-			_btn_member.xy = new LCoordinate(755,90);
-			_btn_member.addEventListener(MouseEvent.MOUSE_UP,memberView);
-			_menuLayer.addChild(_btn_member);
-			
-			_btn_equipment = new LButton(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"equipment_menu.png"));
-			_btn_equipment.filters = [new GlowFilter()];
-			_btn_equipment.xy = new LCoordinate(755,135);
-			_btn_equipment.addEventListener(MouseEvent.MOUSE_UP,equipmentChange);
-			_menuLayer.addChild(_btn_equipment);
-			
-			_btn_luggage = new LButton(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"luggage_menu.png"));
-			_btn_luggage.filters = [new GlowFilter()];
-			_btn_luggage.xy = new LCoordinate(755,180);
-			_btn_luggage.addEventListener(MouseEvent.MOUSE_UP,luggageShow);
-			_menuLayer.addChild(_btn_luggage);
-			
-			_btn_system = new LButton(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"system_menu.png"));
-			_btn_system.filters = [new GlowFilter()];
-			_btn_system.xy = new LCoordinate(755,225);
-			_btn_system.addEventListener(MouseEvent.MOUSE_UP,systemShow);
-			_menuLayer.addChild(_btn_system);
-			
-			_btn_gameclose = new LButton(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"gameclose"));
-			_btn_gameclose.filters = [new GlowFilter()];
-			_btn_gameclose.xy = new LCoordinate(755,400);
-			_btn_gameclose.addEventListener(MouseEvent.MOUSE_UP,gameClose);
-			_menuLayer.addChild(_btn_gameclose);
+			_rightMenu.addMenu();
 			_menuLayer.x = 6;
-		}
-		private function gameClose(event:MouseEvent):void{
-			if(LSouSouObject.storyCtrl)return;
-			LGlobal.script.lineList.unshift("endif;");
-			LGlobal.script.lineList.unshift("SouSouGame.close();");
-			LGlobal.script.lineList.unshift("if(@select==0);");
-			LGlobal.script.lineList.unshift("SouSouTalk.select(1.关闭游戏,2.继续游戏);");
-			LGlobal.script.analysis();
-		}
-		private function memberView(event:MouseEvent):void{
-			if(LSouSouObject.storyCtrl)return;
-			LSouSouObject.charaSNow = new LSouSouCharacterS(LSouSouObject.memberList[0],0,0,0);
-			var profile:LSouSouCharacterProfile = new LSouSouCharacterProfile(0);
-			LGlobal.script.scriptLayer.addChild(profile);
-		}
-		private function systemShow(event:MouseEvent):void{
-			if(LSouSouObject.storyCtrl)return;
-			var window:LSouSouWindow = new LSouSouWindow();
-			window.systemShow();
-			LGlobal.script.scriptLayer.addChild(window);
-		}
-		private function luggageShow(event:MouseEvent):void{
-			if(LSouSouObject.storyCtrl)return;
-			var window:LSouSouWindow = new LSouSouWindow();
-			window.luggage();
-			LGlobal.script.scriptLayer.addChild(window);
-		}
-		private function libGameExplanation(event:MouseEvent):void{
-			if(LSouSouObject.storyCtrl)return;
-			var window:LSouSouWindow = new LSouSouWindow();
-			window.libGameExplanation();
-			LGlobal.script.scriptLayer.addChild(window);
-		}
-		private function libExplanation(event:MouseEvent):void{
-			if(LSouSouObject.storyCtrl)return;
-			var window:LSouSouWindow = new LSouSouWindow();
-			window.libExplanation();
-			LGlobal.script.scriptLayer.addChild(window);
-		}
-		private function equipmentChange(event:MouseEvent):void{
-			if(LSouSouObject.storyCtrl)return;
-			var window:LSouSouWindow = new LSouSouWindow();
-			window.equipmentChange();
-			LGlobal.script.scriptLayer.addChild(window);
 		}
 		private function addFunction():void{
 			var script:LScript = LGlobal.script;
@@ -445,17 +365,6 @@ package zhanglubin.legend.game.sousou.map
 			}
 			LSouSouObject.rStarQuery = new LSouSouStarR(_mapData);
 			
-			/**tt*/
-			/*
-			var bmd:BitmapData = new BitmapData(mapW, mapH, true, 0);
-			var bmd2:BitmapData = new BitmapData(mapW, mapH, true, 0);
-			bmd.setPixels(bmd.rect, bytes);
-			this._map = new LBitmap(bmd2);
-			this._map.bitmapData.copyPixels(bmd,new Rectangle(0,0,335,bmd.height),new Point(465,0));
-			this._map.bitmapData.copyPixels(bmd,new Rectangle(335,0,465,bmd.height),new Point(0,0));
-			//this._map.bitmapData.copyPixels(bmd,new Rectangle(400,0,200,bmd.height),new Point(400,0));
-			//this._map.bitmapData.copyPixels(bmd,new Rectangle(600,0,200,bmd.height),new Point(600,0));
-			*/
 			var bmd:BitmapData = new BitmapData(mapW, mapH, true, 0);
 			bmd.setPixels(bmd.rect, bytes);
 			this._map = new LBitmap(bmd);

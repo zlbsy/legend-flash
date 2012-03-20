@@ -30,8 +30,8 @@ package zhanglubin.legend.game.sousou.map
 		private var _tabLayer:LSprite;
 		private var _backLayer:LSprite;
 		private var _listLayer:LSprite;
-		private var _memNameBitmap:Bitmap;
-		private var _memSelectBitmap:Bitmap;
+		private var _memNameBitmap:LBitmap;
+		private var _memSelectBitmap:LBitmap;
 		
 		public function LSouSouCharacterProfile(view:int = -1)
 		{

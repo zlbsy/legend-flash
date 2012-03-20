@@ -1,13 +1,16 @@
-package zhanglubin.legend.game.sousou.map.smap
+package zhanglubin.legend.game.sousou.map.rmap
 {
 	import flash.events.MouseEvent;
 	import flash.filters.GlowFilter;
 	
 	import zhanglubin.legend.display.LButton;
 	import zhanglubin.legend.display.LSprite;
+	import zhanglubin.legend.game.sousou.character.LSouSouCharacterS;
+	import zhanglubin.legend.game.sousou.map.LSouSouCharacterProfile;
 	import zhanglubin.legend.game.sousou.map.LSouSouWindow;
 	import zhanglubin.legend.game.sousou.map.window.LSouSouWindwoArchive;
 	import zhanglubin.legend.game.sousou.map.window.LSouSouWindwoCondition;
+	import zhanglubin.legend.game.sousou.map.window.LSouSouWindwoEquipment;
 	import zhanglubin.legend.game.sousou.object.LSouSouObject;
 	import zhanglubin.legend.utils.LGlobal;
 	import zhanglubin.legend.utils.math.LCoordinate;
@@ -40,44 +43,44 @@ package zhanglubin.legend.game.sousou.map.smap
 			_btn_lib.filters = [new GlowFilter()];
 			_btn_lib.xy = new LCoordinate(755,0);
 			_btn_lib.addEventListener(MouseEvent.MOUSE_UP,libExplanation);
-			LSouSouObject.sMap.menuLayer.addChild(_btn_lib);
+			LSouSouObject.rMap.menuLayer.addChild(_btn_lib);
 			
 			_btn_game = new LButton(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"game"));
 			_btn_game.filters = [new GlowFilter()];
 			_btn_game.xy = new LCoordinate(755,45);
 			_btn_game.addEventListener(MouseEvent.MOUSE_UP,libGameExplanation);
-			LSouSouObject.sMap.menuLayer.addChild(_btn_game);
+			LSouSouObject.rMap.menuLayer.addChild(_btn_game);
 			
-			_btn_zk = new LButton(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"zk"));
-			_btn_zk.filters = [new GlowFilter()];
-			_btn_zk.xy = new LCoordinate(755,90);
-			_btn_zk.addEventListener(MouseEvent.MOUSE_UP,zkView);
-			LSouSouObject.sMap.menuLayer.addChild(_btn_zk);
+			_btn_member = new LButton(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"member"));
+			_btn_member.filters = [new GlowFilter()];
+			_btn_member.xy = new LCoordinate(755,90);
+			_btn_member.addEventListener(MouseEvent.MOUSE_UP,memberView);
+			LSouSouObject.rMap.menuLayer.addChild(_btn_member);
+			
+			_btn_equipment = new LButton(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"equipment_menu.png"));
+			_btn_equipment.filters = [new GlowFilter()];
+			_btn_equipment.xy = new LCoordinate(755,135);
+			_btn_equipment.addEventListener(MouseEvent.MOUSE_UP,equipmentChange);
+			LSouSouObject.rMap.menuLayer.addChild(_btn_equipment);
 			
 			_btn_luggage = new LButton(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"luggage_menu.png"));
 			_btn_luggage.filters = [new GlowFilter()];
-			_btn_luggage.xy = new LCoordinate(755,135);
+			_btn_luggage.xy = new LCoordinate(755,180);
 			_btn_luggage.addEventListener(MouseEvent.MOUSE_UP,luggageShow);
-			LSouSouObject.sMap.menuLayer.addChild(_btn_luggage);
+			LSouSouObject.rMap.menuLayer.addChild(_btn_luggage);
 			
 			_btn_system = new LButton(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"system_menu.png"));
 			_btn_system.filters = [new GlowFilter()];
-			_btn_system.xy = new LCoordinate(755,180);
+			_btn_system.xy = new LCoordinate(755,225);
 			_btn_system.addEventListener(MouseEvent.MOUSE_UP,systemShow);
-			LSouSouObject.sMap.menuLayer.addChild(_btn_system);
-			//_btn_system.visible = false;
+			LSouSouObject.rMap.menuLayer.addChild(_btn_system);
 			
 			_btn_gameclose = new LButton(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"gameclose"));
 			_btn_gameclose.filters = [new GlowFilter()];
 			_btn_gameclose.xy = new LCoordinate(755,400);
 			_btn_gameclose.addEventListener(MouseEvent.MOUSE_UP,gameClose);
-			LSouSouObject.sMap.menuLayer.addChild(_btn_gameclose);
-			
-			_cancel_menu = new LButton(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],"cancel"));
-			_cancel_menu.filters = [new GlowFilter()];
-			_cancel_menu.xy = new LCoordinate(755,225);
-			_cancel_menu.visible = false;
-			LSouSouObject.sMap.menuLayer.addChild(_cancel_menu);
+			LSouSouObject.rMap.menuLayer.addChild(_btn_gameclose);
+			//_menuLayer.x = 6;
 			
 		}
 		private function gameClose(event:MouseEvent):void{
@@ -88,22 +91,23 @@ package zhanglubin.legend.game.sousou.map.smap
 			LGlobal.script.lineList.unshift("SouSouTalk.select(1.关闭游戏,2.继续游戏);");
 			LGlobal.script.analysis();
 		}
-		private function luggageShow(event:MouseEvent):void{
+		private function memberView(event:MouseEvent):void{
 			if(LSouSouObject.storyCtrl)return;
-			var window:LSouSouWindow = new LSouSouWindow();
-			window.luggage();
-			LGlobal.script.scriptLayer.addChild(window);
-		}
-		private function zkView(event:MouseEvent):void{
-			if(LSouSouObject.storyCtrl)return;
-			var window:LSouSouWindwoCondition = new LSouSouWindwoCondition();
-			window.show(LSouSouObject.sMap.condition,true);
-			LGlobal.script.scriptLayer.addChild(window);
+			LSouSouObject.charaSNow = new LSouSouCharacterS(LSouSouObject.memberList[0],0,0,0);
+			var profile:LSouSouCharacterProfile = new LSouSouCharacterProfile(0);
+			
+			LGlobal.script.scriptLayer.addChild(profile);
 		}
 		private function systemShow(event:MouseEvent):void{
 			if(LSouSouObject.storyCtrl)return;
 			var window:LSouSouWindow = new LSouSouWindwoArchive();
 			(window as LSouSouWindwoArchive).show();
+			LGlobal.script.scriptLayer.addChild(window);
+		}
+		private function luggageShow(event:MouseEvent):void{
+			if(LSouSouObject.storyCtrl)return;
+			var window:LSouSouWindow = new LSouSouWindow();
+			window.luggage();
 			LGlobal.script.scriptLayer.addChild(window);
 		}
 		private function libGameExplanation(event:MouseEvent):void{
@@ -116,6 +120,13 @@ package zhanglubin.legend.game.sousou.map.smap
 			if(LSouSouObject.storyCtrl)return;
 			var window:LSouSouWindow = new LSouSouWindow();
 			window.libExplanation();
+			LGlobal.script.scriptLayer.addChild(window);
+		}
+		private function equipmentChange(event:MouseEvent):void{
+			if(LSouSouObject.storyCtrl)return;
+			var window:LSouSouWindwoEquipment = new LSouSouWindwoEquipment();
+			//var window:LSouSouWindow = new LSouSouWindow();
+			window.show();
 			LGlobal.script.scriptLayer.addChild(window);
 		}
 	}
