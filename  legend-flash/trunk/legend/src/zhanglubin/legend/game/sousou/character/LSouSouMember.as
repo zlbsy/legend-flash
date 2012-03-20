@@ -176,12 +176,12 @@ package zhanglubin.legend.game.sousou.character
 			//装备
 			if(int(equipment.toString()) > 0){
 				itemXml = LSouSouObject.item["Child"+equipment];
-				addvalue+=int(itemXml[addName]) + int(itemXml[addName].@add)*int(equipment.lv);
+				addvalue+=int(itemXml[addName]) + int(itemXml[addName].@add)*int(equipment.@lv);
 			}
 			//武器
 			if(int(weapon.toString()) > 0){
 				itemXml = LSouSouObject.item["Child"+weapon];
-				addvalue+=int(itemXml[addName]) + int(itemXml[addName].@add)*int(weapon.lv);
+				addvalue+=int(itemXml[addName]) + int(itemXml[addName].@add)*int(weapon.@lv);
 			}
 			//坐骑
 			if(int(horse.toString()) > 0){

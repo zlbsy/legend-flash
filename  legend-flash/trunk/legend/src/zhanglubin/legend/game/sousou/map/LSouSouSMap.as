@@ -28,6 +28,8 @@ package zhanglubin.legend.game.sousou.map
 	import zhanglubin.legend.game.sousou.character.LSouSouMember;
 	import zhanglubin.legend.game.sousou.map.smap.LSouSouCtrlMenuLayer;
 	import zhanglubin.legend.game.sousou.map.smap.LSouSouRound;
+	import zhanglubin.legend.game.sousou.map.smap.LSouSouSMapClick;
+	import zhanglubin.legend.game.sousou.map.smap.LSouSouSMapDraw;
 	import zhanglubin.legend.game.sousou.map.window.LSouSouWindwoTerrain;
 	import zhanglubin.legend.game.sousou.meff.LSouSouMeff;
 	import zhanglubin.legend.game.sousou.meff.LSouSouMeffShow;
@@ -65,9 +67,6 @@ package zhanglubin.legend.game.sousou.map
 		
 		private var _speed:int = 0;
 		private var _speed2:int = 0;
-		/**
-		 *回合显示，设定等相关 
-		 */
 		private var _roundCtrl:LSouSouRound;
 		private var _round_show:int = 0;
 		private var _roundCount:int = 1;
@@ -167,10 +166,14 @@ package zhanglubin.legend.game.sousou.map
 		
 		private var _condition:Array = ["****","****"];
 		
+		private var _draw:LSouSouSMapDraw;
+		private var _smapClick:LSouSouSMapClick;
 		
 		public function LSouSouSMap()
 		{
 			LSouSouObject.sMap = this;
+			_draw = new LSouSouSMapDraw();
+			_smapClick = new LSouSouSMapClick();
 			_mapLayer = new LSprite();
 			_characterLayer = new LSprite();
 			_menuLayer = new LSprite();
@@ -216,6 +219,89 @@ package zhanglubin.legend.game.sousou.map
 			this.addChild(_drawLayer);
 			this.addChild(_menuLayer);
 			
+		}
+
+		public function set mouseIsDown(value:Boolean):void
+		{
+			_mouseIsDown = value;
+		}
+
+		public function get mouseIsDown():Boolean
+		{
+			return _mouseIsDown;
+		}
+
+		public function get mapIsMove():Boolean
+		{
+			return _mapIsMove;
+		}
+
+		public function get miniScale():Number
+		{
+			return _miniScale;
+		}
+
+		public function get miniCoordinate():int
+		{
+			return _miniCoordinate;
+		}
+
+		public function get miniEnemy():BitmapData
+		{
+			return _miniEnemy;
+		}
+
+		public function get miniFriend():BitmapData
+		{
+			return _miniFriend;
+		}
+
+		public function get miniSelf():BitmapData
+		{
+			return _miniSelf;
+		}
+
+		/**
+		 *回合显示，设定等相关 
+		 */
+		public function get roundCtrl():LSouSouRound
+		{
+			return _roundCtrl;
+		}
+
+		public function get attackTargetRange():XMLList
+		{
+			return _attackTargetRange;
+		}
+
+		public function get attackRange():XMLList
+		{
+			return _attackRange;
+		}
+
+		public function get meff():LSouSouMeff
+		{
+			return _meff;
+		}
+
+		public function get miniWindow():LSprite
+		{
+			return _miniWindow;
+		}
+
+		public function get miniMap():LBitmap
+		{
+			return _miniMap;
+		}
+
+		public function get minimapBitmapData():BitmapData
+		{
+			return _minimapBitmapData;
+		}
+
+		public function get mapBitmapData():BitmapData
+		{
+			return _mapBitmapData;
 		}
 
 		public function get map():LBitmap
@@ -548,73 +634,15 @@ package zhanglubin.legend.game.sousou.map
 			LGlobal.script.analysis();
 		}
 
-		public function addFriendCharacter(param:Array):void{
-			var mbr:LSouSouMember;
-			var memberxml:XMLList = LSouSouObject.chara["peo"+param[0]];
-			memberxml.Index = param[0];
-			memberxml.Lv = param[1];
-			mbr = new LSouSouMember(new XML(memberxml.toString()));
-			
-			_characterS = new LSouSouCharacterS(mbr,-1,int(param[2]),int(param[6]));
-			_characterS.xy = new LCoordinate(int(param[3])*_nodeLength,int(param[4])*_nodeLength);
-			_characterS.tagerCoordinate = _characterS.xy;
-			if(param[5] == "0")_characterS.visible = false;
-			_characterS.member.troops = _characterS.member.maxTroops;
-			_characterS.member.strategy = _characterS.member.maxStrategy;
-			this._friendlist.push(_characterS);
-			
-			//this.initialization();
-			this._sMapScript.initialization();
-		}
-		public function addEnemyCharacter(param:Array):void{
-			var mbr:LSouSouMember;
-			var memberxml:XMLList = LSouSouObject.chara["peo"+param[0]];
-			memberxml.Index = param[0];
-			memberxml.Lv = param[1];
-			mbr = new LSouSouMember(new XML(memberxml.toString()));
-			
-			_characterS = new LSouSouCharacterS(mbr,1,int(param[2]),int(param[6]));
-			_characterS.xy = new LCoordinate(int(param[3])*_nodeLength,int(param[4])*_nodeLength);
-			
-			_characterS.tagerCoordinate = _characterS.xy;
-			if(param[5] == "0")_characterS.visible = false;
-			_characterS.member.troops = _characterS.member.maxTroops;
-			_characterS.member.strategy = _characterS.member.maxStrategy;
-			this._enemylist.push(_characterS);
-			
-			//this.initialization();
-			this._sMapScript.initialization();
-		}
-		public function addOurCharacter(param:Array):void{
-			if(int(param[0]) >= LSouSouObject.perWarList.length){
-				this._sMapScript.initialization();
-				return;
-			}
-			var mbr:LSouSouMember;
-			
-			for each(mbr in LSouSouObject.memberList)if(mbr.index == LSouSouObject.perWarList[int(param[0])])break;
-			
-			_characterS = new LSouSouCharacterS(mbr,0,int(param[1]),0);
-			_characterS.xy = new LCoordinate(int(param[2])*_nodeLength,int(param[3])*_nodeLength);
-			_characterS.tagerCoordinate = _characterS.xy;
-			if(param[4] == "0")_characterS.visible = false;
-			_characterS.member.troops = _characterS.member.maxTroops;
-			_characterS.member.strategy = _characterS.member.maxStrategy;
-			this._ourlist.push(_characterS);
-			//this.initialization();
-			this._sMapScript.initialization();
-		}
 		public function setSaveCharas():void{
 			//存档数据恢复
 			var xmldata:XML,charas:LSouSouCharacterS;
 			for each(xmldata in LSouSouObject.sMapSaveXml.charalist.elements()){
-				trace("xmldata = " + xmldata);
-				trace("xxx = " + xmldata["peo" + xmldata.index]);
 				var mbr:LSouSouMember = new LSouSouMember(new XML(xmldata["peo" + xmldata.index].toXMLString()));
 				
 				charas = new LSouSouCharacterS(mbr,xmldata.belong,xmldata.direction,xmldata.command);
 				charas.xy = new LCoordinate(xmldata.x,xmldata.y);
-				trace("charas.xy = " + charas.xy);
+
 				charas.tagerCoordinate = charas.xy;
 				
 				if(int(xmldata.belong) == LSouSouObject.BELONG_SELF){
@@ -642,9 +670,7 @@ package zhanglubin.legend.game.sousou.map
 				charas.statusArray[LSouSouCharacterS.STATUS_MORALE] = (xmldata.status.morale .toString()).split(",");
 				charas.statusArray[LSouSouCharacterS.STATUS_MOVE] = (xmldata.status.move.toString()).split(",");
 				charas.statusArray[LSouSouCharacterS.STATUS_NOATK] = (xmldata.status.noatk.toString()).split(",");
-				//charas.member.data = xmldata["peo" + xmldata.index];
 				
-				//this._sMapScript.initialization();
 			}
 		}
 		/**
@@ -733,11 +759,9 @@ package zhanglubin.legend.game.sousou.map
 			_mapLayer.addChild(_miniWindow);
 			_loadBar.removeFromParent();
 			
-			//this.drawGrid();
-			//this.initialization();
 			this._sMapScript.initialization();
 			
-			drawMap();
+			_draw.drawMap(mouseX,mouseY);
 		}
 		public function setDetails(value:String):void{
 			_labelDetailsList.push(value);
@@ -745,39 +769,10 @@ package zhanglubin.legend.game.sousou.map
 			_labelDetails.htmlText = "<font color='#ffffff'>"+_labelDetailsList.join("\n")+"</font>";
 			_labelDetails.scrollV = _labelDetails.bottomScrollV;
 		}
-		private function drawMiniMap(charas:LSouSouCharacterS):void{
-			if(charas.belong == LSouSouObject.BELONG_SELF){
-				_miniMap.bitmapData.copyPixels(_miniSelf,_miniSelf.rect,new Point(_miniCoordinate + charas.x*_miniScale,_miniCoordinate + charas.y*_miniScale));
-			}else if(charas.belong == LSouSouObject.BELONG_FRIEND){
-				_miniMap.bitmapData.copyPixels(_miniFriend,_miniFriend.rect,new Point(_miniCoordinate + charas.x*_miniScale,_miniCoordinate + charas.y*_miniScale));
-			}else {
-				_miniMap.bitmapData.copyPixels(_miniEnemy,_miniEnemy.rect,new Point(_miniCoordinate + charas.x*_miniScale,_miniCoordinate + charas.y*_miniScale));
-			}
-		}
-		private function drawNum():void{
-			var i:int,j:int;
-			var child:Array;
-			var numStr:String;
-			var numBitmap:BitmapData;
-			for(i=0;i<_numList.length;i++){
-				child = _numList[i];
-				numStr = child[0];
-				for(j=0;j<numStr.length;j++){
-					numBitmap = LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["img"],numStr.charAt(j) + ".png");
-					this._map.bitmapData.copyPixels(numBitmap,numBitmap.rect,new Point(child[1] + j*20,child[2]));
-				}
-				child[2] = int(child[2]) - 2;
-				child[3] = int(child[3]) + 1;
-				if(int(child[3]) > 10){
-					_numList.splice(i,1);
-					i--;
-				}
-			}
-		}
 		/**
 		 * 回合显示_roundCtrl
 		 * */
-		private function roundShow():void{
+		public function roundShow():void{
 			LSouSouObject.storyCtrl = true;
 			
 			if(_roundCtrl.scaleY >= 1){
@@ -884,33 +879,6 @@ package zhanglubin.legend.game.sousou.map
 			_round_bitmap.height += 8;
 			_round_bitmap.y -= 4;*/
 		}
-		private function findRoad(mx:int,my:int):void{
-			var intX:int = int((mx - _mapCoordinate.x)/_nodeLength);
-			var intY:int = int((my - _mapCoordinate.y)/_nodeLength);
-			var isRoad:Boolean;
-			var node:Node;
-			for each(node in this._roadList){
-				for each(_characterS in LSouSouObject.sMap.ourlist){
-					if(_characterS.visible && _characterS.index != LSouSouObject.charaSNow.index && _characterS.locationX == intX && _characterS.locationY == intY){
-						return;
-					}
-				}
-				for each(_characterS in LSouSouObject.sMap.friendlist){
-					if(_characterS.visible && _characterS.locationX == intX && _characterS.locationY == intY){
-						return;
-					}
-				}
-				if(mx >= node.x*_nodeLength + _mapCoordinate.x && mx < node.x*_nodeLength + _mapCoordinate.x + _nodeLength && 
-					my >= node.y*_nodeLength + _mapCoordinate.y && my < node.y*_nodeLength + _mapCoordinate.y + _nodeLength){
-					isRoad = true;
-					break;
-				}
-			}
-
-			if(!isRoad)return;
-			//LSouSouObject.charaSNow.tagerCoordinate = new LCoordinate(LSouSouObject.charaSNow.locationX,LSouSouObject.charaSNow.locationY);
-			moveToCoordinate(mx,my);
-		}
 		public function moveToCoordinate(mx:int,my:int,toCoordinate:LCoordinate = null):void{
 			if(toCoordinate == null)toCoordinate = new LCoordinate(int((mx - this._mapCoordinate.x)/_nodeLength),int((my - this._mapCoordinate.y)/_nodeLength));
 			LSouSouObject.charaSNow.path = LSouSouObject.sStarQuery.path(
@@ -977,7 +945,8 @@ package zhanglubin.legend.game.sousou.map
 			//loopListCheck();
 			
 			mapMove();
-			drawMap();
+			
+			_draw.drawMap(mouseX,mouseY);
 			//trace("onFrame");
 		}
 		private function mapMoveCheck():void{
@@ -1046,35 +1015,6 @@ package zhanglubin.legend.game.sousou.map
 			if(_menu == null)this._mouseIsDown = true;
 			_mapIsMove = false;
 		}
-		private function findAttackTarget(mx:int,my:int):void{
-			var nodeStr:String;
-			var nodeArr:Array;
-			var intX:int = int((mx - this._mapCoordinate.x)/_nodeLength);
-			var intY:int = int((my - this._mapCoordinate.y)/_nodeLength);
-			for each(nodeStr in _attackRange){
-				nodeArr = nodeStr.split(",");
-				if(mx >= LSouSouObject.charaSNow.x + nodeArr[0]*_nodeLength + _mapCoordinate.x && 
-					mx < LSouSouObject.charaSNow.x + nodeArr[0]*_nodeLength + _mapCoordinate.x + _nodeLength &&
-					my >= LSouSouObject.charaSNow.y + nodeArr[1]*_nodeLength + _mapCoordinate.y && 
-					my < LSouSouObject.charaSNow.y + nodeArr[1]*_nodeLength + _mapCoordinate.y + _nodeLength){
-					if(LSouSouObject.charaSNow.belong == LSouSouObject.BELONG_SELF){
-						
-						for each(_characterS in this._enemylist){
-							if(_characterS.visible && _characterS.locationX == intX && _characterS.locationY == intY){
-								_attackRange = null;
-								cancel_menu.removeAllEventListener();
-								cancel_menu.visible = false;
-								LSouSouObject.charaSNow.targetCharacter = _characterS;
-								LSouSouObject.charaSNow.setAttackNumber();
-								LSouSouObject.charaSNow.attackCalculate();
-								return;
-							}
-						}
-					}
-				}
-			}
-
-		}
 		/**
 		 * 鼠标弹起事件
 		 * 
@@ -1084,396 +1024,8 @@ package zhanglubin.legend.game.sousou.map
 			if(LSouSouObject.storyCtrl)return;
 			if(_roundCtrl)return;
 			if(this.belong_mode != LSouSouObject.BELONG_SELF)return;
-			var charaList:Vector.<LSouSouCharacterS>;
-			var getcharacter:Boolean;
-			var nodeStr:String;
-			var nodeArr:Array;
-			var window:LSouSouWindow;
-			this._mouseIsDown = false;
-			if(this._roadList != null){
-				findRoad(mouseX,mouseY);
-			}else if(this._attackRange != null){
-				findAttackTarget(mouseX,mouseY);
-			}else if(_props != null){
-				charaList = new Vector.<LSouSouCharacterS>();
-				
-				for each(_characterS in this._ourlist){
-					if(!_characterS.visible || _characterS.member.troops == 0)continue;
-					charaList.push(_characterS);
-				}
-				for each(_characterS in this._friendlist){
-					if(!_characterS.visible || _characterS.member.troops == 0)continue;
-					charaList.push(_characterS);
-				}
-				
-				for each(_characterS in charaList){
-					if(!_characterS.visible)continue;
-					if(mouseX > _characterS.x + this._mapCoordinate.x && mouseX < _characterS.x + this._mapCoordinate.x + this._nodeLength && 
-						mouseY > _characterS.y + this._mapCoordinate.y && mouseY < _characterS.y + this._mapCoordinate.y + this._nodeLength){
-						getcharacter = true;
-						if(mouseX > LSouSouObject.charaSNow.x + this._mapCoordinate.x - this._nodeLength && mouseX < LSouSouObject.charaSNow.x + this._mapCoordinate.x + 2*this._nodeLength
-							&& mouseY > LSouSouObject.charaSNow.y + this._mapCoordinate.y - this._nodeLength && mouseY < LSouSouObject.charaSNow.y + this._mapCoordinate.y + 2*this._nodeLength){
-								LSouSouObject.charaSNow.targetCharacter = _characterS;
-								
-								var xmllist:XML;
-								var ishava:Boolean;
-								for each(xmllist in LSouSouObject.propsList.elements()){
-									if(int(xmllist.@index) == int(_props.index.toString())){
-										xmllist.@num = int(xmllist.@num) - 1;
-										ishava = true;
-										break;
-									}
-								}
-								cancel_menu.removeAllEventListener();
-								cancel_menu.visible = false;
-								LSouSouObject.charaSNow.propsCalculate();
-								break;
-						}
-						if(getcharacter)break;
-					}
-				}
-				
-			}else if(_strategy != null){
-				var intX:int = int((mouseX - _mapCoordinate.x)/_nodeLength);
-				var intY:int = int((mouseY - _mapCoordinate.y)/_nodeLength);
-				if(!LSouSouCalculate.canUseMeff(intX,intY,_strategy)){
-					window = new LSouSouWindow();
-					window.setMsg(["此地形无法使用",1,30]);
-					LGlobal.script.scriptLayer.addChild(window);
-					return;
-				}
-				
-				if(_strategy.Belong == 1){
-					charaList = _enemylist;
-				}else if(_strategy.Belong == 0){
-					
-					charaList = new Vector.<LSouSouCharacterS>();
-					
-					for each(_characterS in this._ourlist){
-						if(!_characterS.visible || _characterS.member.troops == 0)continue;
-						charaList.push(_characterS);
-					}
-					for each(_characterS in this._friendlist){
-						if(!_characterS.visible || _characterS.member.troops == 0)continue;
-						charaList.push(_characterS);
-					}
-				}
-				for each(_characterS in charaList){
-					if(!_characterS.visible)continue;
-					if(mouseX > _characterS.x + this._mapCoordinate.x && mouseX < _characterS.x + this._mapCoordinate.x + this._nodeLength && 
-						mouseY > _characterS.y + this._mapCoordinate.y && mouseY < _characterS.y + this._mapCoordinate.y + this._nodeLength){
-						getcharacter = true;
-						
-						for each(nodeStr in _strategy.Range.elements()){
-							nodeArr = nodeStr.split(",");
-							if(LSouSouObject.charaSNow.locationX  + int(nodeArr[0]) == _characterS.locationX && 
-								LSouSouObject.charaSNow.locationY + int( nodeArr[1]) == _characterS.locationY){
-								if(!LSouSouCalculate.belongMeff(_characterS)){
-									return;
-								}else{
-									LSouSouObject.sMap.cancel_menu.removeAllEventListener();
-									LSouSouObject.sMap.cancel_menu.visible = false;
-									LSouSouObject.charaSNow.targetCharacter = _characterS;
-									LSouSouObject.charaSNow.strategyAttackCalculate();
-								}
-								break;
-							}
-						}
-						if(getcharacter)break;
-					}
-				}
-			}else{
-				var isChara:Boolean;
-				if(_menu != null){
-					_sMenu.onClick(_menu,mouseX,mouseY);
-				}else{
-					var sx:int;
-					var sy:int;
-					var act:int;
-					//是否点击我军
-					for each(_characterS in this._ourlist){
-						if(!_characterS.visible)continue;
-						if(mouseX > _characterS.x + this._mapCoordinate.x && mouseX < _characterS.x + this._mapCoordinate.x + this._nodeLength && 
-							mouseY > _characterS.y + this._mapCoordinate.y && mouseY < _characterS.y + this._mapCoordinate.y + this._nodeLength){
-							LSouSouObject.charaSNow = _characterS;
-							
-							sx = LSouSouObject.charaSNow.x;
-							sy = LSouSouObject.charaSNow.y;
-							act = LSouSouObject.charaSNow.action;
-							LSouSouObject.returnFunction = function ():void{
-								LSouSouObject.charaSNow.x = sx;
-								LSouSouObject.charaSNow.y = sy;
-								LSouSouObject.charaSNow.action = act;
-								LSouSouObject.charaSNow.tagerCoordinate=LSouSouObject.charaSNow.xy; 
-								
-								_menu = _sMenu.addSMenu(LSouSouObject.charaSNow.xy,"select");
-								_menuLayer.addChild(_menu);
-							}
-							LSouSouObject.returnFunction();
-							return;
-						}
-					}
-					//是否点击友军
-					for each(_characterS in this._friendlist){
-						if(!_characterS.visible)continue;
-						if(mouseX > _characterS.x + this._mapCoordinate.x && mouseX < _characterS.x + this._mapCoordinate.x + this._nodeLength && 
-							mouseY > _characterS.y + this._mapCoordinate.y && mouseY < _characterS.y + this._mapCoordinate.y + this._nodeLength){
-							LSouSouObject.charaSNow = _characterS;
-							
-							sx = LSouSouObject.charaSNow.x;
-							sy = LSouSouObject.charaSNow.y;
-							act = LSouSouObject.charaSNow.action;
-							LSouSouObject.returnFunction = function ():void{
-								LSouSouObject.charaSNow.x = sx;
-								LSouSouObject.charaSNow.y = sy;
-								LSouSouObject.charaSNow.action = act;
-								LSouSouObject.charaSNow.tagerCoordinate=LSouSouObject.charaSNow.xy; 
-								
-								_menu = _sMenu.addSMenu(LSouSouObject.charaSNow.xy,"select");
-								_menuLayer.addChild(_menu);
-							}
-							LSouSouObject.returnFunction();
-							return;
-						}
-					}
-					//是否点击敌军
-					for each(_characterS in this._enemylist){
-						if(!_characterS.visible)continue;
-						if(mouseX > _characterS.x + this._mapCoordinate.x && mouseX < _characterS.x + this._mapCoordinate.x + this._nodeLength && 
-							mouseY > _characterS.y + this._mapCoordinate.y && mouseY < _characterS.y + this._mapCoordinate.y + this._nodeLength){
-							LSouSouObject.charaSNow = _characterS;
-							
-							sx = LSouSouObject.charaSNow.x;
-							sy = LSouSouObject.charaSNow.y;
-							act = LSouSouObject.charaSNow.action;
-							LSouSouObject.returnFunction = function ():void{
-								LSouSouObject.charaSNow.x = sx;
-								LSouSouObject.charaSNow.y = sy;
-								LSouSouObject.charaSNow.action = act;
-								LSouSouObject.charaSNow.tagerCoordinate=LSouSouObject.charaSNow.xy; 
-								
-								_menu = _sMenu.addSMenu(LSouSouObject.charaSNow.xy,"select");
-								_menuLayer.addChild(_menu);
-							}
-							LSouSouObject.returnFunction();
-							return;
-						}
-					}
-					//点击战场，显示地形
-					if(LSouSouObject.storyCtrl || _menu || _mapIsMove || mouseX > 760)return;
-					
-					window = new LSouSouWindwoTerrain();
-					(window as LSouSouWindwoTerrain).show(mouseX,mouseY);
-					LGlobal.script.scriptLayer.addChild(window);
-				}
-			}
+			_smapClick.onUp(mouseX,mouseY);
 		}
-		
-		private function drawMap():void{
-			var node:Node;
-			var nodeStr:String;
-			var nodeArr:Array;
-			var statusBit:BitmapData;
-			var meffShow:LSouSouMeffShow,i:int;
-			_drawLayer.graphics.clear();
-			
-			/**画地图*/
-			this._map.bitmapData.copyPixels(_mapBitmapData,new Rectangle(-_mapCoordinate.x,-_mapCoordinate.y,SCREEN_WIDTH,SCREEN_HEIGHT),new Point(0,0));
-			/**画小地图*/
-			_miniMap.bitmapData.copyPixels(_minimapBitmapData,_minimapBitmapData.rect,new Point(5,5));
-			if(mouseX < 300){
-				_miniWindow.x = SCREEN_WIDTH - _miniMap.width;
-			}else if(mouseX > 500){
-				_miniWindow.x = 0;
-			}
-			/**画人物*/
-			for each(_characterS in _ourlist){
-				if(!_characterS.visible)continue;
-				_characterS.onFrame();
-				drawMiniMap(_characterS);
-				/**判断是否需要绘制人物*/
-				if(_characterS.x + _mapCoordinate.x >= 0 && _characterS.x + _mapCoordinate.x < SCREEN_WIDTH &&
-					_characterS.y + _mapCoordinate.y >= 0 && _characterS.y + _mapCoordinate.y < SCREEN_HEIGHT){
-					
-					if(_characterS.action_mode == LSouSouCharacterS.MODE_STOP)_characterS.colorTrans(-70);
-					if(_characterS.action_mode == LSouSouCharacterS.MODE_BREAKOUT)_characterS.colorTrans(100);
-					this._map.bitmapData.copyPixels(_characterS.bitmapData,
-						new Rectangle(0,0,_characterS.width,_characterS.height),
-						new Point(_characterS.x + _mapCoordinate.x + _characterS.point.x,
-							_characterS.y + _mapCoordinate.y + (_nodeLength - _characterS.height)/2));
-					statusBit = _characterS.drawStatus();
-					if(statusBit)_map.bitmapData.copyPixels(statusBit,statusBit.rect,
-						new Point(_characterS.x + _mapCoordinate.x + _characterS.point.x + _characterS.statusX,
-							_characterS.y + _mapCoordinate.y + (_nodeLength - _characterS.height)/2));
-					//船
-					if(LSouSouObject.sMap.mapData[_characterS.locationY][_characterS.locationX] == 13)
-						this._map.bitmapData.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["stage"],"boatmask"+(_characterS.animation.currentframe + 2) % 2),
-							new Rectangle(0,0,_characterS.width,_characterS.height),
-							new Point(_characterS.x + _mapCoordinate.x + _characterS.point.x,
-								_characterS.y + _mapCoordinate.y + (_nodeLength - _characterS.height)/2));
-				}
-			}
-			
-			for each(_characterS in _enemylist){
-				if(!_characterS.visible)continue;
-				_characterS.onFrame();
-				drawMiniMap(_characterS);
-				/**判断是否需要绘制人物*/
-				if(_characterS.x + _mapCoordinate.x >= 0 && _characterS.x + _mapCoordinate.x < SCREEN_WIDTH &&
-					_characterS.y + _mapCoordinate.y >= 0 && _characterS.y + _mapCoordinate.y < SCREEN_HEIGHT){
-					
-					if(_characterS.action_mode == LSouSouCharacterS.MODE_STOP)_characterS.colorTrans(-70);
-					if(_characterS.action_mode == LSouSouCharacterS.MODE_BREAKOUT)_characterS.colorTrans(100);
-					this._map.bitmapData.copyPixels(_characterS.bitmapData,
-						new Rectangle(0,0,_characterS.width,_characterS.height),
-						new Point(_characterS.x + _mapCoordinate.x + _characterS.point.x,
-							_characterS.y + _mapCoordinate.y + _characterS.point.y));
-					statusBit = _characterS.drawStatus();
-					if(statusBit)_map.bitmapData.copyPixels(statusBit,statusBit.rect,
-						new Point(_characterS.x + _mapCoordinate.x + _characterS.point.x + _characterS.statusX,
-							_characterS.y + _mapCoordinate.y + (_nodeLength - _characterS.height)/2));
-					//船
-					if(LSouSouObject.sMap.mapData[_characterS.locationY][_characterS.locationX] == 13)
-						this._map.bitmapData.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["stage"],"boatmask" + (_characterS.animation.currentframe + 2) % 2),
-							new Rectangle(0,0,_characterS.width,_characterS.height),
-							new Point(_characterS.x + _mapCoordinate.x + _characterS.point.x,
-								_characterS.y + _mapCoordinate.y + (_nodeLength - _characterS.height)/2));
-				}
-			}
-			for each(_characterS in _friendlist){
-				if(!_characterS.visible)continue;
-				_characterS.onFrame();
-				drawMiniMap(_characterS);
-				/**判断是否需要绘制人物*/
-				if(_characterS.x + _mapCoordinate.x >= 0 && _characterS.x + _mapCoordinate.x < SCREEN_WIDTH &&
-					_characterS.y + _mapCoordinate.y >= 0 && _characterS.y + _mapCoordinate.y < SCREEN_HEIGHT){
-					
-					if(_characterS.action_mode == LSouSouCharacterS.MODE_STOP)_characterS.colorTrans(-70);
-					if(_characterS.action_mode == LSouSouCharacterS.MODE_BREAKOUT)_characterS.colorTrans(100);
-					this._map.bitmapData.copyPixels(_characterS.bitmapData,
-						new Rectangle(0,0,_characterS.width,_characterS.height),
-						new Point(_characterS.x + _mapCoordinate.x + _characterS.point.x,
-							_characterS.y + _mapCoordinate.y + (_nodeLength - _characterS.height)/2));
-					statusBit = _characterS.drawStatus();
-					if(statusBit)_map.bitmapData.copyPixels(statusBit,statusBit.rect,
-						new Point(_characterS.x + _mapCoordinate.x + _characterS.point.x + _characterS.statusX,
-							_characterS.y + _mapCoordinate.y + (_nodeLength - _characterS.height)/2));
-					//船
-					if(LSouSouObject.sMap.mapData[_characterS.locationY][_characterS.locationX] == 13)
-						this._map.bitmapData.copyPixels(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["stage"],"boatmask" + (_characterS.animation.currentframe + 2) % 2),
-							new Rectangle(0,0,_characterS.width,_characterS.height),
-							new Point(_characterS.x + _mapCoordinate.x + _characterS.point.x,
-								_characterS.y + _mapCoordinate.y + (_nodeLength - _characterS.height)/2));
-				}
-			}
-			//小地图框架
-			LSouSouObject.addBoxBitmapdata(_miniMap.bitmapData);
-			
-			/**画法术*/
-			if(_meff != null){
-				_meff.onFrame();
-				var meffarr:Array;
-				for each(meffarr in _meff.animationList){
-					this._map.bitmapData.copyPixels(meffarr[0].dataBMP,meffarr[0].dataBMP.rect,
-						new Point(_meff.x + meffarr[2] + _mapCoordinate.x,_meff.y + meffarr[3] + _mapCoordinate.y));
-				}
-				
-				_meff.checkOver();
-			}
-			/**画绝招*/
-			if(_skill != null){
-				this._map.bitmapData.copyPixels(_skill.bitmapData,_skill.bitmapData.rect,
-					new Point(_skill.x,_skill.y));
-				_skill.onFrame();
-			}
-			/**画法术演示*/
-			i=0;
-			for each(meffShow in _meffShowList){
-				this._map.bitmapData.copyPixels(meffShow.bitmapData,meffShow.bitmapData.rect,
-					new Point(meffShow.x + _mapCoordinate.x,meffShow.y + _mapCoordinate.y));
-				meffShow.onFrame(i);
-				i++;
-			}
-			/**画路径*/
-			if(this._roadList != null){
-				for each(node in this._roadList){
-					LDisplay.drawRect(_drawLayer.graphics,
-						[node.x*_nodeLength + _mapCoordinate.x,node.y*_nodeLength + _mapCoordinate.y,
-							_nodeLength-1,_nodeLength-1],
-						true,0x0000FF,0.5,3);
-				}
-				for each(nodeStr in LSouSouObject.charaSNow.rangeAttack){
-					nodeArr = nodeStr.split(",");
-					LDisplay.drawRect(_drawLayer.graphics,
-						[LSouSouObject.charaSNow.x + nodeArr[0]*_nodeLength + _mapCoordinate.x,
-							LSouSouObject.charaSNow.y + nodeArr[1]*_nodeLength + _mapCoordinate.y,
-							_nodeLength,_nodeLength],
-						false,0xFF0000,0.5,5);
-				}
-			}else if(_attackRange != null){
-				for each(nodeStr in _attackRange){
-					nodeArr = nodeStr.split(",");
-					LDisplay.drawRect(_drawLayer.graphics,
-						[LSouSouObject.charaSNow.x + nodeArr[0]*_nodeLength + _mapCoordinate.x,
-							LSouSouObject.charaSNow.y + nodeArr[1]*_nodeLength + _mapCoordinate.y,
-							_nodeLength-1,_nodeLength-1],
-						true,0xFF0000,0.5,1);
-				}
-				for each(nodeStr in this._attackTargetRange){
-					nodeArr = nodeStr.split(",");
-					LDisplay.drawRect(_drawLayer.graphics,
-						[int(mouseX/this._nodeLength)*_nodeLength + nodeArr[0]*_nodeLength,
-							int(mouseY/this._nodeLength)*_nodeLength + nodeArr[1]*_nodeLength,
-							_nodeLength,_nodeLength],
-						false,0xFF0000,1,2);
-				}
-			}else if(_strategy != null && _meff == null && LSouSouObject.charaSNow.belong == LSouSouObject.BELONG_SELF){
-				for each(nodeStr in _strategy.Range.elements()){
-					nodeArr = nodeStr.split(",");
-					LDisplay.drawRect(_drawLayer.graphics,
-						[LSouSouObject.charaSNow.x + nodeArr[0]*_nodeLength + _mapCoordinate.x,
-							LSouSouObject.charaSNow.y + nodeArr[1]*_nodeLength + _mapCoordinate.y,
-							_nodeLength-1,_nodeLength-1],
-						true,0xFF0000,0.5,1);
-				}
-				for each(nodeStr in _strategy.Att.elements()){
-					nodeArr = nodeStr.split(",");
-					LDisplay.drawRect(_drawLayer.graphics,
-						[int(mouseX/this._nodeLength)*_nodeLength + nodeArr[0]*_nodeLength,
-							int(mouseY/this._nodeLength)*_nodeLength + nodeArr[1]*_nodeLength,
-							_nodeLength,_nodeLength],
-						false,0xFF0000,1,2);
-				}
-			}
-			/**画方框*/
-			if(mouseX<SCREEN_WIDTH)LDisplay.drawRect(_drawLayer.graphics,[int(mouseX/_nodeLength)*_nodeLength,int(mouseY/_nodeLength)*_nodeLength,_nodeLength,_nodeLength],false,0xffffff,0.8,3);
-			/**画战场物件*/
-			if(_stageList.length > 0){
-				////战场物件，火，船等[icon,index,maxindex,x，y，fun,stageindex]
-				for each(nodeArr in _stageList){
-					var stageImg:BitmapData = LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["stage"],nodeArr[0] + nodeArr[1]);
-					var upX:int = int((stageImg.width/2)/this._nodeLength)*this._nodeLength;
-					var upY:int = int((stageImg.height/2)/this._nodeLength)*this._nodeLength;
-					this._map.bitmapData.copyPixels(stageImg,stageImg.rect,	
-						new Point(nodeArr[3] + _mapCoordinate.x - upX,nodeArr[4] + _mapCoordinate.y - upY));
-					nodeArr[1] = int(nodeArr[1]) + 1;
-					if(int(nodeArr[1]) > nodeArr[2])(nodeArr[5] as Function)(nodeArr);
-				}
-			}
-			/**画伤害值等*/
-			if(_numList.length > 0)drawNum();
-			
-			/**画回合*/
-			if(_roundCtrl)roundShow();
-			
-			/**画menu*/
-			if(_menu != null){
-				_sMenu.onMove(_menu,mouseX,mouseY);
-			}
-			/**画单条*/
-			if(LSouSouObject.window != null && LSouSouObject.window.name == "singled"){
-				LSouSouObject.window.windowSingled.draw();
-			}
-		}
+
 	}
 }

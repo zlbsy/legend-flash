@@ -63,20 +63,20 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 							}
 						}
 						if(mbr == null){LGlobal.script.analysis();return;}
-						if(param[1] > 0)mbr.helmet = new XMLList("<Helmet>"+param[1]+"</Helmet>");
-						if(param[2] > 0)mbr.equipment = new XMLList("<Equipment lv='"+param[3]+"' exp='0'>"+param[2]+"</Equipment>");
-						if(param[4] > 0)mbr.weapon = new XMLList("<Weapon lv='"+param[5]+"' exp='0'>"+param[4]+"</Weapon>");
-						if(param[6] > 0)mbr.horse = new XMLList("<Horse>"+param[6]+"</Horse>");
+						if(param[1] > 0)mbr.helmet = new XMLList("<Helmet id='"+LSouSouObject.itemObjectId+"' lv='0' exp='0'>"+param[1]+"</Helmet>");
+						if(param[2] > 0)mbr.equipment = new XMLList("<Equipment id='"+LSouSouObject.itemObjectId+"' lv='"+param[3]+"' exp='0'>"+param[2]+"</Equipment>");
+						if(param[4] > 0)mbr.weapon = new XMLList("<Weapon id='"+LSouSouObject.itemObjectId+"' lv='"+param[5]+"' exp='0'>"+param[4]+"</Weapon>");
+						if(param[6] > 0)mbr.horse = new XMLList("<Horse id='"+LSouSouObject.itemObjectId+"' lv='0' exp='0'>"+param[6]+"</Horse>");
 						
 					}else{
 						var charas:LSouSouCharacterS;
 						charas = ScriptSouSouSCharacter.getCharacterS(param[0]);
 						if(charas == null){LGlobal.script.analysis();return;}
 						mbr = charas.member;
-						if(param[1] > 0)mbr.helmet = new XMLList("<Helmet>"+param[1]+"</Helmet>");
-						if(param[2] > 0)mbr.equipment = new XMLList("<Equipment lv='"+param[3]+"' exp='0'>"+param[2]+"</Equipment>");
-						if(param[4] > 0)mbr.weapon = new XMLList("<Weapon lv='"+param[5]+"' exp='0'>"+param[4]+"</Weapon>");
-						if(param[6] > 0)mbr.horse = new XMLList("<Horse>"+param[6]+"</Horse>");
+						if(param[1] > 0)mbr.helmet = new XMLList("<Helmet id='"+LSouSouObject.itemObjectId+"' lv='0' exp='0'>"+param[1]+"</Helmet>");
+						if(param[2] > 0)mbr.equipment = new XMLList("<Equipment id='"+LSouSouObject.itemObjectId+"' lv='"+param[3]+"' exp='0'>"+param[2]+"</Equipment>");
+						if(param[4] > 0)mbr.weapon = new XMLList("<Weapon id='"+LSouSouObject.itemObjectId+"' lv='"+param[5]+"' exp='0'>"+param[4]+"</Weapon>");
+						if(param[6] > 0)mbr.horse = new XMLList("<Horse id='"+LSouSouObject.itemObjectId+"' lv='0' exp='0'>"+param[6]+"</Horse>");
 						
 					}
 					trace("mbr = ",mbr.data);

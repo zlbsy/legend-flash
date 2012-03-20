@@ -56,6 +56,8 @@ package zhanglubin.legend.game.sousou.object
 		public static var rMap:LSouSouRMap;
 		public static var sMap:LSouSouSMap;
 		public static var storyCtrl:Boolean;
+
+
 		public static var returnFunction:Function;
 		public static var checkFunction:Function;
 		public static var memberList:Array;
@@ -64,6 +66,7 @@ package zhanglubin.legend.game.sousou.object
 		public static var money:int;
 		public static var itemsList:XML = <data></data>;
 		public static var propsList:XML = <data></data>;
+		private static var _itemObjectId:int=0;
 		
 		/** 
 		 *S存档回复用xml
@@ -83,6 +86,10 @@ package zhanglubin.legend.game.sousou.object
 			<list index='1' num='10' />
 		</data>;
 		*/
+		public static function get itemObjectId():int
+		{
+			return _itemObjectId++;
+		}
 		public static function addBoxBitmapdata(_menuBitmapData:BitmapData):BitmapData{
 			var bar_h:int = 15;
 			var btn_h:int = 34;

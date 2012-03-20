@@ -369,21 +369,21 @@ package zhanglubin.legend.game.sousou.script
 					break;
 				case "SouSouSCharacter.addOur":
 					if(LSouSouObject.sMapSaveXml == null){
-						LSouSouObject.sMap.addOurCharacter(lineValue.substring(start+1,end).split(","));
+						addOurCharacter(lineValue.substring(start+1,end).split(","));
 					}else{
 						initialization();
 					}
 					break;
 				case "SouSouSCharacter.addEnemy":
 					if(LSouSouObject.sMapSaveXml == null){
-						LSouSouObject.sMap.addEnemyCharacter(lineValue.substring(start+1,end).split(","));
+						addEnemyCharacter(lineValue.substring(start+1,end).split(","));
 					}else{
 						initialization();
 					}
 					break;
 				case "SouSouSCharacter.addFriend":
 					if(LSouSouObject.sMapSaveXml == null){
-						LSouSouObject.sMap.addFriendCharacter(lineValue.substring(start+1,end).split(","));
+						addFriendCharacter(lineValue.substring(start+1,end).split(","));
 					}else{
 						initialization();
 					}
@@ -392,6 +392,46 @@ package zhanglubin.legend.game.sousou.script
 					initialization();
 			}
 			
+		}
+		private function addEnemyCharacter(param:Array):void{
+			var mbr:LSouSouMember;
+			var memberxml:XMLList = LSouSouObject.chara["peo"+param[0]];
+			memberxml.Index = param[0];
+			memberxml.Lv = param[1];
+			mbr = new LSouSouMember(new XML(memberxml.toString()));
+			
+			var _characterS:LSouSouCharacterS;
+			_characterS = new LSouSouCharacterS(mbr,1,int(param[2]),int(param[6]));
+			_characterS.xy = new LCoordinate(int(param[3])*LSouSouObject.sMap.nodeLength,int(param[4])*LSouSouObject.sMap.nodeLength);
+			
+			_characterS.tagerCoordinate = _characterS.xy;
+			if(param[5] == "0")_characterS.visible = false;
+			_characterS.member.troops = _characterS.member.maxTroops;
+			_characterS.member.strategy = _characterS.member.maxStrategy;
+			LSouSouObject.sMap.enemylist.push(_characterS);
+			
+			//this.initialization();
+			initialization();
+		}
+		private function addOurCharacter(param:Array):void{
+			if(int(param[0]) >= LSouSouObject.perWarList.length){
+				initialization();
+				return;
+			}
+			var mbr:LSouSouMember;
+			var _characterS:LSouSouCharacterS;
+			
+			for each(mbr in LSouSouObject.memberList)if(mbr.index == LSouSouObject.perWarList[int(param[0])])break;
+			
+			_characterS = new LSouSouCharacterS(mbr,0,int(param[1]),0);
+			_characterS.xy = new LCoordinate(int(param[2])*LSouSouObject.sMap.nodeLength,int(param[3])*LSouSouObject.sMap.nodeLength);
+			_characterS.tagerCoordinate = _characterS.xy;
+			if(param[4] == "0")_characterS.visible = false;
+			_characterS.member.troops = _characterS.member.maxTroops;
+			_characterS.member.strategy = _characterS.member.maxStrategy;
+			LSouSouObject.sMap.ourlist.push(_characterS);
+			//this.initialization();
+			initialization();
 		}
 		private function addFriendCharacter(param:Array):void{
 			var mbr:LSouSouMember;
