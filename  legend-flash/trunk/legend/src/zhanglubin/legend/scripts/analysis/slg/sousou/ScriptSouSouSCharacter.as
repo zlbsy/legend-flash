@@ -493,7 +493,7 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 		}
 		private static function changeAction(params:Array):void{
 			var charas:LSouSouCharacterS = getCharacterS(int(params[0]));
-			if(charas == null){LGlobal.script.analysis();return;}
+			if(charas == null || !charas.visible){LGlobal.script.analysis();return;}
 			LSouSouSMapMethod.setLocationAtChara(charas);
 			LSouSouObject.runSChara = charas;
 			switch(params[1]){

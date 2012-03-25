@@ -19,7 +19,7 @@ package zhanglubin.legend.display
 		 * 事件储存器
 		 */
 		private var _eventList:Array;
-		private var _disposeList:Array;
+		private var _save:Boolean = true;
 		/**
 		 * legend的Bitmap类继承自flash.display.Bitmap
 		 * @author lufy(lufy.legend＠gmail.com)
@@ -27,25 +27,19 @@ package zhanglubin.legend.display
 		public function LBitmap(bitmapData:BitmapData = null,pixelSnapping:String = "auto",smoothing:Boolean = false)
 		{
 			this._eventList = new Array();
-			this._disposeList = new Array();
 			super(bitmapData,pixelSnapping,smoothing);
 		}
 		
-		/**
-		 * 待销毁bitmapdata储存器
-		 */
-		public function get disposeList():Array
+		public function get save():Boolean
 		{
-			return _disposeList;
+			return _save;
 		}
 
-		/**
-		 * @private
-		 */
-		public function set disposeList(value:Array):void
+		public function set save(value:Boolean):void
 		{
-			_disposeList = value;
+			_save = value;
 		}
+
 
 		override public function addEventListener(type:String, listener:Function, useCapture:Boolean=false, priority:int=0, useWeakReference:Boolean=true):void{
 			var eventList:Array = [type,listener,useCapture,priority,useWeakReference];
@@ -69,9 +63,8 @@ package zhanglubin.legend.display
 		public function die():void{
 			//移除所有事件
 			this.removeAllEventListener();
-			while(this._disposeList.length > 0){
-				(this._disposeList[0] as BitmapData).dispose();
-				this._disposeList.shift();
+			if(!_save){
+				this.bitmapData.dispose();
 			}
 		}
 		/**

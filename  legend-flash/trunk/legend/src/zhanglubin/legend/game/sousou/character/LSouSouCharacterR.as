@@ -403,6 +403,14 @@ package zhanglubin.legend.game.sousou.character
 			this._animation.run(this.mode);
 			this.bitmapData = this._animation.dataBMP;
 		}
+		override public function die():void{
+			var i:int,j:int,arr:Array;
+			for(i=0;i<_dataArray.length;i++){
+				arr = _dataArray[i];
+				for(j=0;j<arr.length;j++)(arr[j] as BitmapData).dispose();
+			}
+			super.die();
+		}
 		public function get action():int
 		{
 			return this._animation.rowIndex;

@@ -59,15 +59,15 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 			}
 			
 			var varlable:String = "<data>";
-			for(i = 0;i<1000;i++){
-				if(LGlobal.script.scriptArray.varList["sousou" + i] != null && LGlobal.script.scriptArray.varList["sousou" + i].toString().length > 0){
-					varlable += "<varlable name='sousou"+i+"'>"+LGlobal.script.scriptArray.varList["sousou" + i]+"<varlable>";
+			for(var key:String in LGlobal.script.scriptArray.varList){
+				if(LGlobal.script.scriptArray.varList[key] != null && LGlobal.script.scriptArray.varList[key].toString().length > 0){
+					varlable += "<varlable name='" + key + "'>"+LGlobal.script.scriptArray.varList[key]+"</varlable>";
 				}
 			}
 			varlable += "</data>";
 			
 			//如果R剧情进行中，则储存R存档，否则进行S存档
-			if(LSouSouObject.rMap != null){
+			if(LSouSouObject.sMap == null){
 				/*
 				bytes.writeUTF("R");
 				bytes.writeUTF(start_file);
@@ -85,13 +85,27 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 					LSouSouObject.itemsList.toXMLString(),
 					LSouSouObject.propsList.toXMLString(),
 					LSouSouObject.money,
-					varlable
+					varlable,
+					new XML("<data></data>")
 				];
 			}else{
 				var mapXml:XML = new XML("<data></data>");
 				var charaXml:XML = new XML("<charalist></charalist>");
 				var stageList:XML = new XML("<stagelist></stagelist>");
+				var weatherXml:XML = new XML("<weather>" + 
+					"<weatherIndex>" + LSouSouObject.sMap.weatherIndex + "</weatherIndex>" + 
+					"<weatherArray>" + 
+					LSouSouObject.sMap.weather[0][1] + "," + 
+					LSouSouObject.sMap.weather[1][1] + "," + 
+					LSouSouObject.sMap.weather[2][1] + "," + 
+					LSouSouObject.sMap.weather[3][1] + "," + 
+					LSouSouObject.sMap.weather[4][1] +  
+					"</weatherArray>" + 
+					"</weather>");
+				var conditionXml:XML = new XML("<condition>" + LSouSouObject.sMap.condition.join(",") + "</condition>");
 				var charas:LSouSouCharacterS;
+				mapXml.appendChild(conditionXml);
+				mapXml.appendChild(weatherXml);
 				mapXml.roundCount = LSouSouObject.sMap.roundCount;
 				mapXml.mapCoordinate = LSouSouObject.sMap.mapCoordinate.toString();
 				LSouSouObject.sMap.stageList;
@@ -141,7 +155,6 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 		public static function readGameAsFile(name:String = "save1"):void{
 			var savepath:String = LGlobal.script.scriptArray.varList["savepath"];
 			var saveArray:Array = LGlobal.script.scriptLayer["readGame"](name,savepath);
-			trace("-- read --" ,saveArray);
 			
 			var type:String = saveArray[0];
 			var start_file:String = saveArray[1];

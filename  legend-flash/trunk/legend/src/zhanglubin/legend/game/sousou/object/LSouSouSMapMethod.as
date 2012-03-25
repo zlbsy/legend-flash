@@ -24,7 +24,14 @@ package zhanglubin.legend.game.sousou.object
 				case "SouSouSMapChange.removeStage":
 					removeStage(params);
 					break;
+				case "SouSouSMapChange.chageWeather":
+					chageWeather(params);
+					break;
 			}
+		}
+		private static function chageWeather(params:Array):void{
+			if(params.length > 0)LSouSouObject.sMap.weatherIndex = int(params[0]);
+			LGlobal.script.analysis();
 		}
 		private static function removeStage(params:Array):void{
 			var i:int;

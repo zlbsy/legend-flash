@@ -105,11 +105,7 @@ package zhanglubin.legend.game.sousou.map.window
 			LDisplay.drawRect(_shopLayer.graphics,[0,1+this._shopIndex*60,380,58],true,color,0.2,5);
 			//Props
 			var propsXml:XMLList = LSouSouObject.props["Props" + param[0]];
-			var propsBit:LBitmap = new LBitmap(
-				LGlobal.getBitmapData(
-					LGlobal.script.scriptArray.swfList["item"],propsXml["Icon"]
-				)
-			);
+			var propsBit:LBitmap = new LBitmap(LSouSouObject.itemImg[propsXml.Icon]);
 			propsBit.width = 50;
 			propsBit.height = 50;
 			propsBit.xy = new LCoordinate(0,this._shopIndex*60+5);
@@ -143,11 +139,7 @@ package zhanglubin.legend.game.sousou.map.window
 		}
 		private function showProps(param:Array):void{
 			var propsXml:XMLList = LSouSouObject.props["Props" + param[0]];
-			var propsBit:LBitmap = new LBitmap(
-				LGlobal.getBitmapData(
-					LGlobal.script.scriptArray.swfList["item"],propsXml["Icon"]
-				)
-			);
+			var propsBit:LBitmap = new LBitmap(LSouSouObject.itemImg[propsXml.Icon]);
 			propsBit.width = 100;
 			propsBit.height = 100;
 			propsBit.xy = new LCoordinate(10,10);
@@ -324,11 +316,7 @@ package zhanglubin.legend.game.sousou.map.window
 			
 			
 			var itemXml:XMLList = LSouSouObject.item["Child" + param[0]];
-			var itemBit:LBitmap = new LBitmap(
-				LGlobal.getBitmapData(
-					LGlobal.script.scriptArray.swfList["item"],itemXml["Icon"]
-				)
-			);
+			var itemBit:LBitmap = new LBitmap(LSouSouObject.itemImg[itemXml.Icon]);
 			itemBit.width = 50;
 			itemBit.height = 50;
 			itemBit.xy = new LCoordinate(0,this._shopIndex*60+5);
@@ -368,11 +356,7 @@ package zhanglubin.legend.game.sousou.map.window
 		}
 		private function showItem(param:Array):void{
 			var itemXml:XMLList = LSouSouObject.item["Child" + param[0]];
-			var itemBit:LBitmap = new LBitmap(
-				LGlobal.getBitmapData(
-					LGlobal.script.scriptArray.swfList["item"],itemXml["Icon"]
-				)
-			);
+			var itemBit:LBitmap = new LBitmap(LSouSouObject.itemImg[itemXml.Icon]);
 			itemBit.width = 100;
 			itemBit.height = 100;
 			itemBit.xy = new LCoordinate(10,10);

@@ -28,7 +28,6 @@ package zhanglubin.legend.game.sousou.object
 		public static const SOUND_FLAG:String = "SOUND_FLAG";
 		public static const SPEED_FLAG:String = "SPEED_FLAG";
 		public static const STR_IMG:String = "img";
-		public static const STR_COLOR:String = "color";
 		public static var sound:LSouSouSoundScript = new LSouSouSoundScript();
 		public static var charaR0List:Array = [];
 		public static var charaR1List:Array = [];
@@ -55,6 +54,8 @@ package zhanglubin.legend.game.sousou.object
 		public static var runSChara:LSouSouCharacterS;
 		public static var rMap:LSouSouRMap;
 		public static var sMap:LSouSouSMap;
+		public static var sMapFixLv:Boolean = false;
+		public static var rMapData:Array = [];
 		public static var storyCtrl:Boolean;
 
 

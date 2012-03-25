@@ -146,16 +146,17 @@ package zhanglubin.legend.game.sousou.meff
 					
 					if(LSouSouObject.sMap.strategy.Type.toString() == "1" ||
 						LSouSouObject.sMap.strategy.Type.toString() == "2" ||
-						LSouSouObject.sMap.strategy.Type.toString() == "3"){
+						LSouSouObject.sMap.strategy.Type.toString() == "3" ||
+						LSouSouObject.sMap.strategy.Type.toString() == "4"){
 						toHert(arr[1]);
-					}else if(LSouSouObject.sMap.strategy.Type.toString() == "4"){
-						toAdd(arr[1]);
 					}else if(LSouSouObject.sMap.strategy.Type.toString() == "5"){
 						toChangeStatus(arr[1]);
 					}else if(LSouSouObject.sMap.strategy.Type.toString() == "6"){
 						toChangeStatus2(arr[1]);
 					}else if(LSouSouObject.sMap.strategy.Type.toString() == "7"){
 						toWake(arr[1]);
+					}else if(LSouSouObject.sMap.strategy.Type.toString() == "8"){
+						toAdd(arr[1]);
 					}else{
 						trace("LSouSouMeff onFrame 该策略功能尚未实现");
 					}

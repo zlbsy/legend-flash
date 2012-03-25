@@ -36,7 +36,8 @@ package zhanglubin.legend.game.sousou.map.window
 			var saveList:Array = new Array();
 			systemArray = new Array();
 			setBox(20,70,740,70);
-			saveList.push(LGlobal.script.scriptLayer["readGame"]("save1.slf"));
+			var savepath:String = LGlobal.script.scriptArray.varList["savepath"];
+			saveList.push(LGlobal.script.scriptLayer["readGame"]("save1.slf",savepath));
 			expLbl = new LLabel();
 			expLbl.xy = new LCoordinate(30,80);
 			expLbl.htmlText = "<font color='#ffffff' size='18'>"+
@@ -45,7 +46,7 @@ package zhanglubin.legend.game.sousou.map.window
 			systemArray.push(expLbl);
 			this.addChild(expLbl);
 			setBox(20,150,740,70);
-			saveList.push(LGlobal.script.scriptLayer["readGame"]("save2.slf"));
+			saveList.push(LGlobal.script.scriptLayer["readGame"]("save2.slf",savepath));
 			expLbl = new LLabel();
 			expLbl.xy = new LCoordinate(30,160);
 			expLbl.htmlText = "<font color='#ffffff' size='18'>"+
@@ -54,7 +55,7 @@ package zhanglubin.legend.game.sousou.map.window
 			systemArray.push(expLbl);
 			this.addChild(expLbl);
 			setBox(20,230,740,70);
-			saveList.push(LGlobal.script.scriptLayer["readGame"]("save3.slf"));
+			saveList.push(LGlobal.script.scriptLayer["readGame"]("save3.slf",savepath));
 			expLbl = new LLabel();
 			expLbl.xy = new LCoordinate(30,240);
 			expLbl.htmlText = "<font color='#ffffff' size='18'>"+
@@ -63,7 +64,7 @@ package zhanglubin.legend.game.sousou.map.window
 			systemArray.push(expLbl);
 			this.addChild(expLbl);
 			setBox(20,310,740,70);
-			saveList.push(LGlobal.script.scriptLayer["readGame"]("save4.slf"));
+			saveList.push(LGlobal.script.scriptLayer["readGame"]("save4.slf",savepath));
 			expLbl = new LLabel();
 			expLbl.xy = new LCoordinate(30,320);
 			expLbl.htmlText = "<font color='#ffffff' size='18'>"+
@@ -72,7 +73,7 @@ package zhanglubin.legend.game.sousou.map.window
 			systemArray.push(expLbl);
 			this.addChild(expLbl);
 			setBox(20,390,740,70);
-			saveList.push(LGlobal.script.scriptLayer["readGame"]("save5.slf"));
+			saveList.push(LGlobal.script.scriptLayer["readGame"]("save5.slf",savepath));
 			expLbl = new LLabel();
 			expLbl.xy = new LCoordinate(30,400);
 			expLbl.htmlText = "<font color='#ffffff' size='18'>"+

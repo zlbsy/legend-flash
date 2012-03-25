@@ -13,6 +13,9 @@ package zhanglubin.legend.game.sousou.script
 
 	public class LSouSouSMapScript
 	{
+		private var _lvCount:int = 0;
+		private var _lvNum:int = 0;
+		private var _lvAve:int = 3;
 		public function LSouSouSMapScript()
 		{
 		}
@@ -388,6 +391,12 @@ package zhanglubin.legend.game.sousou.script
 						initialization();
 					}
 					break;
+				case "SetWeather":
+					var params:Array = lineValue.substring(start+1,end).split(","),i:int;
+					for(i=0;i<LSouSouObject.sMap.weather.length;i++){
+						LSouSouObject.sMap.weather[i][1] = params[i];
+					}
+					break;
 				default:
 					initialization();
 			}
@@ -397,7 +406,11 @@ package zhanglubin.legend.game.sousou.script
 			var mbr:LSouSouMember;
 			var memberxml:XMLList = LSouSouObject.chara["peo"+param[0]];
 			memberxml.Index = param[0];
-			memberxml.Lv = param[1];
+			if(LSouSouObject.sMapFixLv){
+				memberxml.Lv = int(param[1]);
+			}else{
+				memberxml.Lv = this._lvAve + int(param[1]);
+			}
 			mbr = new LSouSouMember(new XML(memberxml.toString()));
 			
 			var _characterS:LSouSouCharacterS;
@@ -430,14 +443,22 @@ package zhanglubin.legend.game.sousou.script
 			_characterS.member.troops = _characterS.member.maxTroops;
 			_characterS.member.strategy = _characterS.member.maxStrategy;
 			LSouSouObject.sMap.ourlist.push(_characterS);
-			//this.initialization();
+			
+			this._lvNum++;
+			this._lvCount += _characterS.member.lv;
+			this._lvAve = int(this._lvCount/this._lvNum);
+			
 			initialization();
 		}
 		private function addFriendCharacter(param:Array):void{
 			var mbr:LSouSouMember;
 			var memberxml:XMLList = LSouSouObject.chara["peo"+param[0]];
 			memberxml.Index = param[0];
-			memberxml.Lv = param[1];
+			if(LSouSouObject.sMapFixLv){
+				memberxml.Lv = int(param[1]);
+			}else{
+				memberxml.Lv = this._lvAve + int(param[1]);
+			}
 			mbr = new LSouSouMember(new XML(memberxml.toString()));
 			var charas:LSouSouCharacterS;
 			charas = new LSouSouCharacterS(mbr,-1,int(param[2]),int(param[6]));
