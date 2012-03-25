@@ -1,5 +1,7 @@
 package zhanglubin.legend.scripts
 {
+	import flash.display.BitmapData;
+	
 	import zhanglubin.legend.game.sousou.map.LSouSouRMap;
 	import zhanglubin.legend.game.sousou.map.LSouSouSMap;
 	import zhanglubin.legend.game.sousou.object.LSouSouObject;
@@ -18,11 +20,23 @@ package zhanglubin.legend.scripts
 			var start:int;
 			var end:int;
 			var params:Array;
+			var key:String;
 			switch(childType){
 				case "SouSouObjectLoad":
 					ScriptSouSouLoad.analysis(lineValue);
 					break;
 				case "SouSouRMap":
+					start = lineValue.indexOf("(");
+					end = lineValue.indexOf(")");
+					params = lineValue.substring(start + 1,end).split(",");
+					if(params.length == 0 || int(params[0]) <= 0){
+						for(key in LSouSouObject.rMapData){
+							trace("key = " + key , " data = "+LSouSouObject.rMapData[key]);
+							(LSouSouObject.rMapData[key][0] as BitmapData).dispose();
+							delete LSouSouObject.rMapData[key];
+							//LSouSouObject.rMapData[key] = null;
+						}
+					}
 					var rMap:LSouSouRMap = new LSouSouRMap();
 					break;
 				case "SouSouTalk":
@@ -48,6 +62,14 @@ package zhanglubin.legend.scripts
 					ScriptSouSouMember.analysis(lineValue);
 					break;
 				case "SouSouSMap":
+					start = lineValue.indexOf("(");
+					end = lineValue.indexOf(")");
+					params = lineValue.substring(start + 1,end).split(",");
+					if(params.length == 0 || int(params[0]) <= 0){
+						LSouSouObject.sMapFixLv = false;
+					}else{
+						LSouSouObject.sMapFixLv = true;
+					}
 					var sMap:LSouSouSMap = new LSouSouSMap();
 					break;
 				case "SouSouSMapChange":

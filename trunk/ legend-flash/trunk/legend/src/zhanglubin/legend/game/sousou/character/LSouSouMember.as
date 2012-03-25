@@ -11,7 +11,6 @@ package zhanglubin.legend.game.sousou.character
 		}
 		public function calculation(xmlData:XML):XML{
 			var result:XML = xmlData;
-			
 			result.Helmet = new XMLList("<Helmet>0</Helmet>");
 			result.Equipment = new XMLList("<Equipment lv='1' exp='0'>0</Equipment>");
 			result.Weapon = new XMLList("<Weapon lv='1' exp='0'>0</Weapon>");

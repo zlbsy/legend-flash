@@ -846,7 +846,7 @@ package zhanglubin.legend.game.sousou.character
 						switch(charas.member.skill){
 							case 1:
 								if(skillvalue < int(skillXml.Probability.toString())){
-									LSouSouObject.sMap.setDetails(this.member.name + "特技["+skillXml.Name+"]发动");
+									LSouSouObject.sMap.setDetails(charas.member.name + "特技["+skillXml.Name+"]发动，伤害将为0");
 									hertValue = 0;
 								}
 								break;
@@ -1080,6 +1080,14 @@ package zhanglubin.legend.game.sousou.character
 			this._animation.rowIndex = this._direction + 4;
 			this._animation.run(this.mode);
 			this.bitmapData = this._animation.dataBMP;
+		}
+		override public function die():void{
+			var i:int,j:int,arr:Array;
+			for(i=0;i<_dataArray.length;i++){
+				arr = _dataArray[i];
+				for(j=0;j<arr.length;j++)(arr[j] as BitmapData).dispose();
+			}
+			super.die();
 		}
 		/**
 		 *取得人物位置修正

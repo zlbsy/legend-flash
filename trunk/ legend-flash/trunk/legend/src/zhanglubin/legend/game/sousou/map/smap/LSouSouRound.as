@@ -14,7 +14,8 @@ package zhanglubin.legend.game.sousou.map.smap
 		{
 			super();
 			var bitColor:BitmapData = new BitmapData(50,50,false,0x990000);
-			var belongStr:String = belong == LSouSouObject.BELONG_ENEMY?"敌":(belong == LSouSouObject.BELONG_FRIEND?"友":"我");
+			trace("******* LSouSouRound belong = " + belong);
+			var belongStr:String = (belong == LSouSouObject.BELONG_ENEMY)?"敌":(belong == LSouSouObject.BELONG_FRIEND?"友":"我");
 			_belongLayer = LGlobal.getColorText(bitColor,belongStr + "军回合",150);
 			_belongLayer.y = -_belongLayer.height/2;
 			_countLayer = LGlobal.getColorText(bitColor,"第" + count + "回合",100);

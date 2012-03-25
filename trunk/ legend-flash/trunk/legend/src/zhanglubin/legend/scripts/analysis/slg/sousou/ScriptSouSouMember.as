@@ -42,11 +42,23 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 					LGlobal.script.analysis();
 					break;
 				case "SouSouMember.add":
+					if(LSouSouObject.memberList == null)LSouSouObject.memberList = new Array();
+					var lvCount:int = 0,lvAdd:int = 0,lvEvg:int = 0;
+					if(LSouSouObject.memberList.length > 0){
+						for(i=0;i<LSouSouObject.memberList.length;i++){
+							lvCount += (LSouSouObject.memberList[i] as LSouSouMember).lv;
+						}
+						lvEvg = int(lvCount/LSouSouObject.memberList.length);
+					}
+					if(lvEvg == 0)lvEvg = 1;
+					
 					var memberxml:XMLList = LSouSouObject.chara["peo"+param[0]];
 					memberxml.Index = param[0];
-					memberxml.Lv =  param[1];
+					if(param.length > 1 && int(param[1]) != 0){
+						lvAdd = int(param[1]);
+					}
+					memberxml.Lv =  (lvEvg + lvAdd > 0)?(lvEvg + lvAdd):1;
 					member = new LSouSouMember(new XML(memberxml.toString()));
-					if(LSouSouObject.memberList == null)LSouSouObject.memberList = new Array();
 					LSouSouObject.memberList.push(member);
 					trace("SouSouMember.add LSouSouObject.memberList = ",LSouSouObject.memberList);
 					LGlobal.script.analysis();

@@ -86,20 +86,22 @@ package zhanglubin.legend.game.sousou.map
 		private var _btn_luggage:LButton;
 		private var _btn_system:LButton;
 		private var _btn_gameclose:LButton;
+		private var _mapName:String;
 		public function LSouSouRMap()
 		{
 			LGlobal.script.scriptArray.funList = new Array();
-			analysis();
+			LSouSouObject.storyCtrl = true;
 			LGlobal.script.scriptLayer.addChild(this);
 			LSouSouObject.rMap = this;
 			_mapLayer = new LSprite();
 			_characterLayer = new LSprite();
 			_menuLayer = new LSprite();
 			_rightMenu = new LSouSouCtrlMenuLayer();
+			
+			analysis();
 			_menuLayer.addChild(_rightMenu);
 			
 			//LSouSouObject.R_CLICK_MODE = false;
-			LSouSouObject.storyCtrl = true;
 			
 			if(LGlobal.script.scriptArray.varList[LSouSouObject.SPEED_FLAG] == LSouSouObject.FAST){
 				this.SPEED = 2;
@@ -326,6 +328,12 @@ package zhanglubin.legend.game.sousou.map
 		 * @param param [地图名，后缀名]
 		 */
 		private function addMap(param:Array):void{
+			_mapName = param[0] + "/" + param[1];
+			trace("addMap LSouSouObject.rMapData[_mapName] = " + LSouSouObject.rMapData[_mapName]);
+			if(LSouSouObject.rMapData[_mapName] != null){
+				loadMapOver(null);
+				return;
+			}
 			_loadBar = new LLoading(400);
 			_loadBar.xy = new LCoordinate((LGlobal.stage.stageWidth - _loadBar.width)/2,(LGlobal.stage.stageHeight - _loadBar.height)/2);
 			this.addChild(_loadBar);
@@ -351,27 +359,34 @@ package zhanglubin.legend.game.sousou.map
 		 * @param event 事件
 		 */
 		private function loadMapOver(event:Event):void{
-			var bytes:ByteArray = event.target.data as ByteArray;
-			bytes.uncompress();
-			mapW = bytes.readUnsignedInt(); 
-			mapH = bytes.readUnsignedInt();
-			var mapdata:String = bytes.readUTF();
-			var arr:Array = mapdata.split("\n");
-			var i:int = 0;
-			_mapData = [];
-			while(i<arr.length){
-				_mapData[i] = (arr[i] as String).split(",");
-				i++;
+			var bmd:BitmapData;
+			if(LSouSouObject.rMapData[_mapName] != null){
+				bmd = LSouSouObject.rMapData[_mapName][0];
+				_mapData = LSouSouObject.rMapData[_mapName][1];
+			}else{
+				var bytes:ByteArray = event.target.data as ByteArray;
+				bytes.uncompress();
+				mapW = bytes.readUnsignedInt(); 
+				mapH = bytes.readUnsignedInt();
+				var mapdata:String = bytes.readUTF();
+				var arr:Array = mapdata.split("\n");
+				var i:int = 0;
+				_mapData = [];
+				while(i<arr.length){
+					_mapData[i] = (arr[i] as String).split(",");
+					i++;
+				}
+				bmd = new BitmapData(mapW, mapH, true, 0);
+				bmd.setPixels(bmd.rect, bytes);
+				
+				LSouSouObject.rMapData[_mapName] = [bmd,_mapData];
+				_loadBar.removeFromParent();
 			}
 			LSouSouObject.rStarQuery = new LSouSouStarR(_mapData);
-			
-			var bmd:BitmapData = new BitmapData(mapW, mapH, true, 0);
-			bmd.setPixels(bmd.rect, bytes);
-			this._map = new LBitmap(bmd);
-			
+			this._map = new LBitmap(LSouSouObject.rMapData[_mapName][0].clone());
+			this._map.save = false;
 			_mapLayer.addChild(_map);
 			
-			_loadBar.removeFromParent();
 			
 			this.drawGrid();
 			this.initialization();
@@ -397,6 +412,7 @@ package zhanglubin.legend.game.sousou.map
 			
 			var charaArray:Array = new Array();
 			
+			try{
 			for each(_characterR in _characterList){
 				_characterR.onFrame();
 				charaArray.push({chara:_characterR,y:_characterR.y});
@@ -436,7 +452,6 @@ package zhanglubin.legend.game.sousou.map
 				}else if(_characterR.filters)_characterR.filters = null;
 				
 			}
-			try{
 				gameSort(charaArray);
 			}catch(e:Object){
 			}
@@ -465,6 +480,7 @@ package zhanglubin.legend.game.sousou.map
 		 * @param event 鼠标事件
 		 */
 		private function onUp(event:MouseEvent):void{
+			trace("LSouSouObject.storyCtrl = " + LSouSouObject.storyCtrl);
 			if(LSouSouObject.storyCtrl)return;
 			if(event.target is LButton)return;
 			var isChara:Boolean;

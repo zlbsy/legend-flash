@@ -42,7 +42,7 @@ package zhanglubin.legend.game.sousou.map.window
 			
 			setBox(0,0,LGlobal.stage.stageWidth,LGlobal.stage.stageHeight);
 			
-			var title:LSprite = LGlobal.getColorText(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList[LSouSouObject.STR_IMG],LSouSouObject.STR_COLOR),TITLE_STXT,50);
+			var title:LSprite = LGlobal.getColorText(new BitmapData(50,50,false,0xffffff),TITLE_STXT,50);
 			title.x = 50;
 			title.y = 20;
 			this.addChild(title);

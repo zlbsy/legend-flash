@@ -168,6 +168,7 @@ package zhanglubin.legend.game.sousou.map
 		
 		private var _draw:LSouSouSMapDraw;
 		private var _smapClick:LSouSouSMapClick;
+		private var _smapName:String;
 		
 		public function LSouSouSMap()
 		{
@@ -213,6 +214,20 @@ package zhanglubin.legend.game.sousou.map
 					mbr.strategy = mbr.maxStrategy;
 				}
 			}else{
+				trace(LSouSouObject.sMapSaveXml.toXMLString());
+				this._condition = LSouSouObject.sMapSaveXml.condition.toString().split(",");
+				this._weatherIndex = LSouSouObject.sMapSaveXml.weather.weatherIndex;
+				var weatherArray:Array = LSouSouObject.sMapSaveXml.weather.weatherArray.toString().split(",");
+				this._weather[0][1] = int(weatherArray[0]);
+				this._weather[1][1] = int(weatherArray[1]);
+				this._weather[2][1] = int(weatherArray[2]);
+				this._weather[3][1] = int(weatherArray[3]);
+				this._weather[4][1] = int(weatherArray[4]);
+				this._roundCount = int(LSouSouObject.sMapSaveXml.roundCount);
+				var saveCoordinate:Array = LSouSouObject.sMapSaveXml.mapCoordinate.toString().split(",");
+				this._mapCoordinate.x = saveCoordinate[0];
+				this._mapCoordinate.y = saveCoordinate[1];
+				
 			}
 			this.addChild(_mapLayer);
 			this.addChild(_characterLayer);
@@ -537,7 +552,8 @@ package zhanglubin.legend.game.sousou.map
 			_round_show = value;
 			
 			
-			_roundCtrl = new LSouSouRound(_round_show == 1?0:(_round_show == 2?1:0),_roundCount);
+			trace("******* round_show _round_show = " + _round_show);
+			_roundCtrl = new LSouSouRound(_round_show == 1?0:(_round_show == 2?1:-1),_roundCount);
 			_roundCtrl.x = 84;
 			_roundCtrl.y = 220;
 			this.addChild(_roundCtrl);
@@ -607,6 +623,8 @@ package zhanglubin.legend.game.sousou.map
 		}
 		override public function die():void{
 			LGlobal.script.scriptArray.funList = new Array();
+			this._mapBitmapData.dispose();
+			this.minimapBitmapData.dispose();
 			LSouSouObject.sMap = null;
 			LSouSouObject.sStarQuery = null;
 			LSouSouObject.perWarList = null;
@@ -638,6 +656,7 @@ package zhanglubin.legend.game.sousou.map
 			//存档数据恢复
 			var xmldata:XML,charas:LSouSouCharacterS;
 			for each(xmldata in LSouSouObject.sMapSaveXml.charalist.elements()){
+				trace("LSouSouSMap setSaveCharas xmldata = " + xmldata.toXMLString());
 				var mbr:LSouSouMember = new LSouSouMember(new XML(xmldata["peo" + xmldata.index].toXMLString()));
 				
 				charas = new LSouSouCharacterS(mbr,xmldata.belong,xmldata.direction,xmldata.command);
@@ -679,6 +698,7 @@ package zhanglubin.legend.game.sousou.map
 		 * @param param [地图名，后缀名]
 		 */
 		public function addMap(param:Array):void{
+			_smapName = param[0] + "/" + param[1];
 			_loadBar = new LLoading(400);
 			_loadBar.xy = new LCoordinate((LGlobal.stage.stageWidth - _loadBar.width)/2,(LGlobal.stage.stageHeight - _loadBar.height)/2);
 			this.addChild(_loadBar);
@@ -686,8 +706,7 @@ package zhanglubin.legend.game.sousou.map
 			_urlloader.dataFormat = URLLoaderDataFormat.BINARY;
 			_urlloader.addEventListener(Event.COMPLETE,loadMapOver);
 			_urlloader.addEventListener(ProgressEvent.PROGRESS,progress);
-			_urlloader.load(new URLRequest(param[0] + "/" + param[1]));
-			
+			_urlloader.load(new URLRequest(_smapName));
 		}
 		/**
 		 * 读取地图过程事件
@@ -724,6 +743,8 @@ package zhanglubin.legend.game.sousou.map
 			_minimapBitmapData = new BitmapData(mapW*_miniScale, mapH*_miniScale, true, 0);
 			var rect:Rectangle=new Rectangle(0,0,mapW, mapH);
 			_minimapBitmapData.draw(_mapBitmapData,new Matrix(_miniScale,0,0,_miniScale,0,0),null,null,rect,false);
+			
+			
 			_miniSelf = new BitmapData(_miniScale*36,_miniScale*36,false,0xff0000);
 			_miniFriend = new BitmapData(_miniScale*36,_miniScale*36,false,0xf59249);
 			_miniEnemy = new BitmapData(_miniScale*36,_miniScale*36,false,0x0000ff);
@@ -868,6 +889,10 @@ package zhanglubin.legend.game.sousou.map
 						if(!_characterS.visible || _characterS.member.troops == 0)continue;
 						_characterS.resume();
 					}
+					
+					//天气变化
+					weatherChange();
+					
 				}
 				LSouSouObject.storyCtrl = false;
 				return;
@@ -878,6 +903,19 @@ package zhanglubin.legend.game.sousou.map
 			_roundText.y -= 4;
 			_round_bitmap.height += 8;
 			_round_bitmap.y -= 4;*/
+		}
+		private function weatherChange():void{
+			var index:int = int(Math.random() * 100);
+			var i:int,num:int = 0;
+			for(i=0;i<this.weather.length;i++){
+				if(this.weather[i] + num > index){
+					if(this.weatherIndex != i)_draw.weatherObjectClear();
+					this.weatherIndex = i;
+					break;
+				}else{
+					num += weather[i];
+				}
+			}
 		}
 		public function moveToCoordinate(mx:int,my:int,toCoordinate:LCoordinate = null):void{
 			if(toCoordinate == null)toCoordinate = new LCoordinate(int((mx - this._mapCoordinate.x)/_nodeLength),int((my - this._mapCoordinate.y)/_nodeLength));

@@ -86,7 +86,8 @@ package zhanglubin.legend.game.sousou.menu
 				lbltext.xy = new LCoordinate(25 + (90-lbltext.width)/2,btn_h*index + (btn_h - lbltext.height)/2);
 				_menuBack.addChild(lbltext);
 				
-				img = new LBitmap(LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["item"],LSouSouObject.props["Props"+slist.@index].Icon));
+				img = new LBitmap(
+					LSouSouObject.itemImg[LSouSouObject.props["Props"+slist.@index]["Icon"]]);
 				img.width = 30;
 				img.height = 30;
 				img.xy = new LCoordinate(5,btn_h*index + (btn_h - img.height)/2);

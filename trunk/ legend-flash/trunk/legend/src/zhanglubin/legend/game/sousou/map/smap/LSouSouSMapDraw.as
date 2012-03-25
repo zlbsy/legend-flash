@@ -17,10 +17,14 @@ package zhanglubin.legend.game.sousou.map.smap
 
 	public class LSouSouSMapDraw
 	{
+		private var _weatherObjectList:Array = [];
+		private var _weatherObjectSpeedIndex:int = 0;
 		public function LSouSouSMapDraw()
 		{
 		}
-		
+		public function weatherObjectClear():void{
+			if(this._weatherObjectList.length > 0)this._weatherObjectList.splice(0,this._weatherObjectList.length);
+		}
 		public function drawMap(mouseX:int,mouseY:int):void{
 			var node:Node;
 			var nodeStr:String;
@@ -158,6 +162,102 @@ package zhanglubin.legend.game.sousou.map.smap
 				i++;
 			}
 			/**画路径*/
+			drawRoadList(mouseX,mouseY,_drawLayer,_mapCoordinate);
+
+			/**画方框*/
+			if(mouseX<LSouSouObject.sMap.SCREEN_WIDTH)
+				LDisplay.drawRect(
+					_drawLayer.graphics,
+					[int(mouseX/LSouSouObject.sMap.nodeLength)*LSouSouObject.sMap.nodeLength,int(mouseY/LSouSouObject.sMap.nodeLength)*LSouSouObject.sMap.nodeLength,LSouSouObject.sMap.nodeLength,LSouSouObject.sMap.nodeLength],
+					false,0xffffff,0.8,3);
+			/**画战场物件*/
+			drawStage(_mapCoordinate);
+			
+			/**画天气*/
+			drawWeather(_drawLayer);
+			
+			/**画伤害值等*/
+			if(LSouSouObject.sMap.numList.length > 0)drawNum();
+			
+			/**画回合*/
+			if(LSouSouObject.sMap.roundCtrl)LSouSouObject.sMap.roundShow();
+			
+			/**画menu*/
+			if(LSouSouObject.sMap.menu != null){
+				LSouSouObject.sMap.sMenu.onMove(LSouSouObject.sMap.menu,mouseX,mouseY);
+			}
+			/**画单条*/
+			if(LSouSouObject.window != null && LSouSouObject.window.name == "singled"){
+				LSouSouObject.window.windowSingled.draw();
+			}
+		}
+		/**
+		 * 画天气
+		 * */
+		private function drawWeather(_drawLayer:LShape):void{
+			if(LSouSouObject.sMap.weatherIndex < 2)return;
+			
+			var i:int,arr:Array;
+			if(LSouSouObject.sMap.weatherIndex == 2){
+				if(_weatherObjectSpeedIndex++ > 5){
+					_weatherObjectSpeedIndex = 0;
+					for(i=0;i<10;i++){
+						_weatherObjectList.push([Math.random()*LSouSouObject.sMap.SCREEN_WIDTH,(Math.random() - 2)*LSouSouObject.sMap.SCREEN_HEIGHT]);
+					}
+				}
+				for(i=0;i<_weatherObjectList.length;i++){
+					arr = _weatherObjectList[i];;
+					LDisplay.drawLine(_drawLayer.graphics,[arr[0],arr[1],arr[0],arr[1] + 100],1,0xffffff,0.5);
+					if(arr[1] > LSouSouObject.sMap.SCREEN_HEIGHT){
+						_weatherObjectList.splice(i,1);
+						i--;
+					}else{
+						_weatherObjectList[i][1] += 50;
+					}
+				}
+			}else if(LSouSouObject.sMap.weatherIndex == 3){
+				if(_weatherObjectSpeedIndex++ > 5){
+					_weatherObjectSpeedIndex = 0;
+					for(i=0;i<15;i++){
+						_weatherObjectList.push([Math.random()*LSouSouObject.sMap.SCREEN_WIDTH,(Math.random() - 2)*LSouSouObject.sMap.SCREEN_HEIGHT]);
+					}
+				}
+				for(i=0;i<_weatherObjectList.length;i++){
+					arr = _weatherObjectList[i];;
+					LDisplay.drawLine(_drawLayer.graphics,[arr[0],arr[1],arr[0],arr[1] + 200],1,0xffffff,0.5);
+					if(arr[1] > LSouSouObject.sMap.SCREEN_HEIGHT){
+						_weatherObjectList.splice(i,1);
+						i--;
+					}else{
+						_weatherObjectList[i][1] += 50;
+					}
+				}
+			}else if(LSouSouObject.sMap.weatherIndex == 4){
+				if(_weatherObjectSpeedIndex++ > 5){
+					_weatherObjectSpeedIndex = 0;
+					for(i=0;i<5;i++){
+						_weatherObjectList.push([Math.random()*LSouSouObject.sMap.SCREEN_WIDTH,(Math.random() - 1)*200,2 + Math.random()*4]);
+					}
+				}
+				for(i=0;i<_weatherObjectList.length;i++){
+					arr = _weatherObjectList[i];
+					LDisplay.drawRoundRect(_drawLayer.graphics,[arr[0],arr[1],arr[2],arr[2],arr[2],arr[2]],true,0xffffff,0.4);
+					if(arr[1] > LSouSouObject.sMap.SCREEN_HEIGHT){
+						_weatherObjectList.splice(i,1);
+						i--;
+					}else{
+						_weatherObjectList[i][1] += 5;
+					}
+				}
+			}
+		}
+		/**
+		 * 画路径
+		 * */
+		private function drawRoadList(mouseX:int,mouseY:int,_drawLayer:LShape,_mapCoordinate:LCoordinate):void{
+			var nodeArr:Array;
+			var node:Node;
+			var nodeStr:String;
 			if(LSouSouObject.sMap.roadList != null){
 				for each(node in LSouSouObject.sMap.roadList){
 					LDisplay.drawRect(_drawLayer.graphics,
@@ -208,38 +308,22 @@ package zhanglubin.legend.game.sousou.map.smap
 						false,0xFF0000,1,2);
 				}
 			}
-			/**画方框*/
-			if(mouseX<LSouSouObject.sMap.SCREEN_WIDTH)
-				LDisplay.drawRect(
-					_drawLayer.graphics,
-					[int(mouseX/LSouSouObject.sMap.nodeLength)*LSouSouObject.sMap.nodeLength,int(mouseY/LSouSouObject.sMap.nodeLength)*LSouSouObject.sMap.nodeLength,LSouSouObject.sMap.nodeLength,LSouSouObject.sMap.nodeLength],
-					false,0xffffff,0.8,3);
-			/**画战场物件*/
-			if(LSouSouObject.sMap.stageList.length > 0){
-				////战场物件，火，船等[icon,index,maxindex,x，y，fun,stageindex]
-				for each(nodeArr in LSouSouObject.sMap.stageList){
-					var stageImg:BitmapData = LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["stage"],nodeArr[0] + nodeArr[1]);
-					var upX:int = int((stageImg.width/2)/LSouSouObject.sMap.nodeLength)*LSouSouObject.sMap.nodeLength;
-					var upY:int = int((stageImg.height/2)/LSouSouObject.sMap.nodeLength)*LSouSouObject.sMap.nodeLength;
-					LSouSouObject.sMap.map.bitmapData.copyPixels(stageImg,stageImg.rect,	
-						new Point(nodeArr[3] + _mapCoordinate.x - upX,nodeArr[4] + _mapCoordinate.y - upY));
-					nodeArr[1] = int(nodeArr[1]) + 1;
-					if(int(nodeArr[1]) > nodeArr[2])(nodeArr[5] as Function)(nodeArr);
-				}
-			}
-			/**画伤害值等*/
-			if(LSouSouObject.sMap.numList.length > 0)drawNum();
-			
-			/**画回合*/
-			if(LSouSouObject.sMap.roundCtrl)LSouSouObject.sMap.roundShow();
-			
-			/**画menu*/
-			if(LSouSouObject.sMap.menu != null){
-				LSouSouObject.sMap.sMenu.onMove(LSouSouObject.sMap.menu,mouseX,mouseY);
-			}
-			/**画单条*/
-			if(LSouSouObject.window != null && LSouSouObject.window.name == "singled"){
-				LSouSouObject.window.windowSingled.draw();
+		}
+		/**
+		 * 画战场物件
+		 * */
+		private function drawStage(_mapCoordinate:LCoordinate):void{
+			if(LSouSouObject.sMap.stageList.length <= 0)return;
+			var nodeArr:Array;
+			////战场物件，火，船等[icon,index,maxindex,x，y，fun,stageindex]
+			for each(nodeArr in LSouSouObject.sMap.stageList){
+				var stageImg:BitmapData = LGlobal.getBitmapData(LGlobal.script.scriptArray.swfList["stage"],nodeArr[0] + nodeArr[1]);
+				var upX:int = int((stageImg.width/2)/LSouSouObject.sMap.nodeLength)*LSouSouObject.sMap.nodeLength;
+				var upY:int = int((stageImg.height/2)/LSouSouObject.sMap.nodeLength)*LSouSouObject.sMap.nodeLength;
+				LSouSouObject.sMap.map.bitmapData.copyPixels(stageImg,stageImg.rect,	
+					new Point(nodeArr[3] + _mapCoordinate.x - upX,nodeArr[4] + _mapCoordinate.y - upY));
+				nodeArr[1] = int(nodeArr[1]) + 1;
+				if(int(nodeArr[1]) > nodeArr[2])(nodeArr[5] as Function)(nodeArr);
 			}
 		}
 		private function drawNum():void{
@@ -264,9 +348,9 @@ package zhanglubin.legend.game.sousou.map.smap
 		}
 		private function drawMiniMap(charas:LSouSouCharacterS):void{
 			if(charas.belong == LSouSouObject.BELONG_SELF){
-				LSouSouObject.sMap.miniMap.bitmapData.copyPixels(LSouSouObject.sMap.miniSelf,LSouSouObject.sMap.miniSelf.rect,new Point(LSouSouObject.sMap.miniCoordinate + charas.x*LSouSouObject.sMap.miniCoordinate,LSouSouObject.sMap.miniCoordinate + charas.y*LSouSouObject.sMap.miniScale));
+				LSouSouObject.sMap.miniMap.bitmapData.copyPixels(LSouSouObject.sMap.miniSelf,LSouSouObject.sMap.miniSelf.rect,new Point(LSouSouObject.sMap.miniCoordinate + charas.x*LSouSouObject.sMap.miniScale,LSouSouObject.sMap.miniCoordinate + charas.y*LSouSouObject.sMap.miniScale));
 			}else if(charas.belong == LSouSouObject.BELONG_FRIEND){
-				LSouSouObject.sMap.miniMap.bitmapData.copyPixels(LSouSouObject.sMap.miniSelf,LSouSouObject.sMap.miniFriend.rect,new Point(LSouSouObject.sMap.miniCoordinate + charas.x*LSouSouObject.sMap.miniScale,LSouSouObject.sMap.miniCoordinate + charas.y*LSouSouObject.sMap.miniScale));
+				LSouSouObject.sMap.miniMap.bitmapData.copyPixels(LSouSouObject.sMap.miniFriend,LSouSouObject.sMap.miniFriend.rect,new Point(LSouSouObject.sMap.miniCoordinate + charas.x*LSouSouObject.sMap.miniScale,LSouSouObject.sMap.miniCoordinate + charas.y*LSouSouObject.sMap.miniScale));
 			}else {
 				LSouSouObject.sMap.miniMap.bitmapData.copyPixels(LSouSouObject.sMap.miniEnemy,LSouSouObject.sMap.miniEnemy.rect,new Point(LSouSouObject.sMap.miniCoordinate + charas.x*LSouSouObject.sMap.miniScale,LSouSouObject.sMap.miniCoordinate + charas.y*LSouSouObject.sMap.miniScale));
 			}

@@ -637,7 +637,7 @@ package zhanglubin.legend.game.sousou.map
 			_tabLayer.addChild(lblTitle);
 			LSouSouObject.setBox(lblX,lblY + 35,380,100,_tabLayer);
 			var lblIntroduction:LLabel = new LLabel();
-			lblIntroduction.htmlText = "<font color='#ffffff' size='15'>" + LSouSouObject.charaSNow.member.introduction + "</font>";
+			lblIntroduction.htmlText = "<font color='#ffffff' size='13'>" + LSouSouObject.charaSNow.member.introduction + "</font>";
 			lblIntroduction.autoSize = LTextField.NONE;
 			lblIntroduction.wordWrap = true;
 			lblIntroduction.width = 360;

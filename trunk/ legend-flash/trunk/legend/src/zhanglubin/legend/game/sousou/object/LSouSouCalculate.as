@@ -182,9 +182,10 @@ package zhanglubin.legend.game.sousou.object
 			var r:int;
 			//得到攻击方的攻击力和等级
 			var attLv:int =  attChara.member.lv;
-			var attAttack:int = attChara.member.attack + attChara.statusArray[LSouSouCharacterS.STATUS_ATTACK][2];
+			var attAttack:int = attChara.member.attack + int(attChara.statusArray[LSouSouCharacterS.STATUS_ATTACK][2]);
 			//得到防御方的防御力
-			var hertDefense:int = hertChara.member.defense + hertChara.statusArray[LSouSouCharacterS.STATUS_DEFENSE][2];
+			var hertDefense:int = hertChara.member.defense + int(hertChara.statusArray[LSouSouCharacterS.STATUS_DEFENSE][2]);
+			trace("attAttack = " + attAttack,"hertDefense = " + hertDefense);
 			//计算攻击方所在地形
 			var attTerrain:String = "Terrain" + LSouSouObject.sMap.mapData[attChara.locationY][attChara.locationX];
 			//计算防御方所在地形
@@ -194,16 +195,16 @@ package zhanglubin.legend.game.sousou.object
 			if(LSouSouObject.arms["Arms" + attChara.arms].Terrain[attTerrain] == null || LSouSouObject.arms["Arms" + attChara.arms].Terrain[attTerrain].length > 0){
 				attAttackAddition = attAttack;
 			}else{
-				attAttackAddition = Math.floor((int(LSouSouObject.arms["Arms" + attChara.arms].Terrain[attTerrain].@Addition)/100) * attAttack);
+				attAttackAddition = int((int(LSouSouObject.arms["Arms" + attChara.arms].Terrain[attTerrain].@Addition)/100) * attAttack);
 			}
 			
 			var hertDefenseAddition:int;
 			if(LSouSouObject.arms["Arms" + hertChara.arms].Terrain[hertTerrain] == null || LSouSouObject.arms["Arms" + hertChara.arms].Terrain[hertTerrain].length > 0){
 				hertDefenseAddition = hertDefense;
 			}else{
-				hertDefenseAddition = Math.floor((int(LSouSouObject.arms["Arms" + hertChara.arms].Terrain[hertTerrain].@Addition)/100) * hertDefense);
+				hertDefenseAddition = int((int(LSouSouObject.arms["Arms" + hertChara.arms].Terrain[hertTerrain].@Addition)/100) * hertDefense);
 			}
-			
+			trace("attAttackAddition = " + attAttackAddition,"hertDefenseAddition = " + hertDefenseAddition);
 			
 			//物理攻击的伤害值计算
 			if(attAttackAddition > hertDefenseAddition){

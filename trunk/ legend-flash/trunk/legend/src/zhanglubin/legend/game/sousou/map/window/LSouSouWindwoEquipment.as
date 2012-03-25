@@ -162,7 +162,8 @@ package zhanglubin.legend.game.sousou.map.window
 			_selectMemberIndex = i;
 			_profileLayer.die();
 			_itemLayer.removeAllChild();
-			
+			_itemLayer.graphics.clear();
+			_itemScroll.scrollToTop();
 			var member:LSouSouMember = LSouSouObject.memberList[_selectMemberIndex];
 			
 			var facedata:BitmapData = LSouSouObject.getBoxBitmapData(130,130);
