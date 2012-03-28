@@ -622,12 +622,17 @@ package zhanglubin.legend.game.sousou.map
 			this._menu = value;
 		}
 		override public function die():void{
+			for each(_characterS in this._ourlist){
+				_characterS.member.troops = _characterS.member.maxTroops;
+				_characterS.member.strategy = _characterS.member.maxStrategy;
+			}
 			LGlobal.script.scriptArray.funList = new Array();
 			this._mapBitmapData.dispose();
 			this.minimapBitmapData.dispose();
 			LSouSouObject.sMap = null;
 			LSouSouObject.sStarQuery = null;
 			LSouSouObject.perWarList = null;
+			LSouSouObject.sMapSaveXml = null;
 			super.die();
 		}
 		public function setMenu():void{
