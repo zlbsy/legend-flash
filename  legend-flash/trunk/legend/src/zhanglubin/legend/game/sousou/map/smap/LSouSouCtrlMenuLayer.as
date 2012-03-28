@@ -81,7 +81,7 @@ package zhanglubin.legend.game.sousou.map.smap
 			
 		}
 		private function gameClose(event:MouseEvent):void{
-			if(LSouSouObject.storyCtrl)return;
+			if(LSouSouObject.storyCtrl || LSouSouObject.sMap.roundCtrl)return;
 			LGlobal.script.lineList.unshift("endif;");
 			LGlobal.script.lineList.unshift("SouSouGame.close();");
 			LGlobal.script.lineList.unshift("if(@select==0);");
@@ -89,31 +89,31 @@ package zhanglubin.legend.game.sousou.map.smap
 			LGlobal.script.analysis();
 		}
 		private function luggageShow(event:MouseEvent):void{
-			if(LSouSouObject.storyCtrl)return;
+			if(LSouSouObject.storyCtrl || LSouSouObject.sMap.roundCtrl)return;
 			var window:LSouSouWindow = new LSouSouWindow();
 			window.luggage();
 			LGlobal.script.scriptLayer.addChild(window);
 		}
 		private function zkView(event:MouseEvent):void{
-			if(LSouSouObject.storyCtrl)return;
+			if(LSouSouObject.storyCtrl || LSouSouObject.sMap.roundCtrl)return;
 			var window:LSouSouWindwoCondition = new LSouSouWindwoCondition();
 			window.show(LSouSouObject.sMap.condition,true);
 			LGlobal.script.scriptLayer.addChild(window);
 		}
 		private function systemShow(event:MouseEvent):void{
-			if(LSouSouObject.storyCtrl)return;
+			if(LSouSouObject.storyCtrl || LSouSouObject.sMap.roundCtrl)return;
 			var window:LSouSouWindow = new LSouSouWindwoArchive();
 			(window as LSouSouWindwoArchive).show();
 			LGlobal.script.scriptLayer.addChild(window);
 		}
 		private function libGameExplanation(event:MouseEvent):void{
-			if(LSouSouObject.storyCtrl)return;
+			if(LSouSouObject.storyCtrl || LSouSouObject.sMap.roundCtrl)return;
 			var window:LSouSouWindow = new LSouSouWindow();
 			window.libGameExplanation();
 			LGlobal.script.scriptLayer.addChild(window);
 		}
 		private function libExplanation(event:MouseEvent):void{
-			if(LSouSouObject.storyCtrl)return;
+			if(LSouSouObject.storyCtrl || LSouSouObject.sMap.roundCtrl)return;
 			var window:LSouSouWindow = new LSouSouWindow();
 			window.libExplanation();
 			LGlobal.script.scriptLayer.addChild(window);
