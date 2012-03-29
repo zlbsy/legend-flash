@@ -86,7 +86,7 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 					LSouSouObject.propsList.toXMLString(),
 					LSouSouObject.money,
 					varlable,
-					new XML("<data></data>")
+					new XML("<data>1</data>")
 				];
 			}else{
 				var mapXml:XML = new XML("<data></data>");

@@ -182,6 +182,7 @@ package zhanglubin.legend.game.sousou.map
 			_menuLayer.addChild(_rightMenu);
 			_drawLayer = new LShape();
 			
+			trace("smap LSouSouSMap LSouSouObject.sMapSaveXml = " + LSouSouObject.sMapSaveXml);
 			//如果不是存档文件，则将变量进行初始化
 			if(LSouSouObject.sMapSaveXml == null){
 				for(var i:int = 0;i< 300;i++){
@@ -622,9 +623,17 @@ package zhanglubin.legend.game.sousou.map
 			this._menu = value;
 		}
 		override public function die():void{
+			var mbr:LSouSouMember;
+			var i:int;
 			for each(_characterS in this._ourlist){
 				_characterS.member.troops = _characterS.member.maxTroops;
 				_characterS.member.strategy = _characterS.member.maxStrategy;
+				for(i=0;i<LSouSouObject.memberList.length;i++){
+					if(LSouSouObject.memberList[i].index == _characterS.index){
+						LSouSouObject.memberList[i] = _characterS.member;
+						break;
+					}
+				}
 			}
 			LGlobal.script.scriptArray.funList = new Array();
 			this._mapBitmapData.dispose();
@@ -633,6 +642,7 @@ package zhanglubin.legend.game.sousou.map
 			LSouSouObject.sStarQuery = null;
 			LSouSouObject.perWarList = null;
 			LSouSouObject.sMapSaveXml = null;
+			trace("smap die LSouSouObject.sMapSaveXml = " + LSouSouObject.sMapSaveXml);
 			super.die();
 		}
 		public function setMenu():void{
@@ -645,6 +655,7 @@ package zhanglubin.legend.game.sousou.map
 			this.addEventListener(MouseEvent.MOUSE_UP,onUp);
 			this.addEventListener(MouseEvent.MOUSE_DOWN,onDown);
 			
+			trace("smap setMenu LSouSouObject.sMapSaveXml = " + LSouSouObject.sMapSaveXml);
 			//如果是存档文件，不进行S初始剧情
 			if(LSouSouObject.sMapSaveXml != null){
 				LSouSouObject.sMapSaveXml = null;
