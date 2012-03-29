@@ -817,8 +817,11 @@ package zhanglubin.legend.game.sousou.character
 					}else{
 						exp_up = 8 - lv_up*2;
 					}
+					trace("--------exp_up = " + exp_up);
 					if(exp_up<1)exp_up=1;
+					trace("--------this.member.exp = " + this.member.exp);
 					this.member.exp += exp_up;
+					trace("--------this.member.exp = " + this.member.exp);
 				}
 				if(charas.member.lv <= this.member.lv){
 					charas.member.equipment.@exp = int(this.member.equipment.@exp.toString()) + 4;
