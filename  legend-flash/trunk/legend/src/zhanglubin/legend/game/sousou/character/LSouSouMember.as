@@ -11,10 +11,10 @@ package zhanglubin.legend.game.sousou.character
 		}
 		public function calculation(xmlData:XML):XML{
 			var result:XML = xmlData;
-			result.Helmet = new XMLList("<Helmet>0</Helmet>");
-			result.Equipment = new XMLList("<Equipment lv='1' exp='0'>0</Equipment>");
-			result.Weapon = new XMLList("<Weapon lv='1' exp='0'>0</Weapon>");
-			result.Horse = new XMLList("<Horse>0</Horse>");
+			if(result.Helmet == null)result.Helmet = new XMLList("<Helmet>0</Helmet>");
+			if(result.Equipment == null)result.Equipment = new XMLList("<Equipment lv='1' exp='0'>0</Equipment>");
+			if(result.Weapon == null)result.Weapon = new XMLList("<Weapon lv='1' exp='0'>0</Weapon>");
+			if(result.Horse == null)result.Horse = new XMLList("<Horse>0</Horse>");
 			
 			var armXml:XMLList = LSouSouObject.arms["Arms" + result.Arms];
 			result.Attack = int(result.Force.toString())/2 + upValue(armXml.Property.Attack,result.Force)*int(result.Lv);
@@ -25,7 +25,7 @@ package zhanglubin.legend.game.sousou.character
 			result.MaxTroops = int(result.MaxTroops.toString()) + int(armXml.Property.Troops.toString())*int(result.Lv);
 			result.MaxStrategy = int(result.MaxStrategy.toString()) + int(armXml.Property.Strategy.toString())*int(result.Lv);
 			
-			result.Exp = 0;
+			if(result.Exp == null)result.Exp = 0;
 			/**
 			var xmllist:XML = <StrategyList></StrategyList>;
 			xmllist.appendChild(<list index='1' icon='menu_icon_attack.png'>小风计</list>);
