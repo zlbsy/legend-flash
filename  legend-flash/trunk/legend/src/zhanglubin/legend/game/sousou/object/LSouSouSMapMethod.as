@@ -30,7 +30,14 @@ package zhanglubin.legend.game.sousou.object
 				case "SouSouSMapChange.chageWeather":
 					chageWeather(params);
 					break;
+				case "SouSouSMapChange.maxRound":
+					maxRound(params);
+					break;
 			}
+		}
+		private static function maxRound(params:Array):void{
+			LSouSouObject.sMap.roundMax = int(params[0]);
+			LGlobal.script.analysis();
 		}
 		private static function setWeather(params:Array):void{
 			LSouSouObject.sMap.weather[0][1] = int(params[0]);

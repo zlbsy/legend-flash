@@ -361,7 +361,7 @@ package zhanglubin.legend.game.sousou.script
 				analysis();
 				return;
 			}
-			
+			var params:Array,i:int;
 			var start:int = lineValue.indexOf("(");
 			var end:int = lineValue.indexOf(")");
 			trace(" lineValue.substr(0,start) = " + lineValue.substr(0,start));
@@ -392,10 +392,14 @@ package zhanglubin.legend.game.sousou.script
 					}
 					break;
 				case "SetWeather":
-					var params:Array = lineValue.substring(start+1,end).split(","),i:int;
+					params = lineValue.substring(start+1,end).split(",");
 					for(i=0;i<LSouSouObject.sMap.weather.length;i++){
 						LSouSouObject.sMap.weather[i][1] = params[i];
 					}
+					break;
+				case "MaxRound":
+					params = lineValue.substring(start+1,end).split(",");
+					LSouSouObject.sMap.roundMax = int(params[0]);
 					break;
 				default:
 					initialization();
