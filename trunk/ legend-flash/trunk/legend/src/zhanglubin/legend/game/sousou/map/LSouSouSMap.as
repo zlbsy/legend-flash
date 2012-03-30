@@ -641,8 +641,6 @@ package zhanglubin.legend.game.sousou.map
 			LSouSouObject.sMap = null;
 			LSouSouObject.sStarQuery = null;
 			LSouSouObject.perWarList = null;
-			LSouSouObject.sMapSaveXml = null;
-			trace("smap die LSouSouObject.sMapSaveXml = " + LSouSouObject.sMapSaveXml);
 			super.die();
 		}
 		public function setMenu():void{
