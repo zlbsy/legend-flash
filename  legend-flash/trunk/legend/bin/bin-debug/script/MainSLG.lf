@@ -1,0 +1,11 @@
+//Load.swf(img,data/images/img.swf);
+//SouSouObjectLoad.load(images,swf);
+Layer.drawRect(-,0,0,800,480,0x000000,1);
+Text.label(-,load,数据读取中……,280,230,30,#ffffff);
+Load.img(logo,images/logo/logo.png);
+Load.img(logobtnover,images/logo/logobtnover.png);
+Load.img(logobtnup,images/logo/logobtnup.png);
+Var.set(loadimg,0);
+Var.set(loadtxt,0);
+Var.set(savepath,sgj_lsqx);
+Load.script(script/logo.lf);

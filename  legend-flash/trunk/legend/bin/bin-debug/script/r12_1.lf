@@ -1,0 +1,65 @@
+Mark.save_r12_1_1;
+Var.set(save_file,r12_1);
+Var.set(save_word,save_r12_1_1);
+
+Layer.clear(-);
+Layer.drawRect(-,0,0,800,480,0x000000,1);
+Text.label(-,load,Loading……,280,230,30,#ffffff);
+SouSouWindow.title(虎牢关前 刘备军营);
+SouSouRMap.start(1);
+initialization.start;
+addMap(images/map,r05.rmap);
+//是否可控制，人物编号，方向，x坐标,y坐标
+SouSouRCharacter.add(0,1,1,26,16);
+SouSouRCharacter.add(0,2,0,21,11);
+SouSouRCharacter.add(0,3,2,16,14);
+SouSouRCharacter.add(0,4,0,17,9);
+SouSouRCharacter.add(0,5,2,13,13);
+initialization.end;
+function.start;
+function characterclick3();
+	SouSouRunMode.set(1);
+	SouSouTalk.set(3,0,大哥放心吧，有我和二哥在，轮不着那个吕布猖狂。);
+	SouSouRunMode.set(0);
+endfunction;
+function characterclick4();
+	SouSouRunMode.set(1);
+	SouSouTalk.set(4,0,主公，俺可…不…不想碰到那个吕……吕布啊。);
+	SouSouRunMode.set(0);
+endfunction;
+function characterclick5();
+	SouSouRunMode.set(1);
+	SouSouTalk.set(5,0,主公，需要我去买进点什么吗？);
+	//商店
+	SouSouWindow.shop();
+	//物品贩卖(物品编号);
+	shopProps(0);
+	shopProps(1);
+	endWindow;
+	SouSouRunMode.set(0);
+endfunction;
+function characterclick2();
+	SouSouTalk.set(2,0,准备好了吗？);
+	//添加选择
+	SouSouTalk.select(1.准备好了,2.再准备一下);
+	if(@select==0);
+	SouSouTalk.set(1,0,我们马上出发。);
+	//必须出场人物编号
+	SouSouMember.setMust(1);
+	SouSouMember.setMust(2);
+	SouSouMember.setMust(3);
+	SouSouWindow.preWar(script/s07.lf);
+	Exit.run();
+	elseif(@select==1);
+	SouSouTalk.set(1,0,还有些东西要准备，再稍等一下。);
+	endif;
+endfunction;
+function.end;
+
+loop.start;
+loop.end;
+
+SouSouRMap.end();
+SouSouSound.playMusic(sound/sg02.mp3);
+SouSouRunMode.set(1);
+SouSouRunMode.set(0);

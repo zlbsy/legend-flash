@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+    <Terrain0 color="0xCCFFFF" meff="1,2,5,6,7,8">平原</Terrain0>
+    <Terrain1 color="0x33CC66" meff="1,2,5,6,7,8">草原</Terrain1>
+    <Terrain2 color="0x006600" meff="1,5,6,7,8">树林</Terrain2>
+    <Terrain3 color="0x3168D5" meff="2,3,5,6,7,8">大河</Terrain3>
+    <Terrain4 color="0xCC9966" meff="">栅栏</Terrain4>
+    <Terrain5 color="0x999966" meff="1,5,6,7,8">城池</Terrain5>
+    <Terrain6 color="0xFFCC66" meff="1,5,6,7,8">村庄</Terrain6>
+    <Terrain7 color="0xcccccc" meff="1,5,6,7,8">帐篷</Terrain7>
+    <Terrain8 color="0x252F16" meff="2,4,5,6,7,8">山地</Terrain8>
+    <Terrain9 color="0x7A6F45" meff="1,5,6,7,8">城内</Terrain9>
+    <Terrain10 color="0x8A7F55" meff="2,4,5,6,7,8">大山</Terrain10>
+    <Terrain11 color="0x999966" meff="">城墙</Terrain11>
+    <Terrain12 color="0x990066" meff="1,2,3,5,6,7,8">大桥</Terrain12>
+    <Terrain13 color="0x990166" meff="2,3,5,6,7,8">河水</Terrain13>
+</data>

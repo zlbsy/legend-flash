@@ -1,0 +1,94 @@
+Var.set(save_file,r10);
+Var.set(save_word,save_r10_2);
+//添加选择
+SouSouTalk.select(1.保存存档,2.放弃保存);
+if(@select==0);
+	SouSouWindow.system(save);
+endif;
+Mark.save_r10_2;
+Layer.clear(-);
+
+SouSouRMap.start();
+initialization.start;
+addMap(images/map,r05.rmap);
+//是否可控制，人物编号，方向，x坐标,y坐标
+SouSouRCharacter.add(0,13,1,26,16);
+SouSouRCharacter.add(1,1,0,21,11);
+SouSouRCharacter.add(0,2,0,17,9);
+SouSouRCharacter.add(0,3,2,16,14);
+SouSouRCharacter.add(0,151,2,12,12);
+SouSouRCharacter.add(0,152,0,14,8);
+SouSouRCharacter.add(0,153,2,9,11);
+initialization.end;
+function.start;
+function characterclick153();
+	SouSouTalk.set(153,0,你好，我是军粮官，你要买些什么吗？);
+	//商店
+	SouSouWindow.shop();
+	//物品贩卖(物品编号);
+	shopProps(0);
+	shopProps(1);
+	endWindow;
+endfunction;
+function characterclick13();
+	SouSouTalk.set(13,0,玄德，准备好了吗？);
+	//添加选择
+	SouSouTalk.select(1.准备好了,2.再准备一下);
+	if(@select==0);
+	SouSouTalk.set(13,0,那我们马上出发。);
+	//必须出场人物编号
+	SouSouMember.setMust(1);
+	SouSouMember.setMust(2);
+	SouSouMember.setMust(3);
+	SouSouWindow.preWar(script/s05.lf);
+	Layer.clear(-);
+	Exit.run();
+	elseif(@select==1);
+	SouSouTalk.set(1,0,还有些东西要准备，再稍等一下。);
+	endif;
+endfunction;
+function characterclick2();
+	SouSouTalk.set(2,0,大哥，这次敌军兵力恐怕要比我们多很多倍，我们还是多准备些补给物品吧！);
+endfunction;
+function characterclick3();
+	SouSouTalk.set(3,0,大哥，那个董卓也太无能了吧。);
+endfunction;
+function characterclick151();
+	SouSouTalk.set(151,0,听说骑都尉曹操也要参与此次战斗！);
+endfunction;
+function characterclick152();
+	SouSouTalk.set(152,0,知道吴郡孙坚吗，他可是一位了不得的英雄。);
+endfunction;
+function.end;
+
+loop.start;
+loop.end;
+
+SouSouRMap.end();
+SouSouSound.playMusic(sound/sg02.mp3);
+
+//设定人物不可控
+SouSouRunMode.set(1);
+
+SouSouWindow.msg(曲阳营寨,1,50);
+
+SouSouTalk.set(13,0,玄德，这次真的是多亏了你们兄弟三人啊，否则没有这么容易打败敌人。);
+SouSouRCharacter.changeAction(1,3);
+SouSouTalk.set(1,0,只可惜没能抓住张宝。);
+SouSouRCharacter.changeAction(2,31);
+SouSouTalk.set(2,0,将军，恰才皇甫嵩派人来报，朝廷以董卓屡败，命嵩代之。皇甫嵩连胜七战，张角与张梁都已逃往宛城。);
+SouSouTalk.set(13,0,宛城？);
+SouSouRCharacter.changeAction(2,3);
+SouSouTalk.set(1,0,他们是想集合所有优势兵力与我们决一死战吧。);
+SouSouTalk.set(2,0,如此说来，张宝也必将逃往宛城。而且听说其他黄巾贼也正在相继赶往宛城。贼兵势大，皇甫嵩将军恐怕难以抵挡。);
+SouSouRCharacter.changeAction(13,1);
+SouSouTalk.set(1,0,如此，我们必须尽快赶往宛城了！);
+SouSouTalk.set(13,0,不错！玄德，你赶紧准备一下，我们尽快出发！);
+SouSouRCharacter.changeAction(1,31);
+
+SouSouTalk.set(1,0,是！);
+SouSouRCharacter.changeAction(1,0);
+SouSouRCharacter.changeAction(2,0);
+
+Load.script(script/r10_1.lf);
+Exit.run();

@@ -1,0 +1,64 @@
+Mark.save_r14_1_1;
+Var.set(save_file,r14_1);
+Var.set(save_word,save_r14_1_1);
+Layer.clear(-);
+
+SouSouWindow.title(平原县内 救援北海战前准备);
+SouSouRMap.start(1);
+initialization.start;
+addMap(images/map,r08.rmap);
+//是否可控制，人物编号，方向，x坐标,y坐标
+SouSouRCharacter.add(0,1,10,9,15);
+SouSouRCharacter.add(0,2,1,12,16);
+SouSouRCharacter.add(0,127,3,7,13);
+SouSouRCharacter.add(0,3,0,14,12);
+SouSouRCharacter.add(0,43,0,15,13);
+initialization.end;
+function.start;
+function characterclick127();
+	SouSouTalk.set(127,0,主公，需要我去买进点什么吗？);
+	//商店
+	SouSouWindow.shop();
+	//物品贩卖(物品编号);
+	shopProps(0);
+	shopProps(1);
+	shopProps(2);
+	shopProps(3);
+	endWindow;
+endfunction;
+function characterclick43();
+	SouSouRunMode.set(1);
+	SouSouTalk.set(43,0,孔北海果然没有看错人。);
+	SouSouRunMode.set(0);
+endfunction;
+function characterclick3();
+	SouSouRunMode.set(1);
+	SouSouTalk.set(1,0,三弟，你去通知老程和邓茂，我们就要出发了。);
+	SouSouTalk.set(3,0,知道了，他们两个人正天天吵着无聊呢。);
+	SouSouRunMode.set(0);
+endfunction;
+function characterclick2();
+	SouSouTalk.set(2,0,准备好了吗？);
+	//添加选择
+	SouSouTalk.select(1.准备好了,2.再准备一下);
+	if(@select==0);
+	SouSouTalk.set(1,0,我们马上出发。);
+	//必须出场人物编号
+	SouSouMember.setMust(1);
+	SouSouMember.setMust(2);
+	SouSouMember.setMust(3);
+	SouSouWindow.preWar(script/s09.lf);
+	Exit.run();
+	elseif(@select==1);
+	SouSouTalk.set(1,0,还有些东西要准备，再稍等一下。);
+	endif;
+endfunction;
+function.end;
+
+loop.start;
+loop.end;
+
+SouSouRMap.end();
+SouSouSound.playMusic(sound/sg02.mp3);
+//设定人物可控
+SouSouRunMode.set(0);

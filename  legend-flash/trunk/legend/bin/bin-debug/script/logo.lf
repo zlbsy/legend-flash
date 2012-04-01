@@ -1,0 +1,58 @@
+Layer.clear(-);
+Img.add(-,logoimg,logo,0,0,800,480,1);
+
+Button.add(-,btnstart,游戏开始,30,260,logobtnup,logobtnover,logobtnover,#ffffff);
+Button.add(-,btnread,读取进度,30,300,logobtnup,logobtnover,logobtnover,#ffffff);
+Button.add(-,btnset,环境设定,30,340,logobtnup,logobtnover,logobtnover,#ffffff);
+Button.add(-,btnup,支持援助,30,380,logobtnup,logobtnover,logobtnover,#ffffff);
+Button.add(-,btnover,关闭游戏,30,420,logobtnup,logobtnover,logobtnover,#ffffff);
+function startclick();
+	Layer.clear(-);
+	if(@loadtxt==0);
+		SouSouObjectLoad.loadfile(1);
+		Var.set(loadtxt,1);
+	endif;
+	if(@loadimg != 1);
+		SouSouObjectLoad.loadimg();
+		Var.set(loadimg,1);
+	endif;
+	Load.script(script/r01.lf);
+endfunction;
+function readclick();
+	if(@loadimg != 1);
+		SouSouObjectLoad.loadimg();
+		Var.set(loadimg,1);
+	endif;
+	if(@loadtxt==0);
+		SouSouObjectLoad.loadfile();
+		Var.set(loadtxt,1);
+	endif;
+	SouSouWindow.system(read);
+	
+endfunction;
+function setclick();
+	if(@loadimg != 1);
+		SouSouObjectLoad.loadimg();
+		Var.set(loadimg,1);
+	endif;
+	SouSouWindow.system(set);
+	
+endfunction;
+function upclick();
+	if(@loadimg != 1);
+		SouSouObjectLoad.loadimg();
+		Var.set(loadimg,1);
+	endif;
+	SouSouWindow.system(support);
+	
+endfunction;
+function overclick();
+	SouSouGame.close();
+endfunction;
+Button.mouseup(btnstart,startclick);
+Button.mouseup(btnread,readclick);
+Button.mouseup(btnset,setclick);
+Button.mouseup(btnup,upclick);
+Button.mouseup(btnover,overclick);
+SouSouSound.playMusic(sound/sg01.mp3);
+SouSouSound.musicMode(0);

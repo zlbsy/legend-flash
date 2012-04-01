@@ -1,0 +1,59 @@
+Mark.save_r13_1;
+Var.set(save_word,save_r13_1);
+Var.set(save_file,r13_1);
+
+Layer.clear(-);
+
+SouSouWindow.title(平原县内);
+SouSouRMap.start(1);
+initialization.start;
+addMap(images/map,r08.rmap);
+//是否可控制，人物编号，方向，x坐标,y坐标
+SouSouRCharacter.add(1,1,@d,@x,@y);
+initialization.end;
+function.start;
+function characterAt_1_30_4();
+	//SouSouTalk.set(1,0,地图切换);
+	//Layer.clear(-);
+	//设定人物不可控
+	SouSouRunMode.set(1);
+	Var.set(x,25);
+	Var.set(y,7);
+	Var.set(d,0);
+	Load.script(script/r13_2.lf);
+endfunction;
+function characterAt_1_29_3();
+	//SouSouTalk.set(1,0,地图切换);
+	//Layer.clear(-);
+	//设定人物不可控
+	SouSouRunMode.set(1);
+	Var.set(x,25);
+	Var.set(y,7);
+	Var.set(d,0);
+	Load.script(script/r13_2.lf);
+endfunction;
+function characterAt_1_31_5();
+	//SouSouTalk.set(1,0,地图切换);
+	//Layer.clear(-);
+	//设定人物不可控
+	SouSouRunMode.set(1);
+	Var.set(x,25);
+	Var.set(y,7);
+	Var.set(d,0);
+	Load.script(script/r13_2.lf);
+endfunction;
+function.end;
+
+loop.start;
+SouSouRCharacter.atCoordinate(1,30,4);
+SouSouRCharacter.atCoordinate(1,29,3);
+SouSouRCharacter.atCoordinate(1,31,5);
+loop.end;
+
+SouSouRMap.end();
+SouSouSound.playMusic(sound/sg02.mp3);
+//设定人物不可控
+SouSouRunMode.set(1);
+
+SouSouTalk.set(1,0,同盟军还是失败了，唉……我还是出去到处走走吧！);
+SouSouRunMode.set(0);
