@@ -130,6 +130,7 @@ package zhanglubin.legend.game.sousou.map.window
 			var newXml:XML = <data></data>;
 			var member:LSouSouMember = LSouSouObject.memberList[_selectMemberIndex];
 			var nowItem:XMLList;
+			trace("setItem ","Child"+selectItem.@index);
 			var itemXml:XMLList = LSouSouObject.item["Child"+selectItem.@index];
 			
 			var listXml:XML;
@@ -424,7 +425,7 @@ package zhanglubin.legend.game.sousou.map.window
 			var equipment:XMLList = member.equipment;
 			var weapon:XMLList = member.weapon;
 			var horse:XMLList = member.horse;
-			trace("addEquipment = ",helmet,equipment,weapon,horse);
+			trace("addEquipment = ",helmet.toXMLString(),equipment.toXMLString(),weapon.toXMLString(),horse.toXMLString());
 			//饰品
 			if(int(helmet.toString()) > 0){
 				var helmetBit:LBitmap = new LBitmap(

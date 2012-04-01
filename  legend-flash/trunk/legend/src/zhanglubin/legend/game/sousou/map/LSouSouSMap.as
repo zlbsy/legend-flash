@@ -116,7 +116,6 @@ package zhanglubin.legend.game.sousou.map
 		private var _enemylist:Vector.<LSouSouCharacterS> = new Vector.<LSouSouCharacterS>();
 		private var _friendlist:Vector.<LSouSouCharacterS> = new Vector.<LSouSouCharacterS>();
 		
-		private var _characterList:Vector.<LSouSouCharacterR> = new Vector.<LSouSouCharacterR>();
 		private var _friendIsNull:Boolean;
 		
 		private var _linecolor:int = 0xff0000;
@@ -183,8 +182,6 @@ package zhanglubin.legend.game.sousou.map
 			_drawLayer = new LShape();
 			
 			trace("smap LSouSouSMap LSouSouObject.sMapSaveXml = " + LSouSouObject.sMapSaveXml);
-			//如果不是存档文件，则将变量进行初始化
-			if(LSouSouObject.sMapSaveXml == null){
 				for(var i:int = 0;i< 300;i++){
 					LGlobal.script.scriptArray.varList["adjacent" + i] = null;
 					LGlobal.script.scriptArray.varList["atBelongCoordinate" + i] = null;
@@ -198,7 +195,6 @@ package zhanglubin.legend.game.sousou.map
 					LGlobal.script.scriptArray.varList["param_checkHp" + i] = null;
 					LGlobal.script.scriptArray.varList["param_checkround" + i] = null;
 				}
-			}
 			LSouSouObject.dieIsRuning = false;
 			LSouSouObject.runSChara = null;
 			LGlobal.script.scriptArray.funList = new Array();
@@ -228,6 +224,8 @@ package zhanglubin.legend.game.sousou.map
 				var saveCoordinate:Array = LSouSouObject.sMapSaveXml.mapCoordinate.toString().split(",");
 				this._mapCoordinate.x = saveCoordinate[0];
 				this._mapCoordinate.y = saveCoordinate[1];
+				this._mapToCoordinate.x = saveCoordinate[0];
+				this._mapToCoordinate.y = saveCoordinate[1];
 				
 			}
 			this.addChild(_mapLayer);
@@ -624,6 +622,7 @@ package zhanglubin.legend.game.sousou.map
 		}
 		override public function die():void{
 			var mbr:LSouSouMember;
+			LSouSouObject.rMapTitle = this.condition[0] + " 战斗结束";
 			var i:int;
 			for each(_characterS in this._ourlist){
 				_characterS.member.troops = _characterS.member.maxTroops;
@@ -670,8 +669,8 @@ package zhanglubin.legend.game.sousou.map
 			//存档数据恢复
 			var xmldata:XML,charas:LSouSouCharacterS;
 			for each(xmldata in LSouSouObject.sMapSaveXml.charalist.elements()){
-				trace("LSouSouSMap setSaveCharas xmldata = " + xmldata.toXMLString());
-				var mbr:LSouSouMember = new LSouSouMember(new XML(xmldata["peo" + xmldata.index].toXMLString()));
+				//if(int(xmldata.belong) != LSouSouObject.BELONG_SELF)continue;
+				var mbr:LSouSouMember = new LSouSouMember(new XML(xmldata["peo" + xmldata.index].toXMLString()),true);
 				
 				charas = new LSouSouCharacterS(mbr,xmldata.belong,xmldata.direction,xmldata.command);
 				charas.xy = new LCoordinate(xmldata.x,xmldata.y);

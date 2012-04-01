@@ -27,6 +27,10 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 			var window:LSouSouWindow;
 			var param:Array = value.substring(start + 1,end).split(",");
 			switch(value.substr(0,start)){
+				case "SouSouWindow.title":
+					LSouSouObject.rMapTitle = param[0];
+					LGlobal.script.analysis();
+					break;
 				case "SouSouWindow.preWar":
 					trace("SouSouWindow.preWar run");
 					window = new LSouSouWindow();

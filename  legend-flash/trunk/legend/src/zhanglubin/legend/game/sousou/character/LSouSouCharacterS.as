@@ -806,9 +806,9 @@ package zhanglubin.legend.game.sousou.character
 					charas.targetCharacter = this;
 					if(int(this.member.weapon) > 0 && int(LSouSouObject.item["Child"+this.member.weapon].Attack.@add) > 0){
 						if(this.member.lv <= charas.member.lv){
-							this.member.weapon.@exp = int(this.member.weapon.@exp.toString()) + 3;
+							this.member.setWeaponExp(3);
 						}else{
-							this.member.weapon.@exp = int(this.member.weapon.@exp.toString()) + 2;
+							this.member.setWeaponExp(2);
 						}
 					}
 					lv_up = this.member.lv - charas.member.lv;
@@ -817,16 +817,14 @@ package zhanglubin.legend.game.sousou.character
 					}else{
 						exp_up = 8 - lv_up*2;
 					}
-					trace("--------exp_up = " + exp_up);
+					
 					if(exp_up<1)exp_up=1;
-					trace("--------this.member.exp = " + this.member.exp);
 					this.member.exp += exp_up;
-					trace("--------this.member.exp = " + this.member.exp);
 				}
 				if(charas.member.lv <= this.member.lv){
-					charas.member.equipment.@exp = int(this.member.equipment.@exp.toString()) + 4;
+					charas.member.setEquipmentExp(4);
 				}else{
-					charas.member.equipment.@exp = int(this.member.equipment.@exp.toString()) + 3;
+					charas.member.setEquipmentExp(3);
 				}
 				/**攻击*/
 				//charas.setReturnAction(charas.action);
@@ -874,7 +872,7 @@ package zhanglubin.legend.game.sousou.character
 						LSouSouObject.sound.play("Se30");
 					}
 					if(int(this.member.weapon) > 0 && int(LSouSouObject.item["Child"+this.member.weapon].Attack.@add) > 0){
-						this.member.weapon.@exp = int(this.member.weapon.@exp.toString()) + 1;
+						this.member.setWeaponExp(1);
 					}
 					lv_up = this.member.lv - charas.member.lv;
 					if(lv_up > 0){
@@ -886,7 +884,7 @@ package zhanglubin.legend.game.sousou.character
 					this.member.exp += exp_up;
 					charas.targetCharacter = this;
 				}
-				charas.member.equipment.@exp = int(this.member.equipment.@exp.toString()) + 1;
+				charas.member.setEquipmentExp(1);
 				/**档格*/
 				if(this.x > charas.x){
 					//charas.setReturnAction(LSouSouCharacterS.MOVE_RIGHT);
