@@ -5,9 +5,15 @@ package zhanglubin.legend.game.sousou.character
 	public class LSouSouMember
 	{
 		private var _data:XML;
-		public function LSouSouMember(xmlData:XML=null)
+		public function LSouSouMember(xmlData:XML=null,flag:Boolean=false)
 		{
-			if(xmlData)_data = calculation(xmlData);
+			if(xmlData){
+				if(flag){
+					_data = xmlData;
+				}else{
+					_data = calculation(xmlData);
+				}
+			}
 		}
 		public function calculation(xmlData:XML):XML{
 			var result:XML = xmlData;
@@ -16,29 +22,22 @@ package zhanglubin.legend.game.sousou.character
 			if(result.Weapon == null)result.Weapon = new XMLList("<Weapon lv='1' exp='0'>0</Weapon>");
 			if(result.Horse == null)result.Horse = new XMLList("<Horse>0</Horse>");
 			
+			var memberxml:XMLList = LSouSouObject.chara["peo" + result.Index];
 			var armXml:XMLList = LSouSouObject.arms["Arms" + result.Arms];
 			result.Attack = int(result.Force.toString())/2 + upValue(armXml.Property.Attack,result.Force)*int(result.Lv);
 			result.Spirit =  int(result.Intelligence.toString())/2 + upValue(armXml.Property.Spirit,result.Intelligence)*int(result.Lv);
 			result.Defense =  int(result.Command.toString())/2 + upValue(armXml.Property.Defense,result.Command)*int(result.Lv);
 			result.Breakout =  int(result.Agile.toString())/2 + upValue(armXml.Property.Breakout,result.Agile)*int(result.Lv);
 			result.Morale =  int(result.Luck.toString())/2 + upValue(armXml.Property.Morale,result.Luck)*int(result.Lv);
-			result.MaxTroops = int(result.MaxTroops.toString()) + int(armXml.Property.Troops.toString())*int(result.Lv);
-			result.MaxStrategy = int(result.MaxStrategy.toString()) + int(armXml.Property.Strategy.toString())*int(result.Lv);
+			result.MaxTroops = int(memberxml.MaxTroops.toString()) + int(armXml.Property.Troops.toString())*int(result.Lv);
+			result.MaxStrategy = int(memberxml.MaxStrategy.toString()) + int(armXml.Property.Strategy.toString())*int(result.Lv);
 			
-			if(result.Exp == null)result.Exp = 0;
-			/**
-			var xmllist:XML = <StrategyList></StrategyList>;
-			xmllist.appendChild(<list index='1' icon='menu_icon_attack.png'>小风计</list>);
-			xmllist.appendChild(<list index='0' icon='menu_icon_attack.png'>小火计</list>);
-			xmllist.appendChild(<list index='1' icon='menu_icon_attack.png'>小风计</list>);
-			xmllist.appendChild(<list index='0' icon='menu_icon_attack.png'>小火计</list>);
-			xmllist.appendChild(<list index='1' icon='menu_icon_attack.png'>小风计</list>);
-			xmllist.appendChild(<list index='0' icon='menu_icon_attack.png'>小火计</list>);
-			result.StrategyList = xmllist;*/
+			result.Troops = int(result.MaxTroops);
+			result.Strategy = int(result.MaxStrategy);
+			result.Exp = 0;
 			return result;
 		}
 		public function upValue(type:String,value:int):int{
-			trace(type,value);
 			if(type == "S"){
 				if(value < 50)return 1;
 				if(value < 70)return 2;
@@ -58,16 +57,42 @@ package zhanglubin.legend.game.sousou.character
 		}
 		public function lvUp():void{
 			var armXml:XMLList = LSouSouObject.arms["Arms" + _data.Arms];
-			_data.Attack = int(_data.Attack.toString()) + upValue(armXml.Property.Attack,_data.Force);
-			_data.Spirit =  int(_data.Spirit.toString()) + upValue(armXml.Property.Spirit,_data.Intelligence);
-			_data.Defense =  int(_data.Defense.toString()) + upValue(armXml.Property.Defense,_data.Command);
-			_data.Breakout =  int(_data.Breakout.toString()) + upValue(armXml.Property.Breakout,_data.Agile);
-			_data.Morale =  int(_data.Morale.toString()) + upValue(armXml.Property.Morale,_data.Luck);
-			_data.MaxTroops = int(_data.MaxTroops.toString()) + int(armXml.Property.Troops.toString()); 
-			_data.MaxStrategy = int(_data.MaxStrategy.toString()) + int(armXml.Property.Strategy.toString()); 
+			_data.Attack = int(_data.Attack) +  upValue(armXml.Property.Attack,_data.Force);
+			_data.Spirit = int(_data.Spirit) + upValue(armXml.Property.Spirit,_data.Intelligence);
+			_data.Defense = int(_data.Defense) + upValue(armXml.Property.Defense,_data.Command);
+			_data.Breakout = int(_data.Breakout) + upValue(armXml.Property.Breakout,_data.Agile);
+			_data.Morale = int(_data.Morale) + upValue(armXml.Property.Morale,_data.Luck);
+			_data.MaxTroops = int(_data.MaxTroops) + int(armXml.Property.Troops.toString()); 
+			_data.MaxStrategy = int(_data.MaxStrategy) + int(armXml.Property.Strategy.toString()); 
 			_data.Lv = int(_data.Lv.toString()) + 1;
 			_data.Exp = 0;
 			
+		}
+		public function setEquipmentExp(value:int):void{
+			if(int(_data.Equipment) == 0)return;
+			var itemXml:XMLList;
+			itemXml = LSouSouObject.item["Child"+_data.Equipment];
+			if(int(_data.Equipment.@lv) >= int(itemXml.MaxLv))return;
+			_data.Equipment.@exp = int(_data.Equipment.@exp) + value;
+			if(int(_data.Equipment)>0){
+				if(int(_data.Equipment.@exp) >= 100){
+					_data.Equipment.@exp = 0;
+					_data.Equipment.@lv = int(_data.Equipment.@lv) + 1;
+				}
+			}
+		}
+		public function setWeaponExp(value:int):void{
+			if(int(_data.Weapon) == 0)return;
+			var itemXml:XMLList;
+			itemXml = LSouSouObject.item["Child"+_data.Weapon];
+			if(int(_data.Weapon.@lv) >= int(itemXml.MaxLv))return;
+			_data.Weapon.@exp = int(_data.Weapon.@exp) + value;
+			if(int(_data.Weapon)>0){
+				if(int(_data.Weapon.@exp) >= 100){
+					_data.Weapon.@exp = 0;
+					_data.Weapon.@lv = int(_data.Weapon.@lv) + 1;
+				}
+			}
 		}
 		/**
 		 * 坐骑
@@ -222,9 +247,10 @@ package zhanglubin.legend.game.sousou.character
 		public function get maxTroops():int{
 			return int(_data.MaxTroops.toString()) + getAddValue("Hp");
 		}
+		/**
 		public function set maxTroops(value:int):void{
 			_data.MaxTroops = value;
-		}
+		}*/
 		public function get pantTroops():int{
 			return maxTroops*0.25;
 		}

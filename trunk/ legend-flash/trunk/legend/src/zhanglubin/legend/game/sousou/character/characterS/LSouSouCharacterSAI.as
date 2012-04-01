@@ -98,7 +98,11 @@ package zhanglubin.legend.game.sousou.character.characterS
 			}
 			obj = null;
 			//行动范围
-			LSouSouObject.sMap.roadList = LSouSouObject.sStarQuery.makePath(LSouSouObject.charaSNow);
+			if(aiChara.command == LSouSouCharacterS.COMMAND_STAND_DEFENSE){
+				LSouSouObject.sMap.roadList = [];
+			}else{
+				LSouSouObject.sMap.roadList = LSouSouObject.sStarQuery.makePath(LSouSouObject.charaSNow);
+			}
 			//将自己加入到行动范围
 			LSouSouObject.sMap.roadList.unshift(new Node(aiChara.locationX,aiChara.locationY,0));
 			if(aiChara.statusArray[LSouSouCharacterS.STATUS_STATEGY][0] == 0 && aiChara.member.strategy >= 0){

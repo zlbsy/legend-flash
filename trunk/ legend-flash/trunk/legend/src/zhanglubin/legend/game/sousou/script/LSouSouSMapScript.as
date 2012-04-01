@@ -331,7 +331,7 @@ package zhanglubin.legend.game.sousou.script
 				}else if(arr["type"] == "SouSouSCharacter.checkHp"){
 					charas = arr["character"];
 					trace("charas.index = ",charas.index);
-					if(charas.member.troops < int(arr["minhp"]) || charas.member.troops > int(arr["maxhp"]))continue;
+					if(!charas.visible || charas.member.troops < int(arr["minhp"]) || charas.member.troops > int(arr["maxhp"]))continue;
 					ifArr = ScriptVarlable.getVarlable(arr["if"]).split("&&");
 					trace("LSouSouSMapScript Hp 测试 -------------",arr["if"],"ifArr="+ifArr);
 					ifvalue = ScriptIF.checkCondition(ifArr);
@@ -400,6 +400,7 @@ package zhanglubin.legend.game.sousou.script
 				case "MaxRound":
 					params = lineValue.substring(start+1,end).split(",");
 					LSouSouObject.sMap.roundMax = int(params[0]);
+					initialization();
 					break;
 				default:
 					initialization();

@@ -53,6 +53,7 @@ package zhanglubin.legend.game.sousou.object
 		public static var charaSNow:LSouSouCharacterS;
 		public static var runSChara:LSouSouCharacterS;
 		public static var rMap:LSouSouRMap;
+		public static var rMapTitle:String = "";
 		public static var sMap:LSouSouSMap;
 		public static var sMapFixLv:Boolean = false;
 		public static var rMapData:Array = [];
@@ -89,7 +90,13 @@ package zhanglubin.legend.game.sousou.object
 		*/
 		public static function get itemObjectId():int
 		{
-			return _itemObjectId++;
+			if(LGlobal.script.scriptArray.varList["SouSouItemObjectId"] == null){
+				LGlobal.script.scriptArray.varList["SouSouItemObjectId"] = 1;
+			}
+			_itemObjectId = int(LGlobal.script.scriptArray.varList["SouSouItemObjectId"]);
+			_itemObjectId++;
+			LGlobal.script.scriptArray.varList["SouSouItemObjectId"] = _itemObjectId;
+			return _itemObjectId;
 		}
 		public static function addBoxBitmapdata(_menuBitmapData:BitmapData):BitmapData{
 			var bar_h:int = 15;

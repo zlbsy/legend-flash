@@ -5,12 +5,15 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 	import flash.net.FileReference;
 	import flash.utils.ByteArray;
 	
+	import zhanglubin.legend.components.LLabel;
+	import zhanglubin.legend.display.LSprite;
 	import zhanglubin.legend.events.LEvent;
 	import zhanglubin.legend.game.sousou.character.LSouSouCharacterS;
 	import zhanglubin.legend.game.sousou.character.LSouSouMember;
 	import zhanglubin.legend.game.sousou.map.LSouSouSingled;
 	import zhanglubin.legend.game.sousou.map.LSouSouWindow;
 	import zhanglubin.legend.game.sousou.object.LSouSouObject;
+	import zhanglubin.legend.utils.LDisplay;
 	import zhanglubin.legend.utils.LFilter;
 	import zhanglubin.legend.utils.LGlobal;
 	import zhanglubin.legend.utils.LImage;
@@ -57,7 +60,7 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 			for each(mbr in LSouSouObject.memberList){
 				xmlMember.appendChild(mbr.data);
 			}
-			
+			trace("LGlobal.script.scriptArray.varList = " + LGlobal.script.scriptArray.varList);
 			var varlable:String = "<data>";
 			for(var key:String in LGlobal.script.scriptArray.varList){
 				if(LGlobal.script.scriptArray.varList[key] != null && LGlobal.script.scriptArray.varList[key].toString().length > 0){
@@ -65,7 +68,8 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 				}
 			}
 			varlable += "</data>";
-			
+			trace("varlable = " + varlable);
+			var mapXml:XML = new XML("<data></data>");
 			//如果R剧情进行中，则储存R存档，否则进行S存档
 			if(LSouSouObject.sMap == null){
 				/*
@@ -76,7 +80,16 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 				bytes.writeUTF(LSouSouObject.itemsList.toXMLString());
 				bytes.writeUTF(LSouSouObject.propsList.toXMLString());
 				bytes.writeInt(LSouSouObject.money);*/
+				if(LSouSouObject.rMapTitle == ""){
+					var date:Date = new Date();
+					var dateStr:String = date.fullYear+"年"+date.month+"月"+date.date+"日 "+date.hours+":"+date.minutes+":"+date.seconds;
+					mapXml.saveName = dateStr;
+				}else{
+					mapXml.saveName = LSouSouObject.rMapTitle;
+					
+				}
 				
+				mapXml.charaLength = 0;
 				saveArray = [
 					"R",
 					start_file,
@@ -84,12 +97,11 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 					xmlMember.toXMLString(),
 					LSouSouObject.itemsList.toXMLString(),
 					LSouSouObject.propsList.toXMLString(),
-					LSouSouObject.money,
+					LSouSouObject.money.toString(),
 					varlable,
-					new XML("<data>1</data>")
+					mapXml.toXMLString()
 				];
 			}else{
-				var mapXml:XML = new XML("<data></data>");
 				var charaXml:XML = new XML("<charalist></charalist>");
 				var stageList:XML = new XML("<stagelist></stagelist>");
 				var weatherXml:XML = new XML("<weather>" + 
@@ -118,6 +130,7 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 						stageList.appendChild(new XML("<stage><index>"+stageIndex+"</index><x>"+x+"</x><y>"+y+"</y></stage>"));
 					}
 				};
+				/**
 				for each(charas in LSouSouObject.sMap.ourlist){
 					charaXml.appendChild(charas.getSaveData());
 				}
@@ -126,8 +139,10 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 				}
 				for each(charas in LSouSouObject.sMap.enemylist){
 					charaXml.appendChild(charas.getSaveData());
-				}
-				mapXml.appendChild(charaXml);
+				}*/
+				mapXml.saveName = LSouSouObject.sMap.condition[0] + " 第" + LSouSouObject.sMap.roundCount + "回合";
+				mapXml.charaLength = LSouSouObject.sMap.ourlist.length + LSouSouObject.sMap.friendlist.length + LSouSouObject.sMap.enemylist.length;
+				//mapXml.appendChild(charaXml);
 				//trace("mapXml = " + mapXml);
 				saveArray = [
 					"S",
@@ -136,16 +151,25 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 					xmlMember.toXMLString(),
 					LSouSouObject.itemsList.toXMLString(),
 					LSouSouObject.propsList.toXMLString(),
-					LSouSouObject.money,
+					LSouSouObject.money.toString(),
 					varlable,
 					mapXml.toXMLString()
 				];
+				for each(charas in LSouSouObject.sMap.ourlist){
+					saveArray.push(charas.getSaveData().toXMLString());
+				}
+				for each(charas in LSouSouObject.sMap.friendlist){
+					saveArray.push(charas.getSaveData().toXMLString());
+				}
+				for each(charas in LSouSouObject.sMap.enemylist){
+					saveArray.push(charas.getSaveData().toXMLString());
+				}
 				
 			}
 			//trace("saveGameAsFile saveArray = " + saveArray);
 			var savepath:String = LGlobal.script.scriptArray.varList["savepath"];
 			//return "ScriptSouSouSave saveGameAsFile over";
-			return LGlobal.script.scriptLayer["saveGame"](saveArray,name + ".slf",savepath);
+			return LGlobal.script.scriptLayer["saveGame"](saveArray,name + ".slf",savepath,mapXml.saveName);
 		}
 		/**
 		 * 脚本解析
@@ -155,6 +179,7 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 		public static function readGameAsFile(name:String = "save1"):void{
 			var savepath:String = LGlobal.script.scriptArray.varList["savepath"];
 			var saveArray:Array = LGlobal.script.scriptLayer["readGame"](name,savepath);
+			
 			
 			var type:String = saveArray[0];
 			var start_file:String = saveArray[1];
@@ -175,16 +200,19 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 			var childxml:XML;
 			for each(childxml in varlable.elements()){
 				LGlobal.script.scriptArray.varList[childxml.@name] = childxml.toString();
+				trace("LGlobal.script.scriptArray.varList "+childxml.@name+" = " + childxml.toString());
 			}
 			LGlobal.isreading = start_word;
-			
+			var saveXml:XML = new XML(saveArray[8]);
 			if(type == "S"){
-				LSouSouObject.sMapSaveXml = new XML(saveArray[8]);
+				LSouSouObject.sMapSaveXml = saveXml;
 			}
+			LSouSouObject.rMapTitle = saveXml.saveName;
 			//存档数据读取完毕，开始读取相关RS文件
 			LGlobal.script.saveList();
 			LGlobal.script.lineList.unshift("Exit.run();");
 			LGlobal.script.lineList.unshift("Load.script(script/"+start_file+".lf);");
+			LGlobal.script.lineList.unshift("Wait.time(1);");
 			LGlobal.script.lineList.unshift("Text.label(-,load,Loading……,280,230,30,#ffffff);");
 			LGlobal.script.lineList.unshift("Layer.drawRect(-,0,0,800,480,0x000000,1);");
 			LGlobal.script.lineList.unshift("Layer.clear(-);");
