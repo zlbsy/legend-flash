@@ -1,0 +1,78 @@
+Mark.save_r13_2;
+Var.set(save_word,save_r13_2);
+Var.set(save_file,r13);
+
+Layer.clear(-);
+
+SouSouRMap.start();
+initialization.start;
+addMap(images/map,r10.rmap);
+//是否可控制，人物编号，方向，x坐标,y坐标
+SouSouRCharacter.add(1,1,@d,@x,@y);
+SouSouRCharacter.add(0,171,0,13,7);
+SouSouRCharacter.add(0,4,0,26,12,1);
+SouSouRCharacter.add(0,5,0,22,10,1);
+initialization.end;
+function.start;
+function characterAt_1_3_11();
+	//SouSouTalk.set(1,0,地图切换);
+	//Layer.clear(-);
+	//设定人物不可控
+	SouSouRunMode.set(1);
+	Load.script(script/r13_5.lf);
+endfunction;
+function characterAt_1_26_6();
+	//SouSouTalk.set(1,0,地图切换);
+	//Layer.clear(-);
+	//设定人物不可控
+	SouSouRunMode.set(1);
+	Var.set(x,29);
+	Var.set(y,5);
+	Var.set(d,0);
+	Load.script(script/r13_1.lf);
+endfunction;
+function characterclick4();
+	SouSouRunMode.set(1);
+	SouSouRCharacter.changeDirection(1,4);
+	SouSouRCharacter.changeDirection(4,1);
+	SouSouTalk.set(4,0,主……主公，平原这个……这个地方不错，能…能吃饱。);
+	SouSouTalk.set(1,0,哈哈，是啊，平原是个好地方啊。);
+	SouSouRunMode.set(0);
+endfunction;
+function characterclick5();
+	SouSouRunMode.set(1);
+	SouSouRCharacter.changeDirection(1,5);
+	SouSouRCharacter.changeDirection(5,1);
+	SouSouTalk.set(1,0,邓茂，云长和翼德他们呢？。);
+	SouSouTalk.set(5,0,回主公，关将军和张将军到酒馆喝酒去了。);
+	SouSouTalk.set(1,0,哦？我也去看看。);
+	SouSouRunMode.set(0);
+endfunction;
+function characterclick171();
+	SouSouRunMode.set(1);
+	SouSouRCharacter.changeDirection(1,171);
+	SouSouRCharacter.changeDirection(171,1);
+	SouSouTalk.set(171,0,需要些兵器，装备吗？。);
+	SouSouWindow.shop();
+	//装备贩卖(装备编号,装备等级);
+	shopItem(1,2);
+	shopItem(2,1);
+	shopItem(3,1);
+	shopItem(4,1);
+	shopItem(5,1);
+	shopItem(6,1);
+	shopItem(7,1);
+	shopItem(9,1);
+	endWindow;
+	SouSouRunMode.set(0);
+endfunction;
+function.end;
+
+loop.start;
+SouSouRCharacter.atCoordinate(1,3,11);
+SouSouRCharacter.atCoordinate(1,26,6);
+loop.end;
+
+SouSouRMap.end();
+SouSouSound.playMusic(sound/sg02.mp3);
+SouSouRunMode.set(0);

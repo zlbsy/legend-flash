@@ -1,0 +1,225 @@
+Layer.clear(-);
+Img.add(-,logostage,logo_stage.png,0,0,800,480,1,img);
+Text.label(-,s_name,曲阳之战,250,200,70,#ffffff);
+Wait.time(50);
+
+Mark.save_s04_1;
+Var.set(save_word,save_s04_1);
+Var.set(save_file,s04);
+SouSouSMap.start();
+
+initialization.start;
+MaxRound(20);
+//人物出战顺序号，方向(0down,1left,2up,3right)，出现x坐标，出现y坐标，是否隐藏
+SouSouSCharacter.addOur(0,3,3,2,1);
+SouSouSCharacter.addOur(1,0,6,0,0);
+SouSouSCharacter.addOur(2,3,3,3,0);
+SouSouSCharacter.addOur(3,0,7,0,0);
+SouSouSCharacter.addOur(4,3,3,4,0);
+//敌军人物出战编号，等级，方向(0down,1left,2up,3right)，出现x坐标，出现y坐标，是否隐藏，AI
+SouSouSCharacter.addEnemy(16,3,1,19,5,1,2);
+
+SouSouSCharacter.addEnemy(28,2,1,19,8,1,2);
+SouSouSCharacter.addEnemy(204,-2,1,17,6,1,2);
+SouSouSCharacter.addEnemy(205,-2,1,17,7,1,2);
+SouSouSCharacter.addEnemy(355,-2,1,18,6,1,2);
+SouSouSCharacter.addEnemy(354,-2,1,18,7,1,2);
+SouSouSCharacter.addEnemy(206,-2,1,19,6,1,2);
+SouSouSCharacter.addEnemy(207,-2,1,19,7,1,2);
+SouSouSCharacter.addEnemy(356,-2,1,20,6,1,2);
+SouSouSCharacter.addEnemy(357,-2,1,20,7,1,2);
+SouSouSCharacter.addEnemy(1001,-2,1,18,4,1,2);
+SouSouSCharacter.addEnemy(1002,-2,1,19,4,1,2);
+SouSouSCharacter.addEnemy(1003,-2,1,20,4,1,2);
+SouSouSCharacter.addEnemy(1004,-2,1,18,9,1,2);
+SouSouSCharacter.addEnemy(1005,-2,1,19,9,1,2);
+SouSouSCharacter.addEnemy(1006,-2,1,20,9,1,2);
+
+SouSouSCharacter.addEnemy(21,2,1,15,6,1,2);
+
+SouSouSCharacter.addEnemy(1007,-2,1,14,5,1,1);
+SouSouSCharacter.addEnemy(1008,-2,1,14,6,1,1);
+SouSouSCharacter.addEnemy(1009,-2,1,14,7,1,1);
+SouSouSCharacter.addEnemy(1010,-2,1,16,5,1,1);
+SouSouSCharacter.addEnemy(1011,-2,1,16,6,1,1);
+SouSouSCharacter.addEnemy(1012,-2,1,16,7,1,1);
+
+SouSouSCharacter.addEnemy(254,-2,2,6,2,0,0);
+SouSouSCharacter.addEnemy(255,-2,2,7,2,0,0);
+SouSouSCharacter.addEnemy(256,-2,1,5,3,0,0);
+SouSouSCharacter.addEnemy(257,-2,1,5,4,0,0);
+
+//友军人物出战编号，等级，方向(0down,1left,2up,3right)，出现x坐标，出现y坐标，是否隐藏，AI
+SouSouSCharacter.addFriend(13,2,3,4,1,1,0);
+
+SouSouSCharacter.addFriend(351,-2,3,2,0,1,0);
+SouSouSCharacter.addFriend(352,-2,3,3,0,1,0);
+SouSouSCharacter.addFriend(201,-2,3,2,1,1,0);
+SouSouSCharacter.addFriend(202,-2,3,3,1,1,0);
+
+addMap(images/map,s04.smap);
+initialization.end;
+function.start;
+function win();
+	Wait.time(20);
+	SouSouSCharacter.changeDirection(11,1,1);
+	SouSouTalk.set(1,0,消灭敌人了首领张宝，这里的问题应该解决了！);
+	
+	SouSouWindow.addMoney(400);
+	SouSouWindow.msg(战斗胜利！\n得到银两400！,1);
+	Layer.clear(-);
+	Load.script(script/r10.lf);
+	Exit.run();
+endfunction;
+function lose();
+	SouSouWindow.msg(战斗失败！,1);
+	Layer.clear(-);
+	Load.script(script/lose.lf);
+	Exit.run();
+endfunction;
+function checkHp(index,minhp,maxhp);
+	if(@checkhp1 != 1 && @index==1 && @minhp<=@nowcharahp && @maxhp>=@nowcharahp);
+		SouSouTalk.set(1,0,难道我真的要死在这里？唔……);
+		Var.set(checkhp1,1);
+		Call.lose();
+		Exit.run();
+	elseif(@checkhp2 != 1 && @index==2 && @minhp<=@nowcharahp && @maxhp>=@nowcharahp);
+		SouSouTalk.set(2,0,怎么能这么就败了……。);
+		Var.set(checkhp2,1);
+	elseif(@checkhp3 != 1 && @index==3 && @minhp<=@nowcharahp && @maxhp>=@nowcharahp);
+		SouSouTalk.set(3,0,可恨，竟然败在这帮家伙手上……。);
+		Var.set(checkhp3,1);
+	elseif(@checkhp4 != 1 && @index==16 && @minhp<=@nowcharahp && @maxhp>=@nowcharahp);
+		SouSouTalk.set(16,0,怎么可能！？我得赶紧找大哥张角去，我们三兄弟一起消灭他们……。);
+		Var.set(checkhp4,1);
+		Call.win();
+		Exit.run();
+	endif;
+endfunction;
+function adjacent(index1,index2);
+endfunction;
+function atBelongCoordinate(belong,cx,cy);
+endfunction;
+function atBelongCoordinates(belong,fx,fy,tx,ty);
+	if(@atBelongCoordinates1 != 1 && @belong==0 && @fx<=@nowcharax && @fy<=@nowcharay && @tx>=@nowcharax && @ty>=@nowcharay);
+		SouSouRunMode.set(1);
+		SouSouSCharacter.changeAction(21,ATK);
+		SouSouTalk.set(21,0,兄弟们，我们去干掉他们。);
+		SouSouSCharacter.changeRect(1,command,0,11,4,16,9);
+		SouSouRunMode.set(0);
+		Var.set(atBelongCoordinates1,1);
+	elseif(@atBelongCoordinates1 != 1 && @belong==-1 && @fx<=@nowcharax && @fy<=@nowcharay && @tx>=@nowcharax && @ty>=@nowcharay);
+		SouSouRunMode.set(1);
+		SouSouSCharacter.changeAction(21,ATK);
+		SouSouTalk.set(21,0,兄弟们，我们去干掉他们。);
+		SouSouSCharacter.changeRect(1,command,0,11,4,16,9);
+		SouSouRunMode.set(0);
+		Var.set(atBelongCoordinates1,1);
+	elseif(@atBelongCoordinates2 != 1 && @belong==0 && @fx<=@nowcharax && @fy<=@nowcharay && @tx>=@nowcharax && @ty>=@nowcharay);
+		SouSouRunMode.set(1);
+		SouSouSCharacter.changeAction(16,ATK);
+		SouSouSCharacter.changeAction(16,ATK);	
+		SouSouTalk.set(16,0,你们可别小看我，兄弟们，一定要守住！);
+		SouSouSCharacter.changeRect(1,command,0,17,0,20,13);
+		//单人方针改变
+		SouSouSCharacter.change(16,command,2);
+		SouSouRunMode.set(0);
+		Var.set(atBelongCoordinates2,1);
+	elseif(@atBelongCoordinates2 != 1 && @belong==-1 && @fx<=@nowcharax && @fy<=@nowcharay && @tx>=@nowcharax && @ty>=@nowcharay);
+		SouSouRunMode.set(1);
+		SouSouSCharacter.changeAction(16,ATK);
+		SouSouSCharacter.changeAction(16,ATK);
+		SouSouTalk.set(16,0,你们可别小看我，兄弟们，一定要守住！);
+		SouSouSCharacter.changeRect(1,command,0,17,0,20,13);
+		//单人方针改变
+		SouSouSCharacter.change(16,command,2);
+		SouSouRunMode.set(0);
+		Var.set(atBelongCoordinates2,1);
+	endif;
+endfunction;
+function.end;
+
+loop.start;
+SouSouSCharacter.checkHp(1,0,0,@checkhp1!=1);
+SouSouSCharacter.checkHp(2,0,0,@checkhp2!=1);
+SouSouSCharacter.checkHp(3,0,0,@checkhp3!=1);
+SouSouSCharacter.checkHp(16,0,0,@checkhp4!=1);
+//SouSouSCharacter.adjacent(3,5,@adjacent1!=1);
+SouSouSCharacter.atBelongCoordinates(0,11,4,16,9,@atBelongCoordinates1!=1);
+SouSouSCharacter.atBelongCoordinates(-1,11,4,16,9,@atBelongCoordinates1!=1);
+SouSouSCharacter.atBelongCoordinates(0,16,6,20,7,@atBelongCoordinates2!=1);
+SouSouSCharacter.atBelongCoordinates(-1,16,6,20,7,@atBelongCoordinates2!=1);
+loop.end;
+SouSouSMap.end();
+SouSouMember.addEquipment(16,0,5,1,7,1,0);
+SouSouMember.addEquipment(13,0,1,1,6,1,0);
+SouSouMember.addEquipment(21,0,1,1,7,1,0);
+SouSouMember.addEquipment(28,0,1,1,7,1,0);
+SouSouMember.addEquipment(1001,0,1,1,7,1,0);
+SouSouMember.addEquipment(1002,0,1,1,7,1,0);
+SouSouMember.addEquipment(1003,0,1,1,7,1,0);
+SouSouMember.addEquipment(1004,0,1,1,7,1,0);
+SouSouMember.addEquipment(1005,0,1,1,7,1,0);
+SouSouMember.addEquipment(1006,0,1,1,7,1,0);
+SouSouMember.addEquipment(1007,0,1,1,7,1,0);
+SouSouMember.addEquipment(1008,0,1,1,7,1,0);
+SouSouMember.addEquipment(1009,0,1,1,7,1,0);
+SouSouMember.addEquipment(1010,0,1,1,7,1,0);
+SouSouMember.addEquipment(1011,0,1,1,7,1,0);
+SouSouMember.addEquipment(1012,0,1,1,7,1,0);
+SouSouMember.addEquipment(201,0,1,1,6,1,0);
+SouSouMember.addEquipment(202,0,1,1,6,1,0);
+SouSouMember.addEquipment(204,0,1,1,6,1,0);
+SouSouMember.addEquipment(205,0,1,1,6,1,0);
+SouSouMember.addEquipment(206,0,1,1,6,1,0);
+SouSouMember.addEquipment(207,0,1,1,6,1,0);
+SouSouMember.addEquipment(251,0,2,1,6,1,0);
+SouSouMember.addEquipment(252,0,2,1,6,1,0);
+SouSouMember.addEquipment(254,0,2,1,6,1,0);
+SouSouMember.addEquipment(255,0,2,1,6,1,0);
+SouSouMember.addEquipment(351,0,3,1,6,1,0);
+SouSouMember.addEquipment(352,0,3,1,6,1,0);
+SouSouMember.addEquipment(354,0,3,1,6,1,0);
+SouSouMember.addEquipment(355,0,3,1,6,1,0);
+SouSouMember.addEquipment(356,0,3,1,6,1,0);
+SouSouMember.addEquipment(357,0,3,1,6,1,0);
+SouSouSound.playMusic(sound/sg03.mp3);
+SouSouRunMode.set(1);
+
+SouSouSCharacter.changeAction(16,ATK);
+SouSouTalk.set(16,0,%$&#&……不死兵！出现吧！！);
+SouSouSMapChange.addStage(100,5,5,1);
+//武将出现
+SouSouSCharacter.show(254,1);
+SouSouSCharacter.show(255,1);
+SouSouSCharacter.show(256,1);
+SouSouSCharacter.show(257,1);
+SouSouSCharacter.changeAction(1,ATK);
+SouSouTalk.set(1,0,开始破他们的法术！);
+//武将出现
+SouSouSCharacter.show(2,1);
+SouSouSCharacter.show(3,1);
+SouSouSCharacter.show(4,1);
+SouSouSCharacter.show(5,1);
+SouSouTalk.set(3,0,试一下这个猪血的滋味怎么样吧！);
+SouSouSCharacter.changeAction(3,ATK);
+SouSouSCharacter.changeAction(256,HERT);
+SouSouSCharacter.changeAction(257,HERT);
+SouSouTalk.set(2,0,嘿！);
+SouSouSCharacter.changeAction(2,ATK);
+SouSouSCharacter.changeAction(254,HERT);
+SouSouSCharacter.changeAction(255,HERT);
+
+SouSouSCharacter.changeAction(16,PANT);
+SouSouTalk.set(16,0,糟糕！法术不灵了！);
+SouSouSCharacter.show(254,0,1);
+SouSouSCharacter.show(255,0,1);
+SouSouSCharacter.show(256,0,1);
+SouSouSCharacter.show(257,0,1);
+SouSouSCharacter.changeAction(13,ATK);
+SouSouSCharacter.changeAction(13,ATK);
+SouSouTalk.set(13,0,他们的法术已经被破了，我们冲啊！);
+SouSouWindow.setCondition(曲阳之战,1、消灭张宝！,1、刘备阵亡！);
+SouSouRunMode.set(0);
+SouSouSAttack.start(0);
+

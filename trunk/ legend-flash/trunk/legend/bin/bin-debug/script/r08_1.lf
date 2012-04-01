@@ -1,0 +1,56 @@
+
+Mark.save_r08_1_2;
+Var.set(save_file,r08_1);
+Var.set(save_word,save_r08_1_2);
+Layer.clear(-);
+
+SouSouRMap.start(1);
+initialization.start;
+addMap(images/map,r06.rmap);
+//是否可控制，人物编号，方向，x坐标,y坐标
+SouSouRCharacter.add(0,181,0,13,11);
+SouSouRCharacter.add(1,1,2,11,15);
+SouSouRCharacter.add(0,2,2,8,16);
+SouSouRCharacter.add(0,3,2,9,17);
+initialization.end;
+function.start;
+function characterclick181();
+	SouSouTalk.set(181,0,你好，要点什么？);
+	//商店
+	SouSouWindow.shop();
+	//物品贩卖(物品编号);
+	shopProps(0);
+	shopProps(1);
+	endWindow;
+endfunction;
+function characterclick2();
+	SouSouTalk.set(2,0,大哥，现在出发吗？);
+	//添加选择
+	SouSouTalk.select(1.出发前往广宗,2.再准备一下);
+	if(@select==0);
+	SouSouTalk.set(1,0,马上赶往广宗。);
+	//必须出场人物编号
+	SouSouMember.setMust(1);
+	SouSouMember.setMust(2);
+	SouSouMember.setMust(3);
+	SouSouWindow.preWar(script/s03.lf);
+	Exit.run();
+	elseif(@select==1);
+	SouSouTalk.set(1,0,还有些东西要准备，再稍等一下。);
+	endif;
+endfunction;
+function characterclick3();
+	SouSouTalk.set(3,0,大哥，赶紧出发吧);
+endfunction;
+function.end;
+
+loop.start;
+loop.end;
+
+SouSouRMap.end();
+SouSouRunMode.set(0);
+
+/*
+Layer.clear(-);
+Load.script(script/s02.lf);
+*/

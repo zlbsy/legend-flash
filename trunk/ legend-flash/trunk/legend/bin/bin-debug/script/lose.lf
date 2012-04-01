@@ -1,0 +1,13 @@
+Layer.drawRect(-,0,0,800,480,0x000000,1);
+Text.wind(-,message00,战斗失败！,100,100,600,40,150);
+Wait.time(50);
+Layer.clear(-);
+Img.add(-,gameover,gameover,0,0,800,480,1,img);
+//添加选择
+SouSouTalk.select(1.关闭游戏,2.重新战斗);
+if(@select==0);
+	SouSouGame.close();
+else;
+	Layer.clear(-);
+	Load.script(script/logo.lf);
+endif;

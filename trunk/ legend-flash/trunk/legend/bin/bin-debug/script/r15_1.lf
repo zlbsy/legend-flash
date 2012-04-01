@@ -1,0 +1,75 @@
+Mark.save_r15_1_1;
+Var.set(save_file,r15_1);
+Var.set(save_word,save_r15_1_1);
+Layer.clear(-);
+
+SouSouRMap.start(1);
+initialization.start;
+addMap(images/map,r05.rmap);
+//是否可控制，人物编号，方向，x坐标,y坐标
+SouSouRCharacter.add(0,1,1,26,16);
+SouSouRCharacter.add(0,2,0,21,11);
+SouSouRCharacter.add(0,3,0,17,9);
+SouSouRCharacter.add(0,42,0,13,7);
+SouSouRCharacter.add(0,132,2,16,14);
+SouSouRCharacter.add(0,41,2,12,12);
+SouSouRCharacter.add(0,44,2,8,10);
+initialization.end;
+function.start;
+function characterclick44();
+	SouSouTalk.set(44,0,玄德公，你需要买进些什么吗？);
+	//商店
+	SouSouWindow.shop();
+	//物品贩卖(物品编号);
+	shopProps(0);
+	shopProps(1);
+	shopProps(2);
+	shopProps(3);
+	endWindow;
+endfunction;
+function characterclick41();
+	SouSouRunMode.set(1);
+	SouSouTalk.set(41,0,曹孟德兵强马壮，不容易对付阿。);
+	SouSouRunMode.set(0);
+endfunction;
+function characterclick132();
+	SouSouRunMode.set(1);
+	SouSouTalk.set(132,0,曹兵十分勇猛，我们得万分小心啊。);
+	SouSouRunMode.set(0);
+endfunction;
+function characterclick42();
+	SouSouRunMode.set(1);
+	SouSouTalk.set(42,0,云必定全力护送刘将军和张将军二人。);
+	SouSouRunMode.set(0);
+endfunction;
+function characterclick3();
+	SouSouRunMode.set(1);
+	SouSouTalk.set(3,0,大哥放心，有俺的蛇矛开道，曹兵再多也没用。);
+	SouSouRunMode.set(0);
+endfunction;
+function characterclick2();
+	SouSouTalk.set(2,0,准备好了吗？);
+	//添加选择
+	SouSouTalk.select(1.准备好了,2.再准备一下);
+	if(@select==0);
+	SouSouTalk.set(1,0,我们马上出发。);
+	//必须出场人物编号
+	SouSouMember.setMust(1);
+	SouSouMember.setMust(2);
+	SouSouMember.setMust(3);
+	SouSouMember.setMust(44);
+	SouSouWindow.preWar(script/s10.lf);
+	Exit.run();
+	elseif(@select==1);
+	SouSouTalk.set(1,0,还有些东西要准备，再稍等一下。);
+	endif;
+endfunction;
+function.end;
+
+loop.start;
+loop.end;
+
+SouSouRMap.end();
+SouSouSound.playMusic(sound/sg02.mp3);
+//设定人物可控
+SouSouRunMode.set(0);

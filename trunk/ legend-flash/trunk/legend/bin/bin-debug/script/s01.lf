@@ -1,0 +1,369 @@
+Layer.clear(-);
+Img.add(-,logostage,logo_stage.png,0,0,800,480,1,img);
+Text.label(-,s_name,大兴山之战,250,200,70,#ffffff);
+Wait.time(50);
+
+SouSouMember.preWar(1);
+SouSouMember.preWar(2);
+SouSouMember.preWar(3);
+
+Mark.save_s01_1;
+Var.set(save_word,save_s01_1);
+Var.set(save_file,s01);
+
+SouSouSMap.start();
+
+initialization.start;
+MaxRound(20);
+//人物出战顺序号，方向(0down,1left,2up,3right)，出现x坐标，出现y坐标，是否隐藏
+SouSouSCharacter.addOur(0,2,1,14,1);
+SouSouSCharacter.addOur(1,2,1,15,1);
+SouSouSCharacter.addOur(2,2,0,15,1);
+//敌军人物出战编号，等级，方向(0down,1left,2up,3right)，出现x坐标，出现y坐标，是否隐藏，AI
+SouSouSCharacter.addEnemy(4,2,1,13,7,1,1);
+SouSouSCharacter.addEnemy(5,2,1,9,7,1,0);
+SouSouSCharacter.addEnemy(1001,-2,1,8,7,1,0);
+SouSouSCharacter.addEnemy(1002,-2,1,8,8,1,0);
+SouSouSCharacter.addEnemy(1003,-2,1,10,7,1,0);
+SouSouSCharacter.addEnemy(1004,-2,1,10,8,1,0);
+SouSouSCharacter.addEnemy(1005,-2,1,10,9,1,0);
+SouSouSCharacter.addEnemy(1006,-2,1,12,6,1,1);
+SouSouSCharacter.addEnemy(1007,-2,1,12,7,1,1);
+SouSouSCharacter.addEnemy(1008,-2,1,12,8,1,1);
+SouSouSCharacter.addEnemy(1009,-2,1,11,7,1,1);
+SouSouSCharacter.addEnemy(1010,-2,1,11,8,1,1);
+SouSouSCharacter.addEnemy(1011,-2,1,11,9,1,1);
+SouSouSCharacter.addEnemy(1012,-2,1,12,9,1,1);
+//友军人物出战编号，等级，方向(0down,1left,2up,3right)，出现x坐标，出现y坐标，是否隐藏，AI
+SouSouSCharacter.addFriend(7,2,2,2,14,0,0);
+SouSouSCharacter.addFriend(251,-2,2,2,15,0,0);
+SouSouSCharacter.addFriend(252,-2,2,3,15,0,0);
+SouSouSCharacter.addFriend(201,-2,2,3,14,1,0);
+SouSouSCharacter.addFriend(351,-2,2,4,14,1,0);
+addMap(images/map,s01.smap);
+initialization.end;
+function.start;
+function win();
+	Wait.time(20);
+	SouSouSCharacter.changeDirection(1,1,2);
+	SouSouSCharacter.changeDirection(2,1,1);
+	Wait.time(20);
+	SouSouTalk.set(1,0,云长，你没事吧，怎么满脸通红？);
+	SouSouTalk.set(2,0,大哥，云长走先了。);
+	SouSouSCharacter.show(2,0);
+	SouSouTalk.set(1,0,云长……);
+	
+	SouSouWindow.addMoney(100);
+	SouSouWindow.msg(战斗胜利！\n得到银两100！,1);
+	/*
+	*/
+	Layer.clear(-);
+	Load.script(script/r05.lf);
+	Exit.run();
+endfunction;
+function lose();
+	SouSouWindow.msg(战斗失败！,1);
+	Layer.clear(-);
+	Load.script(script/lose.lf);
+	Exit.run();
+endfunction;
+function adjacent(index1,index2);
+	if(@adjacent1 != 1 && @index1==3 && @index2==5);
+		SouSouRunMode.set(1);
+		Wait.time(20);
+		SouSouSCharacter.changeDirection(3,1,5);
+		SouSouSCharacter.changeDirection(5,1,3);
+		Wait.time(20);
+		SouSouTalk.set(3,0,来来来，跟俺老张来过两招。);
+		//单挑开始[左人物编号，右人物编号]
+		SouSouWindow.singled(3,5);
+		Wait.time(40);
+		//单条控制：人物攻击预备[人物(0左1右)]
+		SouSouSingled.atkPrepare(0);
+		//单条控制：单条对话[人物(0左1右)，说话内容]
+		SouSouSingled.talk(0,你爷爷的，有地不种，去当贼！?);
+		Wait.time(40);
+		SouSouSingled.block(1);
+		//单条控制：单条对话[人物(0左1右)，说话内容]
+		SouSouSingled.talk(1,哼！说得轻巧，不造反哪儿来的地种？);
+		Wait.time(40);
+		//单条控制：人物前移[人物(0左1右)，移动距离(+右-左)]
+		SouSouSingled.move(0,3);
+		//单条控制：单条对话[人物(0左1右)，说话内容]
+		SouSouSingled.talk(0,现在后悔还来得及。);
+		Wait.time(40);
+		SouSouSingled.talk(1,……);
+		Wait.time(40);
+		SouSouSingled.talk(1,拼了！);
+		//单条控制：人物前移[人物(0左1右)，移动距离(+右-左)]
+		SouSouSingled.move(1,-1);
+		Wait.time(40);
+		//单条控制：攻击挡格[人物(0左1右)]
+		SouSouSingled.atkBlock(1);
+		//单条控制：攻击挡格[人物(0左1右)]
+		SouSouSingled.atkBlock(1);
+		//单条控制：攻击挡格[人物(0左1右)]
+		SouSouSingled.atkBlock(1);
+		Wait.time(40);
+		SouSouSingled.block(0);
+		SouSouSingled.talk(0,就这点本事吗？);
+		Wait.time(40);
+		SouSouSingled.talk(1,（……糟糕！碰到高手了。）);
+		Wait.time(40);
+		SouSouSingled.talk(1,呀呀呀……！);
+		//单条控制：人物前移[人物(0左1右)，移动距离(+右-左)]
+		SouSouSingled.move(1,-1);
+		Wait.time(40);
+		//单条控制：攻击挡格[人物(0左1右)]
+		SouSouSingled.atkBlock(1);
+		//单条控制：攻击挡格[人物(0左1右)]
+		SouSouSingled.atkBlock(1);
+		//单条控制：攻击挡格[人物(0左1右)]
+		SouSouSingled.atkBlock(1);
+		Wait.time(40);
+		//单条控制：人物喘气[人物(0左1右)]
+		SouSouSingled.pant(1);
+		Wait.time(40);
+		SouSouSingled.talk(1,不行啊，完全无效……);
+		Wait.time(40);
+		SouSouSingled.block(0);
+		SouSouSingled.talk(0,怎么样？还打吗？);
+		Wait.time(40);
+		//单条控制：人物攻击预备[人物(0左1右)]
+		SouSouSingled.atkPrepare(1);
+		//单条控制：单条对话[人物(0左1右)，说话内容]
+		SouSouSingled.talk(1,打，不打就没饭吃啊，杀啊！);
+		Wait.time(40);
+		//单条控制：人物前移[人物(0左1右)，移动距离(+右-左)]
+		SouSouSingled.move(1,-1);
+		//单条控制：攻击跳闪[人物(0左1右)]
+		SouSouSingled.atkDodge2(1);
+		Wait.time(40);
+		SouSouSingled.talk(1,嗯？人呢？);
+		Wait.time(40);
+		SouSouSingled.talk(0,笨蛋，在你后面呢，看招！);
+		//单条控制：攻击致命[人物(0左1右)]
+		SouSouSingled.atkHertFatal(0,1);
+		//单条控制：人物喘气[人物(0左1右)]
+		SouSouSingled.pant(1);
+		SouSouSingled.talk(1,我的妈呀，不行了);
+		Wait.time(40);
+		//单条控制：人物前移[人物(0左1右)，移动距离(+右-左)]
+		SouSouSingled.move(0,1);
+		//单条控制：攻击挡格[人物(0左1右)]
+		SouSouSingled.block(0);
+		Wait.time(40);
+		//单条控制：单条对话[人物(0左1右)，说话内容]
+		SouSouSingled.talk(0,明知道打不过俺，还这么拼命，勇气可嘉，今天就饶你命吧。);
+		Wait.time(40);
+		//单条控制：单条结果[-1失败0平手1胜利]
+		SouSouSingled.result(1);
+		Wait.time(100);
+		//单条结束
+		SouSouWindow.singledend();
+		Var.set(adjacent1,1);
+		SouSouRunMode.set(0);
+	elseif(@adjacent2 != 1 && @index1==2 && @index2==4);
+		SouSouRunMode.set(1);
+		Wait.time(20);
+		SouSouSCharacter.changeDirection(2,1,4);
+		SouSouSCharacter.changeDirection(4,1,2);
+		Wait.time(20);
+		SouSouTalk.set(4,0,对面的，那…那…那个大胡子，来！过……过招！);
+		//单挑开始[左人物编号，右人物编号]
+		SouSouWindow.singled(2,4);
+		Wait.time(40);
+		//单条控制：人物攻击预备[人物(0左1右)]
+		SouSouSingled.atkPrepare(1);
+		SouSouSingled.talk(1,你敢挡…挡…我……们义军的路，不……想活了是不是？);
+		Wait.time(40);
+		SouSouSingled.block(0);
+		//单条控制：单条对话[人物(0左1右)，说话内容]
+		SouSouSingled.talk(0,有太平日子不过，弄的天下大乱，还敢在这里叫嚣。);
+		Wait.time(40);
+		//单条控制：人物前移[人物(0左1右)，移动距离(+右-左)]
+		SouSouSingled.move(0,3);
+		//单条控制：单条对话[人物(0左1右)，说话内容]
+		SouSouSingled.talk(0,你若现在投降，我还可以手下留情。);
+		Wait.time(40);
+		//单条控制：人物前移[人物(0左1右)，移动距离(+右-左)]
+		SouSouSingled.move(1,-1);
+		//单条控制：单条对话[人物(0左1右)，说话内容]
+		SouSouSingled.talk(1,不……不用手下留情，咱们公平一点。);
+		Wait.time(40);
+		//单条控制：人物前移[人物(0左1右)，移动距离(+右-左)]
+		SouSouSingled.move(1,-2);
+		Wait.time(40);
+		SouSouSingled.block(1);
+		//单条控制：单条对话[人物(0左1右)，说话内容]
+		SouSouSingled.talk(1,你先…先出手，俺……让…让你。);
+		Wait.time(40);
+		SouSouSingled.block(0);
+		SouSouSingled.talk(0,好，那就成全你！);
+		Wait.time(40);
+		//单条控制：攻击致命[人物(0左1右)]
+		SouSouSingled.atkHertFatal(0,1);
+		//单条控制：人物喘气[人物(0左1右)]
+		SouSouSingled.pant(1);
+		SouSouSingled.talk(1,哎哟，太……太厉害了！);
+		Wait.time(40);
+		SouSouSingled.talk(1,还……还是跑吧！);
+		Wait.time(40);
+		//单条控制：人物前移[人物(0左1右)，移动距离(+右-左)]
+		SouSouSingled.move(1,3);
+		Wait.time(40);
+		//单条控制：单条对话[人物(0左1右)，说话内容]
+		SouSouSingled.talk(0,……跑得倒是挺快。);
+		Wait.time(40);
+		//单条控制：单条结果[-1失败0平手1胜利]
+		SouSouSingled.result(1);
+		Wait.time(100);
+		//单条结束
+		SouSouWindow.singledend();
+		Var.set(adjacent2,1);
+		SouSouRunMode.set(0);
+	endif;
+endfunction;
+function atBelongCoordinate(belong,cx,cy);
+	if(@atBelongCoordinate1 != 1 && @belong==0 && @cx==13 && @cy==7);
+		//获得物品(物品编号)
+		SouSouWindow.addProps(1);
+		SouSouWindow.msg(得到包子,1);
+		//SouSouTalk.set(1,0,占领！9-11);
+		Var.set(atBelongCoordinate1,1);
+	endif;
+endfunction;
+function checkHp(index,minhp,maxhp);
+	if(@checkHp1 != 1 && @index==4 && @minhp<=@nowcharahp && @maxhp>=@nowcharahp);
+		SouSouRunMode.set(1);
+		SouSouTalk.set(4,0,不……不好，竟然被……活捉了。);
+		Var.set(checkHp1,1);
+		Var.set(value1,1);
+		if(@value2 == 1);
+			SouSouSCharacter.outRect(1,0,0,15,15);
+			Call.win();
+		endif;
+		SouSouRunMode.set(0);
+	elseif(@checkHp2 != 1 && @index==5 && @minhp<=@nowcharahp && @maxhp>=@nowcharahp);
+		SouSouRunMode.set(1);
+		SouSouTalk.set(5,0,哎哟！放开我，放开我。);
+		Var.set(checkHp2,1);
+		Var.set(value2,1);
+		if(@value1 == 1);
+			SouSouSCharacter.outRect(1,0,0,15,15);
+			Call.win();
+		endif;
+		SouSouRunMode.set(0);
+	elseif(@checkHp3 != 1 && @index==1 && @minhp<=@nowcharahp && @maxhp>=@nowcharahp);
+		SouSouRunMode.set(1);
+		SouSouTalk.set(1,0,糟糕……没想到我刘备竟然就这样失败了。);
+		Var.set(checkHp3,1);
+		Call.lose();
+		SouSouRunMode.set(0);
+	endif;
+endfunction;
+function.end;
+
+loop.start;
+SouSouSCharacter.checkHp(4,0,0,@checkHp1!=1);
+SouSouSCharacter.checkHp(5,0,0,@checkHp2!=1);
+SouSouSCharacter.checkHp(1,0,0,@checkHp3!=1);
+SouSouSCharacter.adjacent(3,5,@adjacent1!=1);
+SouSouSCharacter.adjacent(2,4,@adjacent2!=1);
+SouSouSCharacter.atBelongCoordinate(0,13,7,@atBelongCoordinate1!=1);
+loop.end;
+SouSouSMap.end();
+SouSouMember.addEquipment(4,0,1,1,6,1,0);
+SouSouMember.addEquipment(5,0,3,1,6,1,0);
+SouSouMember.addEquipment(1001,0,1,1,7,1,0);
+SouSouMember.addEquipment(1002,0,1,1,7,1,0);
+SouSouMember.addEquipment(1003,0,1,1,7,1,0);
+SouSouMember.addEquipment(1004,0,1,1,7,1,0);
+SouSouMember.addEquipment(1005,0,1,1,7,1,0);
+SouSouMember.addEquipment(1006,0,1,1,7,1,0);
+SouSouMember.addEquipment(1007,0,1,1,7,1,0);
+SouSouMember.addEquipment(1008,0,1,1,7,1,0);
+SouSouMember.addEquipment(1009,0,1,1,7,1,0);
+SouSouMember.addEquipment(1010,0,1,1,7,1,0);
+SouSouMember.addEquipment(1011,0,1,1,7,1,0);
+SouSouMember.addEquipment(1012,0,1,1,7,1,0);
+SouSouMember.addEquipment(201,0,1,1,6,1,0);
+SouSouMember.addEquipment(202,0,1,1,6,1,0);
+SouSouMember.addEquipment(251,0,2,1,6,1,0);
+SouSouMember.addEquipment(351,0,3,1,6,1,0);
+SouSouMember.addEquipment(7,0,7,1,5,1,0);
+SouSouSound.playMusic(sound/sg03.mp3);
+SouSouRunMode.set(1);
+//武将出现
+SouSouSCharacter.show(1,1);
+SouSouSCharacter.show(2,1);
+SouSouSCharacter.show(3,1);
+SouSouSCharacter.show(7,1);
+SouSouSCharacter.show(251,1);
+SouSouSCharacter.show(252,1);
+SouSouSCharacter.show(201,1);
+SouSouSCharacter.show(351,1);
+
+SouSouSCharacter.changeDirection(7,1,1);
+SouSouTalk.set(7,0,玄德，这里就是大兴山了，我们绝对不能让敌人通过这里。);
+SouSouSCharacter.changeDirection(1,1,7);
+SouSouTalk.set(1,0,放心吧，有我兄弟三人在这里，谁也别想通过！);
+SouSouSCharacter.changeDirection(1,1,2);
+SouSouTalk.set(1,0,云长，翼德，我们走！);
+SouSouTalk.set(3,0,是，大哥！);
+
+SouSouSCharacter.moveTo(1,1,0,8);
+SouSouSCharacter.changeDirection(1,0,3);
+SouSouSCharacter.moveTo(1,2,0,7);
+SouSouSCharacter.changeDirection(2,0,3);
+SouSouSCharacter.moveTo(1,3,0,9);
+SouSouSCharacter.changeDirection(3,0,3);
+
+Wait.time(20);
+
+SouSouSCharacter.changeDirection(1,1,2);
+SouSouTalk.set(1,0,云长，你怎么了，脸色有些不好！);
+SouSouSCharacter.changeDirection(2,1,1);
+SouSouTalk.set(2,0,不瞒兄长，我来之前就有点尿急，但是时间紧迫，没来得及上茅厕！);
+SouSouTalk.set(1,0,这如何是好，看来我们这场仗不能拖太久，要速战速决。);
+Wait.time(20);
+SouSouSCharacter.changeAction(3,ATK);
+SouSouSCharacter.changeAction(3,ATK);
+Wait.time(20);
+SouSouTalk.set(3,0,大哥放心，这些贼兵对俺老张来说，比杀猪还容易。);
+Wait.time(20);
+SouSouSCharacter.changeAction(4,ATK);
+Wait.time(20);
+SouSouTalk.set(4,0,我…我……靠，前…前面竟…然来了几个不要…要…要命的，敢挡本大…大…贼的去路。);
+Wait.time(20);
+SouSouSCharacter.changeDirection(5,1,4);
+Wait.time(20);
+SouSouTalk.set(5,0,嗯？老大，咱们可不是贼，咱们是黄巾义军。);
+SouSouTalk.set(4,0,义军你个大…大……屁，贼就……是贼，你没听说颍……川那…边儿正在烧…烧…烧……);
+SouSouSCharacter.changeDirection(1007,1,4);
+SouSouTalk.set(1007,0,老大，是烧杀抢掠！);
+SouSouSCharacter.changeAction(4,ATK);
+SouSouSound.playEffect(Se35);
+SouSouSCharacter.changeAction(1007,HERT);
+SouSouTalk.set(4,0,你个臭小子，你当俺……是…是…文盲阿？);
+SouSouTalk.set(1007,0,老大，小的没那个意思呀…);
+SouSouTalk.set(5,0,可是老大，咱们这伙儿人可没有干那些伤天害理的事儿啊。不能让咱们背这黑锅阿！);
+SouSouTalk.set(4,0,也对，那咱们就当……当义军吧。);
+SouSouTalk.set(4,0,邓茂，你去把…把…前面挡道的，给……俺赶…赶跑！);
+SouSouTalk.set(5,0,老大放心，就交给我吧。);
+SouSouSCharacter.changeDirection(5,1,1);
+SouSouSCharacter.changeAction(5,ATK);
+SouSouTalk.set(5,0,兄弟们，老大放话了，把前面挡道的赶跑。);
+SouSouTalk.set(2,0,大哥，贼兵有动静了。);
+SouSouSCharacter.changeDirection(1,1,5);
+Wait.time(20);
+SouSouSCharacter.changeAction(1,ATKPREPARE);
+Wait.time(20);
+SouSouTalk.set(1,0,擒贼先擒王，我们上！);
+Wait.time(20);
+SouSouSCharacter.changeAction(1,MOVE);
+
+SouSouWindow.setCondition(大兴山之战,1、击毙程远志和邓茂！,1、刘备阵亡！);
+SouSouRunMode.set(0);
+SouSouSAttack.start(0);
+
