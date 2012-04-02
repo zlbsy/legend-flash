@@ -18,18 +18,18 @@
 	<id>Sanguoji.debug</id>
 
 	<!-- Used as the filename for the application. Required. -->
-	<filename>Sanguoji</filename>
+	<filename>三国记-乱世群雄</filename>
 
 	<!-- The name that is displayed in the AIR application installer. 
 	May have multiple values for each language. See samples or xsd schema file. Optional. -->
-	<name>Sanguoji-debug</name>
+	<name>三国记-乱世群雄-debug</name>
 	
 	<!-- A string value of the format <0-999>.<0-999>.<0-999> that represents application version which can be used to check for application upgrade. 
 	Values can also be 1-part or 2-part. It is not necessary to have a 3-part value.
 	An updated version of application must have a versionNumber value higher than the previous version. Required for namespace >= 2.5 . -->
-	<versionNumber>1.0.0</versionNumber>
+	<versionNumber>0.0.0</versionNumber>
 		         
-	<!-- A string value (such as "v1", "3.1", or "Alpha 1") that represents the version of the application, as it should be shown to users. Optional. -->
+	<!-- A string value (such as "v1", "2.5", or "Alpha 1") that represents the version of the application, as it should be shown to users. Optional. -->
 	<!-- <versionLabel></versionLabel> -->
 
 	<!-- Description, displayed in the AIR application installer.
@@ -89,7 +89,8 @@
 
         <!-- The initial aspect ratio of the app when launched (either "portrait" or "landscape"). Optional. Mobile only. Default is the natural orientation of the device -->
 
-        <aspectRatio>landscape</aspectRatio>
+        <!-- <aspectRatio></aspectRatio> -->
+		<aspectRatio>landscape</aspectRatio>
 
         <!-- Whether the app will begin auto-orienting on launch. Optional. Mobile only. Default false -->
 
@@ -99,7 +100,7 @@
 
         <!-- <fullScreen></fullScreen> -->
 
-        <!-- The render mode for the app (either auto, cpu, or gpu). Optional. Mobile only. Default auto -->
+        <!-- The render mode for the app (either auto, cpu, gpu, or direct). Optional. Default auto -->
 
         <!-- <renderMode></renderMode> -->
 
@@ -130,6 +131,7 @@
 		<image32x32></image32x32>
 		<image36x36></image36x36>
 		<image48x48></image48x48>
+		<image57x57></image57x57>
 		<image72x72></image72x72>
 		<image114x114></image114x114>
 		<image128x128></image128x128>
@@ -163,6 +165,12 @@
 			<!-- <contentType></contentType> -->
 			
 			<!-- The icon to display for the file type. Optional. -->
+			<!-- <icon>
+				<image16x16></image16x16>
+				<image32x32></image32x32>
+				<image48x48></image48x48>
+				<image128x128></image128x128>
+			</icon> -->
 			<icon>
 				<image16x16>images/icon/icon16.png</image16x16>
 				<image32x32>images/icon/icon32.png</image32x32>
@@ -189,19 +197,28 @@
                 <string>YES</string>
             ]]>
         </InfoAdditions> -->
-        <!-- <requestedDisplayResolution></requestedDisplayResolution> -->
+        <!-- A list of plist key/value pairs to be added to the application Entitlements.plist -->
+		<!-- <Entitlements>
+            <![CDATA[
+                <key>keychain-access-groups</key>
+                <array>
+                    <string></string>
+                    <string></string>
+                </array>
+            ]]>
+        </Entitlements> -->
+	<!-- Display Resolution for the app (either "standard" or "high"). Optional. Default "standard" -->
+	<!-- <requestedDisplayResolution></requestedDisplayResolution> -->
 	<!-- </iPhone> -->
 
 	<!-- Specify Android specific tags that get passed to AndroidManifest.xml file. -->
-	<!--<android> 
-		<manifestAdditions>
+    <!--<android> -->
+    <!--	<manifestAdditions>
 		<![CDATA[
 			<manifest android:installLocation="auto">
 				<uses-permission android:name="android.permission.INTERNET"/>
 				<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 				<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-				<uses-configuration android:reqFiveWayNav="true"/>
-				<supports-screens android:normalScreens="true"/>
 				<uses-feature android:required="true" android:name="android.hardware.touchscreen.multitouch"/>
 				<application android:enabled="true">
 					<activity android:excludeFromRecents="false">
@@ -211,10 +228,12 @@
 						</intent-filter>
 					</activity>
 				</application>
-			</manifest>
+            </manifest>
 		]]>
-		</manifestAdditions> 
-	</android> -->
+        </manifestAdditions> -->
+	    <!-- Color depth for the app (either "32bit" or "16bit"). Optional. Default 16bit before namespace 3.0, 32bit after -->
+        <!-- <colorDepth></colorDepth> -->
+    <!-- </android> -->
 	<!-- End of the schema for adding the android specific tags in AndroidManifest.xml file -->
 
 <android>
@@ -224,7 +243,7 @@
 			    <!--android.permission.INTERNET 権限を削除すると、
 		デバイス上でアプリケーションをデバッグできなくなります-->
 			    <uses-permission android:name="android.permission.INTERNET"/>
-			    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+			    <!--<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>-->
 			    <!--<uses-permission android:name="android.permission.READ_PHONE_STATE"/>-->
 			    <!--<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>-->
 			    <!--AIR の SystemIdleMode API にアクセスするには、DISABLE_KEYGUARD 権限と
@@ -241,4 +260,14 @@
 			
 		]]></manifestAdditions>
     </android>
+    <iPhone>
+        <InfoAdditions><![CDATA[
+			<key>UIDeviceFamily</key>
+			<array>
+				<string>1</string>
+				<string>2</string>
+			</array>
+		]]></InfoAdditions>
+        <requestedDisplayResolution>high</requestedDisplayResolution>
+    </iPhone>
 </application>

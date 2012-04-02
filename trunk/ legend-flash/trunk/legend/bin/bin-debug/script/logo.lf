@@ -1,11 +1,11 @@
 Layer.clear(-);
 Img.add(-,logoimg,logo,0,0,800,480,1);
 
-Button.add(-,btnstart,游戏开始,30,260,logobtnup,logobtnover,logobtnover,#ffffff);
-Button.add(-,btnread,读取进度,30,300,logobtnup,logobtnover,logobtnover,#ffffff);
-Button.add(-,btnset,环境设定,30,340,logobtnup,logobtnover,logobtnover,#ffffff);
-Button.add(-,btnup,支持援助,30,380,logobtnup,logobtnover,logobtnover,#ffffff);
-Button.add(-,btnover,关闭游戏,30,420,logobtnup,logobtnover,logobtnover,#ffffff);
+Button.add(-,btnstart,游戏开始,30,270,logobtnup,logobtnover,logobtnover,#ffffff);
+Button.add(-,btnread,读取进度,30,315,logobtnup,logobtnover,logobtnover,#ffffff);
+Button.add(-,btnset,环境设定,30,360,logobtnup,logobtnover,logobtnover,#ffffff);
+//Button.add(-,btnup,支持援助,30,380,logobtnup,logobtnover,logobtnover,#ffffff);
+Button.add(-,btnover,关闭游戏,30,405,logobtnup,logobtnover,logobtnover,#ffffff);
 function startclick();
 	Layer.clear(-);
 	if(@loadtxt==0);
@@ -52,7 +52,7 @@ endfunction;
 Button.mouseup(btnstart,startclick);
 Button.mouseup(btnread,readclick);
 Button.mouseup(btnset,setclick);
-Button.mouseup(btnup,upclick);
+//Button.mouseup(btnup,upclick);
 Button.mouseup(btnover,overclick);
 SouSouSound.playMusic(sound/sg01.mp3);
-SouSouSound.musicMode(0);
+//SouSouSound.musicMode(0);

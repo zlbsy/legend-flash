@@ -113,7 +113,7 @@ SouSouRCharacter.changeAction(44,3);
 SouSouTalk.set(44,0,玄德公所言甚是。);
 SouSouTalk.set(1,0,我们这就准备出发。);
 //加入成员(人物编号，人物等级)
-SouSouMember.add(44,0);
+SouSouMember.add(44);
 //加入装备(人物编号，头盔编号，盔甲编号，盔甲lv，武器编号，武器lv，坐骑编号)
 SouSouMember.addEquipment(44,0,7,1,5,1,0);
 SouSouWindow.msg(糜竺加入！,1);

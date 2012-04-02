@@ -98,7 +98,7 @@ package zhanglubin.legend.game.sousou.map
 			explanationTxt.wordWrap = true;
 			explanationTxt.htmlText = "<b><font color='#ffffff' size='25'>" + 
 					"LegendForFlashProgramming，简称legend，\n" + 
-					"是一款游戏引擎，目前您正在玩的游戏由该引擎的0.11版本制作完成。\n\n" + 
+					"是一款游戏引擎，目前您正在玩的游戏由该引擎的0.1.2版本制作完成。\n\n" + 
 					"如果您想了解更多关于该游戏引擎的最新信息以及该游戏引擎的使用方法，\n" + 
 					"欢迎光临作者的官方博客：\n" + "</font></b>";
 			this.addChild(explanationTxt);

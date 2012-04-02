@@ -19,7 +19,6 @@ SouSouSCharacter.addOur(4,2,0,16,0);
 SouSouSCharacter.addOur(5,2,1,16,0);
 SouSouSCharacter.addOur(6,2,2,16,0);
 //敌军人物出战编号，等级，方向(0down,1left,2up,3right)，出现x坐标，出现y坐标，是否隐藏，AI
-SouSouSCharacter.addEnemy(10,3,3,1,4,1,0);
 SouSouSCharacter.addEnemy(84,2,3,1,3,1,0);
 SouSouSCharacter.addEnemy(106,2,3,1,5,1,0);
 SouSouSCharacter.addEnemy(105,2,3,2,4,1,0);
@@ -47,6 +46,7 @@ SouSouSCharacter.addEnemy(254,-2,2,18,18,1,0);
 SouSouSCharacter.addEnemy(255,-2,2,19,18,1,0);
 SouSouSCharacter.addEnemy(256,-2,2,20,18,1,0);
 SouSouSCharacter.addEnemy(257,-2,2,21,18,1,0);
+SouSouSCharacter.addEnemy(10,3,3,1,4,1,0);
 //友军人物出战编号，等级，方向(0down,1left,2up,3right)，出现x坐标，出现y坐标，是否隐藏，AI
 SouSouSCharacter.addFriend(40,2,1,23,1,1,2);
 SouSouSCharacter.addFriend(45,2,1,23,0,1,2);
@@ -79,11 +79,12 @@ function win();
 	SouSouSCharacter.changeDirection(1,1,2);
 	SouSouSCharacter.changeDirection(2,1,1);
 	Wait.time(20);
-	SouSouTalk.set(1,0,太好了，我们拿下了虎牢关。);
+	SouSouTalk.set(163,0,不好了，不好了，主公，荀彧军事派人来报，吕布偷袭兖州，进据濮阳！);
+	SouSouTalk.set(10,0,什么！？吕布匹夫，竟然趁我不在攻我城池，兖州有失，我就无家可归了！);
+	SouSouTalk.set(10,0,传令下去，马上退军！);
+	SouSouSCharacter.outRect(1,0,0,23,16);
 	SouSouWindow.addMoney(1000);
 	SouSouWindow.msg(战斗胜利！\n得到银两1000！,1);
-	/*
-	*/
 	Layer.clear(-);
 	Load.script(script/r16.lf);
 	Exit.run();
@@ -141,7 +142,6 @@ function checkHp(index,minhp,maxhp);
 		SouSouRunMode.set(1);
 		SouSouTalk.set(10,0,可恶的刘备！);
 		Var.set(checkHp5,1);
-		SouSouSCharacter.outRect(1,0,0,23,16);
 		Call.win();
 		SouSouRunMode.set(0);
 	endif;
@@ -250,7 +250,7 @@ SouSouSCharacter.changeAction(3,ATK);
 SouSouSCharacter.changeAction(3,ATK);
 SouSouTalk.set(3,0,哈哈，我倒要看看曹军中谁能挡得住我的蛇矛！);
 
-SouSouWindow.setCondition(徐州救援战,1、刘备，张飞进入徐州城内！,1、陶谦阵亡！\n2、刘备阵亡！\n3、张飞阵亡！);
+SouSouWindow.setCondition(徐州救援战,1、杀退曹操！,1、陶谦阵亡！\n2、刘备阵亡！\n3、张飞阵亡！);
 SouSouRunMode.set(0);
 SouSouSAttack.start(0);
 
