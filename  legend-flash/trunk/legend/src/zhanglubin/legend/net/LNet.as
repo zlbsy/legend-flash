@@ -53,6 +53,7 @@ package zhanglubin.legend.net{
 		 * @param 参数传递方式(默认POST)　
 		 */
 		public function run(method:String = URLRequestMethod.POST,resultType:String = LNet.TYPE_XML):void{
+			_resultType = resultType;
 			// 送信先設定
 			_request = new URLRequest();
 			_request.url = _phpURL + "?legendrand=" + Math.random() + "&";
