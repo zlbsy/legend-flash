@@ -28,7 +28,7 @@ package zhanglubin.legend.game.sousou.character
 	public class LSouSouCharacterS extends LSouSouCharacter
 	{
 		private var SPEED:int = 3;
-		
+		private var MOVESETP:int = 12;
 		
 		/**站立*/
 		public static const DOWN:int = 0;
@@ -203,8 +203,10 @@ package zhanglubin.legend.game.sousou.character
 			
 			if(LGlobal.script.scriptArray.varList[LSouSouObject.SPEED_FLAG] == LSouSouObject.FAST){
 				this.SPEED = 2;
+				this.MOVESETP = 16;
 			}else{
 				this.SPEED = 3;
+				this.MOVESETP = 12;
 			}
 			
 			setImage();
@@ -942,19 +944,18 @@ package zhanglubin.legend.game.sousou.character
 				}
 				LSouSouSMapMethod.setLocationAtChara(this);
 			}
-			
 			this._mode = LAnimation.POSITIVE;
 			if(this.x > this._tagerCoordinate.x){
-				this.x -= 8;
+				this.x -= MOVESETP;
 				this._animation.rowIndex =	LSouSouCharacterS.MOVE_LEFT
 			}else if(this.y < this._tagerCoordinate.y){
-				this.y += 8;
+				this.y += MOVESETP;
 				this._animation.rowIndex =	LSouSouCharacterS.MOVE_DOWN;
 			}else if(this.y > this._tagerCoordinate.y){
-				this.y -= 8;
+				this.y -= MOVESETP;
 				this._animation.rowIndex =	LSouSouCharacterS.MOVE_UP;
 			}else{
-				this.x += 8;
+				this.x += MOVESETP;
 				this._animation.rowIndex =	LSouSouCharacterS.MOVE_RIGHT;
 			}
 			if(LSouSouObject.sMap.roadList)LSouSouObject.sMap.roadList = null;
