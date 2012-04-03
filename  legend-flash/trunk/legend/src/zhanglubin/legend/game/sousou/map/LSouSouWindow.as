@@ -115,7 +115,7 @@ package zhanglubin.legend.game.sousou.map
 			
 			var banTxt:LLabel = new LLabel();
 			banTxt.xy = new LCoordinate(450,430);
-			banTxt.htmlText = "<b><font color='#ffffff' size='18'>LegendForFlashProgramming0.11</font></b>";
+			banTxt.htmlText = "<b><font color='#ffffff' size='18'>LegendForFlashProgramming0.1.2</font></b>";
 			this.addChild(banTxt);
 			
 			addCloseButton();
