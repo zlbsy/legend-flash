@@ -105,16 +105,16 @@ package zhanglubin.legend.game.sousou.map
 			var urlTxt:LLabel = new LLabel();
 			urlTxt.xy = new LCoordinate(50,250);
 			//urlTxt.htmlText = "<b><font color='#ffffff' size='25'><u><a href='event:http://blog.csdn.com/lufy_Legend'>http://blog.csdn.com/lufy_Legend</a></u></font></b>";
-			/**
-			urlTxt.htmlText = "<b><font color='#ffffff' size='25'><u><a href='event:http://blog.csdn.com/lufy_Legend'>lufy.legend@gmail.com</a></u></font></b>";
+			
+			urlTxt.htmlText = "<b><font color='#ffffff' size='25'><u><a href='event:http://blog.csdn.com/lufy_Legend'>http://blog.csdn.com/lufy_Legend</a></u></font></b>";
 			urlTxt.addEventListener(TextEvent.LINK, function (event:TextEvent):void{
 				var url:String = "http://blog.csdn.com/lufy_Legend";
 				var request:URLRequest = new URLRequest(url);
 				navigateToURL(request);
 				trace("goto");
 			});
-			 * */
-			urlTxt.htmlText = "<b><font color='#ffffff' size='25'>lufy.legend@gmail.com</font></b>";
+			
+			//urlTxt.htmlText = "<b><font color='#ffffff' size='25'>lufy.legend@gmail.com</font></b>";
 			this.addChild(urlTxt);
 			
 			var banTxt:LLabel = new LLabel();
