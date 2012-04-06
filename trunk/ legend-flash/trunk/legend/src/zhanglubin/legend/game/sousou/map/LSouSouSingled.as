@@ -195,11 +195,11 @@ package zhanglubin.legend.game.sousou.map
 			chara.onFrame();
 		}
 		public function showResult(value:int):void{
-			var strResult:String = "单条胜利";
+			var strResult:String = "单挑胜利";
 			if(value==0){
-				strResult = "单条平手";
+				strResult = "单挑平手";
 			}else if(value<0){
-				strResult = "单条失败";
+				strResult = "单挑失败";
 			}
 			var resultLayer:LSprite = new LSprite();
 			this.addChild(resultLayer);
