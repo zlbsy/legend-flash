@@ -8,7 +8,7 @@ package com.lufylegend.legend.scripts.analysis
 	import com.lufylegend.legend.display.LSprite;
 	import com.lufylegend.legend.display.LURLLoader;
 	import com.lufylegend.legend.scripts.LScript;
-	import com.lufylegend.legend.scripts.analysis.slg.sousou.ScriptSouSouLoad;
+	import com.lufylegend.legend.scripts.analysis.sousou.ScriptSouSouLoad;
 	import com.lufylegend.legend.utils.LGlobal;
 	import com.lufylegend.legend.utils.LString;
 
