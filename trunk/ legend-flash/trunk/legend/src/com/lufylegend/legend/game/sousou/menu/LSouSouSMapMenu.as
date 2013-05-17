@@ -1,7 +1,7 @@
-package zhanglubin.legend.game.sousou.menu
+package com.lufylegend.legend.game.sousou.menu
 {
-	import zhanglubin.legend.display.LSprite;
-	import zhanglubin.legend.utils.math.LCoordinate;
+	import com.lufylegend.legend.display.LSprite;
+	import com.lufylegend.legend.utils.math.LCoordinate;
 
 	public class LSouSouSMapMenu
 	{

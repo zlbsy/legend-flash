@@ -1,4 +1,4 @@
-package zhanglubin.legend.utils.controler
+package com.lufylegend.legend.utils.controler
 {
 	public class LAction
 	{

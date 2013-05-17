@@ -1,12 +1,12 @@
-package zhanglubin.legend.game.sousou.map.smap
+package com.lufylegend.legend.game.sousou.map.smap
 {
-	import zhanglubin.legend.game.sousou.character.LSouSouCharacterS;
-	import zhanglubin.legend.game.sousou.map.LSouSouWindow;
-	import zhanglubin.legend.game.sousou.map.window.LSouSouWindwoTerrain;
-	import zhanglubin.legend.game.sousou.object.LSouSouCalculate;
-	import zhanglubin.legend.game.sousou.object.LSouSouObject;
-	import zhanglubin.legend.game.utils.Node;
-	import zhanglubin.legend.utils.LGlobal;
+	import com.lufylegend.legend.game.sousou.character.LSouSouCharacterS;
+	import com.lufylegend.legend.game.sousou.map.LSouSouWindow;
+	import com.lufylegend.legend.game.sousou.map.window.LSouSouWindwoTerrain;
+	import com.lufylegend.legend.game.sousou.object.LSouSouCalculate;
+	import com.lufylegend.legend.game.sousou.object.LSouSouObject;
+	import com.lufylegend.legend.game.utils.Node;
+	import com.lufylegend.legend.utils.LGlobal;
 
 	public class LSouSouSMapClick
 	{

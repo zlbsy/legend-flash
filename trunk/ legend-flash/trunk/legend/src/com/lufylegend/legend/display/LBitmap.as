@@ -1,13 +1,13 @@
-package zhanglubin.legend.display
+package com.lufylegend.legend.display
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.geom.Point;
 	
-	import zhanglubin.legend.core.die.IDie;
-	import zhanglubin.legend.core.events.IEventListener;
-	import zhanglubin.legend.utils.LGlobal;
-	import zhanglubin.legend.utils.math.LCoordinate;
+	import com.lufylegend.legend.core.die.IDie;
+	import com.lufylegend.legend.core.events.IEventListener;
+	import com.lufylegend.legend.utils.LGlobal;
+	import com.lufylegend.legend.utils.math.LCoordinate;
 	
 	/**
 	 * legend的Bitmap类继承自flash.display.Bitmap

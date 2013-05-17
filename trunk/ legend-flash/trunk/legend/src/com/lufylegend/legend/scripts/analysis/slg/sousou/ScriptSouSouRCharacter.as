@@ -1,8 +1,8 @@
-package zhanglubin.legend.scripts.analysis.slg.sousou
+package com.lufylegend.legend.scripts.analysis.slg.sousou
 {
-	import zhanglubin.legend.game.sousou.character.LSouSouCharacterR;
-	import zhanglubin.legend.game.sousou.object.LSouSouObject;
-	import zhanglubin.legend.utils.LGlobal;
+	import com.lufylegend.legend.game.sousou.character.LSouSouCharacterR;
+	import com.lufylegend.legend.game.sousou.object.LSouSouObject;
+	import com.lufylegend.legend.utils.LGlobal;
 
 	public class ScriptSouSouRCharacter
 	{

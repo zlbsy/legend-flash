@@ -1,14 +1,14 @@
-package zhanglubin.legend.base
+package com.lufylegend.legend.base
 {
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	
-	import zhanglubin.legend.core.die.IDie;
-	import zhanglubin.legend.core.display.ISprite;
-	import zhanglubin.legend.core.events.IEventListener;
-	import zhanglubin.legend.utils.math.LCoordinate;
+	import com.lufylegend.legend.core.die.IDie;
+	import com.lufylegend.legend.core.display.ISprite;
+	import com.lufylegend.legend.core.events.IEventListener;
+	import com.lufylegend.legend.utils.math.LCoordinate;
 	
 	/**
 	 * legend显示基类

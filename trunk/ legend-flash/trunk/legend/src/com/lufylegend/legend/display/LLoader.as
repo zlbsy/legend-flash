@@ -1,4 +1,4 @@
-package zhanglubin.legend.display
+package com.lufylegend.legend.display
 {
 	import flash.display.DisplayObject;
 	import flash.events.Event;
@@ -9,9 +9,9 @@ package zhanglubin.legend.display
 	import flash.system.LoaderContext;
 	import flash.utils.ByteArray;
 	
-	import zhanglubin.legend.base.LBaseLoader;
-	import zhanglubin.legend.core.die.IDie;
-	import zhanglubin.legend.core.events.IEventListener;
+	import com.lufylegend.legend.base.LBaseLoader;
+	import com.lufylegend.legend.core.die.IDie;
+	import com.lufylegend.legend.core.events.IEventListener;
 	
 	/**
 	 * legend的Loader类继承自flash.events.EventDispatcher;

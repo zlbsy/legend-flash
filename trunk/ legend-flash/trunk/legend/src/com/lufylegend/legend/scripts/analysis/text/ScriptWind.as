@@ -1,14 +1,14 @@
-package zhanglubin.legend.scripts.analysis.text
+package com.lufylegend.legend.scripts.analysis.text
 {
 	import flash.text.StyleSheet;
 	
-	import zhanglubin.legend.components.LLabel;
-	import zhanglubin.legend.display.LSprite;
-	import zhanglubin.legend.events.LEvent;
-	import zhanglubin.legend.game.sousou.object.LSouSouObject;
-	import zhanglubin.legend.scripts.LScript;
-	import zhanglubin.legend.utils.LGlobal;
-	import zhanglubin.legend.utils.math.LCoordinate;
+	import com.lufylegend.legend.components.LLabel;
+	import com.lufylegend.legend.display.LSprite;
+	import com.lufylegend.legend.events.LEvent;
+	import com.lufylegend.legend.game.sousou.object.LSouSouObject;
+	import com.lufylegend.legend.scripts.LScript;
+	import com.lufylegend.legend.utils.LGlobal;
+	import com.lufylegend.legend.utils.math.LCoordinate;
 
 	public class ScriptWind
 	{

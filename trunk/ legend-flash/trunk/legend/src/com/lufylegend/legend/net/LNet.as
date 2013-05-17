@@ -1,4 +1,4 @@
-package zhanglubin.legend.net{
+package com.lufylegend.legend.net{
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.SecurityErrorEvent;
@@ -8,9 +8,9 @@ package zhanglubin.legend.net{
 	import flash.net.URLRequestMethod;
 	import flash.net.URLVariables;
 	
-	import zhanglubin.legend.core.net.INet;
-	import zhanglubin.legend.display.LURLLoader;
-	import zhanglubin.legend.json.JSON;
+	import com.lufylegend.legend.core.net.INet;
+	import com.lufylegend.legend.display.LURLLoader;
+	import com.lufylegend.legend.json.JSON;
 	
 	/**
 	 * legendPHP连接类
@@ -106,7 +106,7 @@ package zhanglubin.legend.net{
 		protected function completeHandler(event:Event):void{
 			event.target.die();
 			if(_resultType == LNet.TYPE_JSON){
-				this._fun(zhanglubin.legend.json.JSON.decode(event.target.data.toString()));
+				this._fun(com.lufylegend.legend.json.JSON.decode(event.target.data.toString()));
 			}else if(_resultType == LNet.TYPE_JSON){
 				this._fun(new XML(event.target.data.toString()));
 			}else{

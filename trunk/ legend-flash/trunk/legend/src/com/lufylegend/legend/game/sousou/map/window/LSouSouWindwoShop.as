@@ -1,4 +1,4 @@
-package zhanglubin.legend.game.sousou.map.window
+package com.lufylegend.legend.game.sousou.map.window
 {
 	import flash.display.BitmapData;
 	import flash.events.MouseEvent;
@@ -7,23 +7,23 @@ package zhanglubin.legend.game.sousou.map.window
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
 	
-	import zhanglubin.legend.components.LLabel;
-	import zhanglubin.legend.components.LRadio;
-	import zhanglubin.legend.components.LRadioChild;
-	import zhanglubin.legend.display.LBitmap;
-	import zhanglubin.legend.display.LButton;
-	import zhanglubin.legend.display.LScrollbar;
-	import zhanglubin.legend.display.LSprite;
-	import zhanglubin.legend.events.LEvent;
-	import zhanglubin.legend.game.sousou.character.LSouSouMember;
-	import zhanglubin.legend.game.sousou.map.LSouSouWindow;
-	import zhanglubin.legend.game.sousou.object.LSouSouObject;
-	import zhanglubin.legend.scripts.LScript;
-	import zhanglubin.legend.utils.LDisplay;
-	import zhanglubin.legend.utils.LFilter;
-	import zhanglubin.legend.utils.LGlobal;
-	import zhanglubin.legend.utils.LString;
-	import zhanglubin.legend.utils.math.LCoordinate;
+	import com.lufylegend.legend.components.LLabel;
+	import com.lufylegend.legend.components.LRadio;
+	import com.lufylegend.legend.components.LRadioChild;
+	import com.lufylegend.legend.display.LBitmap;
+	import com.lufylegend.legend.display.LButton;
+	import com.lufylegend.legend.display.LScrollbar;
+	import com.lufylegend.legend.display.LSprite;
+	import com.lufylegend.legend.events.LEvent;
+	import com.lufylegend.legend.game.sousou.character.LSouSouMember;
+	import com.lufylegend.legend.game.sousou.map.LSouSouWindow;
+	import com.lufylegend.legend.game.sousou.object.LSouSouObject;
+	import com.lufylegend.legend.scripts.LScript;
+	import com.lufylegend.legend.utils.LDisplay;
+	import com.lufylegend.legend.utils.LFilter;
+	import com.lufylegend.legend.utils.LGlobal;
+	import com.lufylegend.legend.utils.LString;
+	import com.lufylegend.legend.utils.math.LCoordinate;
 
 	public class LSouSouWindwoShop extends LSouSouWindow
 	{

@@ -1,10 +1,10 @@
-package zhanglubin.legend.components
+package com.lufylegend.legend.components
 {
 	
 	import flash.text.AntiAliasType;
 	import flash.text.TextFieldAutoSize;
 	
-	import zhanglubin.legend.text.LTextField;
+	import com.lufylegend.legend.text.LTextField;
 
 	public class LLabel extends LTextField
 	{

@@ -1,4 +1,4 @@
-package zhanglubin.legend.utils
+package com.lufylegend.legend.utils
 {
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
@@ -11,8 +11,8 @@ package zhanglubin.legend.utils
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
-	import zhanglubin.legend.display.LBitmap;
-	import zhanglubin.legend.display.LSprite;
+	import com.lufylegend.legend.display.LBitmap;
+	import com.lufylegend.legend.display.LSprite;
 
 	public class LDisplay
 	{

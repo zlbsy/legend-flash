@@ -1,13 +1,13 @@
-package zhanglubin.legend.scripts.analysis
+package com.lufylegend.legend.scripts.analysis
 {
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
 	import flash.net.URLVariables;
 	import flash.net.navigateToURL;
 	
-	import zhanglubin.legend.net.LNet;
-	import zhanglubin.legend.scripts.LScript;
-	import zhanglubin.legend.utils.LGlobal;
+	import com.lufylegend.legend.net.LNet;
+	import com.lufylegend.legend.scripts.LScript;
+	import com.lufylegend.legend.utils.LGlobal;
 
 	public class ScriptUrl
 	{

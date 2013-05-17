@@ -30,7 +30,7 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package zhanglubin.legend.json
+package com.lufylegend.legend.json
 {
 	
 	public final class JSONToken

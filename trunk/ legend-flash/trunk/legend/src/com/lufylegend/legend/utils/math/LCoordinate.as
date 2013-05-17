@@ -1,4 +1,4 @@
-package zhanglubin.legend.utils.math
+package com.lufylegend.legend.utils.math
 {
 	/**
 	 * legend坐标类

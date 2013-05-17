@@ -1,12 +1,12 @@
-package zhanglubin.legend.game.sousou.character.characterS
+package com.lufylegend.legend.game.sousou.character.characterS
 {
 	import flash.display.Bitmap;
 	
-	import zhanglubin.legend.game.sousou.character.LSouSouCharacterS;
-	import zhanglubin.legend.game.sousou.object.LSouSouCalculate;
-	import zhanglubin.legend.game.sousou.object.LSouSouObject;
-	import zhanglubin.legend.game.utils.Node;
-	import zhanglubin.legend.utils.math.LCoordinate;
+	import com.lufylegend.legend.game.sousou.character.LSouSouCharacterS;
+	import com.lufylegend.legend.game.sousou.object.LSouSouCalculate;
+	import com.lufylegend.legend.game.sousou.object.LSouSouObject;
+	import com.lufylegend.legend.game.utils.Node;
+	import com.lufylegend.legend.utils.math.LCoordinate;
 
 	/**
 	 * 战场人物AI处理类

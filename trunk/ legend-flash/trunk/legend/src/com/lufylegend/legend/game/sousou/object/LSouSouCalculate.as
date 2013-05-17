@@ -1,8 +1,8 @@
-package zhanglubin.legend.game.sousou.object
+package com.lufylegend.legend.game.sousou.object
 {
-	import zhanglubin.legend.game.sousou.character.LSouSouCharacterS;
-	import zhanglubin.legend.game.sousou.map.LSouSouWindow;
-	import zhanglubin.legend.utils.LGlobal;
+	import com.lufylegend.legend.game.sousou.character.LSouSouCharacterS;
+	import com.lufylegend.legend.game.sousou.map.LSouSouWindow;
+	import com.lufylegend.legend.utils.LGlobal;
 	/**
 	 * 战场命中伤害等计算
 	 * */

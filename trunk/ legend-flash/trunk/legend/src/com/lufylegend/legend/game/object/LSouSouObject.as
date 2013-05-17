@@ -1,4 +1,4 @@
-package zhanglubin.legend.game.object
+package com.lufylegend.legend.game.object
 {
 	public class LSouSouObject
 	{

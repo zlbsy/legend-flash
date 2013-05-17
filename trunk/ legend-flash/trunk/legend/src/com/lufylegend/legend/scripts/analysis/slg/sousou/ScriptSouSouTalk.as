@@ -1,4 +1,4 @@
-package zhanglubin.legend.scripts.analysis.slg.sousou
+package com.lufylegend.legend.scripts.analysis.slg.sousou
 {
 	import flash.display.BitmapData;
 	import flash.events.MouseEvent;
@@ -6,22 +6,22 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 	import flash.geom.Rectangle;
 	import flash.text.StyleSheet;
 	
-	import zhanglubin.legend.components.LLabel;
-	import zhanglubin.legend.display.LBitmap;
-	import zhanglubin.legend.display.LSprite;
-	import zhanglubin.legend.events.LEvent;
-	import zhanglubin.legend.game.sousou.character.LSouSouCharacterR;
-	import zhanglubin.legend.game.sousou.character.LSouSouCharacterS;
-	import zhanglubin.legend.game.sousou.object.LSouSouObject;
-	import zhanglubin.legend.game.sousou.object.LSouSouSMapMethod;
-	import zhanglubin.legend.scripts.LScript;
-	import zhanglubin.legend.scripts.analysis.text.ScriptLabel;
-	import zhanglubin.legend.scripts.analysis.text.ScriptWind;
-	import zhanglubin.legend.text.LTextField;
-	import zhanglubin.legend.utils.LDisplay;
-	import zhanglubin.legend.utils.LGlobal;
-	import zhanglubin.legend.utils.LImage;
-	import zhanglubin.legend.utils.math.LCoordinate;
+	import com.lufylegend.legend.components.LLabel;
+	import com.lufylegend.legend.display.LBitmap;
+	import com.lufylegend.legend.display.LSprite;
+	import com.lufylegend.legend.events.LEvent;
+	import com.lufylegend.legend.game.sousou.character.LSouSouCharacterR;
+	import com.lufylegend.legend.game.sousou.character.LSouSouCharacterS;
+	import com.lufylegend.legend.game.sousou.object.LSouSouObject;
+	import com.lufylegend.legend.game.sousou.object.LSouSouSMapMethod;
+	import com.lufylegend.legend.scripts.LScript;
+	import com.lufylegend.legend.scripts.analysis.text.ScriptLabel;
+	import com.lufylegend.legend.scripts.analysis.text.ScriptWind;
+	import com.lufylegend.legend.text.LTextField;
+	import com.lufylegend.legend.utils.LDisplay;
+	import com.lufylegend.legend.utils.LGlobal;
+	import com.lufylegend.legend.utils.LImage;
+	import com.lufylegend.legend.utils.math.LCoordinate;
 	
 	public class ScriptSouSouTalk
 	{

@@ -1,15 +1,15 @@
-package zhanglubin.legend.game.sousou.character
+package com.lufylegend.legend.game.sousou.character
 {
 	import flash.display.BitmapData;
 	
-	import zhanglubin.legend.display.LBitmap;
-	import zhanglubin.legend.events.LEvent;
-	import zhanglubin.legend.game.sousou.object.LSouSouObject;
-	import zhanglubin.legend.game.utils.Node;
-	import zhanglubin.legend.objects.LAnimation;
-	import zhanglubin.legend.utils.LGlobal;
-	import zhanglubin.legend.utils.LImage;
-	import zhanglubin.legend.utils.math.LCoordinate;
+	import com.lufylegend.legend.display.LBitmap;
+	import com.lufylegend.legend.events.LEvent;
+	import com.lufylegend.legend.game.sousou.object.LSouSouObject;
+	import com.lufylegend.legend.game.utils.Node;
+	import com.lufylegend.legend.objects.LAnimation;
+	import com.lufylegend.legend.utils.LGlobal;
+	import com.lufylegend.legend.utils.LImage;
+	import com.lufylegend.legend.utils.math.LCoordinate;
 
 	public class LSouSouCharacterR extends LSouSouCharacter
 	{

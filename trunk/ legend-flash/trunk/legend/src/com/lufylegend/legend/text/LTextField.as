@@ -1,4 +1,4 @@
-package zhanglubin.legend.text
+package com.lufylegend.legend.text
 {
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
@@ -7,10 +7,10 @@ package zhanglubin.legend.text
 	import flash.text.TextFieldAutoSize;
 	import flash.utils.Timer;
 	
-	import zhanglubin.legend.core.die.IDie;
-	import zhanglubin.legend.core.events.IEventListener;
-	import zhanglubin.legend.events.LEvent;
-	import zhanglubin.legend.utils.math.LCoordinate;
+	import com.lufylegend.legend.core.die.IDie;
+	import com.lufylegend.legend.core.events.IEventListener;
+	import com.lufylegend.legend.events.LEvent;
+	import com.lufylegend.legend.utils.math.LCoordinate;
 
 	public class LTextField extends TextField implements IEventListener,IDie
 	{

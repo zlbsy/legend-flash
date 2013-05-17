@@ -1,12 +1,12 @@
-package zhanglubin.legend.scripts.analysis
+package com.lufylegend.legend.scripts.analysis
 {
 	import flash.display.BitmapData;
 	
-	import zhanglubin.legend.display.LBitmap;
-	import zhanglubin.legend.display.LSprite;
-	import zhanglubin.legend.scripts.LScript;
-	import zhanglubin.legend.utils.LGlobal;
-	import zhanglubin.legend.utils.transitions.LManager;
+	import com.lufylegend.legend.display.LBitmap;
+	import com.lufylegend.legend.display.LSprite;
+	import com.lufylegend.legend.scripts.LScript;
+	import com.lufylegend.legend.utils.LGlobal;
+	import com.lufylegend.legend.utils.transitions.LManager;
 
 	public class ScriptImg
 	{

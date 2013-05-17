@@ -1,12 +1,12 @@
-package zhanglubin.legend.components
+package com.lufylegend.legend.components
 {
 	import flash.display.BitmapData;
 	import flash.events.MouseEvent;
 	
-	import zhanglubin.legend.display.LBitmap;
-	import zhanglubin.legend.display.LButton;
-	import zhanglubin.legend.display.LSprite;
-	import zhanglubin.legend.events.LEvent;
+	import com.lufylegend.legend.display.LBitmap;
+	import com.lufylegend.legend.display.LButton;
+	import com.lufylegend.legend.display.LSprite;
+	import com.lufylegend.legend.events.LEvent;
 
 	public class LRadioChild extends LSprite
 	{

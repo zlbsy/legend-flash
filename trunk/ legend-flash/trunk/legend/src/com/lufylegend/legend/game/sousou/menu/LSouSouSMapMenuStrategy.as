@@ -1,21 +1,21 @@
-package zhanglubin.legend.game.sousou.menu
+package com.lufylegend.legend.game.sousou.menu
 {
 	import flash.display.BitmapData;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
-	import zhanglubin.legend.components.LLabel;
-	import zhanglubin.legend.display.LBitmap;
-	import zhanglubin.legend.display.LScrollbar;
-	import zhanglubin.legend.display.LSprite;
-	import zhanglubin.legend.game.sousou.character.LSouSouCharacterS;
-	import zhanglubin.legend.game.sousou.map.LSouSouWindow;
-	import zhanglubin.legend.game.sousou.object.LSouSouObject;
-	import zhanglubin.legend.game.sousou.object.LSouSouSMapMethod;
-	import zhanglubin.legend.utils.LGlobal;
-	import zhanglubin.legend.utils.LImage;
-	import zhanglubin.legend.utils.math.LCoordinate;
+	import com.lufylegend.legend.components.LLabel;
+	import com.lufylegend.legend.display.LBitmap;
+	import com.lufylegend.legend.display.LScrollbar;
+	import com.lufylegend.legend.display.LSprite;
+	import com.lufylegend.legend.game.sousou.character.LSouSouCharacterS;
+	import com.lufylegend.legend.game.sousou.map.LSouSouWindow;
+	import com.lufylegend.legend.game.sousou.object.LSouSouObject;
+	import com.lufylegend.legend.game.sousou.object.LSouSouSMapMethod;
+	import com.lufylegend.legend.utils.LGlobal;
+	import com.lufylegend.legend.utils.LImage;
+	import com.lufylegend.legend.utils.math.LCoordinate;
 
 	public class LSouSouSMapMenuStrategy extends LSprite
 	{

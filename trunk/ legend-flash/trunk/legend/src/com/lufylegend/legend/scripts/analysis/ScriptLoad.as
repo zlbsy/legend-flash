@@ -1,16 +1,16 @@
-package zhanglubin.legend.scripts.analysis
+package com.lufylegend.legend.scripts.analysis
 {
 	import flash.events.Event;
 	import flash.net.URLRequest;
 	
-	import zhanglubin.legend.display.LImageLoader;
-	import zhanglubin.legend.display.LLoader;
-	import zhanglubin.legend.display.LSprite;
-	import zhanglubin.legend.display.LURLLoader;
-	import zhanglubin.legend.scripts.LScript;
-	import zhanglubin.legend.scripts.analysis.slg.sousou.ScriptSouSouLoad;
-	import zhanglubin.legend.utils.LGlobal;
-	import zhanglubin.legend.utils.LString;
+	import com.lufylegend.legend.display.LImageLoader;
+	import com.lufylegend.legend.display.LLoader;
+	import com.lufylegend.legend.display.LSprite;
+	import com.lufylegend.legend.display.LURLLoader;
+	import com.lufylegend.legend.scripts.LScript;
+	import com.lufylegend.legend.scripts.analysis.slg.sousou.ScriptSouSouLoad;
+	import com.lufylegend.legend.utils.LGlobal;
+	import com.lufylegend.legend.utils.LString;
 
 	public class ScriptLoad
 	{

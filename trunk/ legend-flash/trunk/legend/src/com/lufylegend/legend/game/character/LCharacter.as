@@ -1,6 +1,6 @@
-package zhanglubin.legend.game.character
+package com.lufylegend.legend.game.character
 {
-	import zhanglubin.legend.display.LBitmap;
+	import com.lufylegend.legend.display.LBitmap;
 
 	public class LCharacter extends LBitmap
 	{

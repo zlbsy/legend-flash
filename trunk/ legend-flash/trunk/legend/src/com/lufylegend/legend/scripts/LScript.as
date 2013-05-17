@@ -1,11 +1,11 @@
-package zhanglubin.legend.scripts
+package com.lufylegend.legend.scripts
 {
 	
-	import zhanglubin.legend.display.LSprite;
-	import zhanglubin.legend.game.sousou.object.LSouSouObject;
-	import zhanglubin.legend.scripts.analysis.*;
-	import zhanglubin.legend.utils.LGlobal;
-	import zhanglubin.legend.utils.LString;
+	import com.lufylegend.legend.display.LSprite;
+	import com.lufylegend.legend.game.sousou.object.LSouSouObject;
+	import com.lufylegend.legend.scripts.analysis.*;
+	import com.lufylegend.legend.utils.LGlobal;
+	import com.lufylegend.legend.utils.LString;
 
 	public class LScript
 	{

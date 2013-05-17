@@ -1,10 +1,10 @@
-package zhanglubin.legend.game.sousou.map
+package com.lufylegend.legend.game.sousou.map
 {
-	import zhanglubin.legend.display.LShape;
-	import zhanglubin.legend.game.utils.LStarQuery;
-	import zhanglubin.legend.game.utils.Node;
-	import zhanglubin.legend.utils.LGlobal;
-	import zhanglubin.legend.utils.math.LCoordinate;
+	import com.lufylegend.legend.display.LShape;
+	import com.lufylegend.legend.game.utils.LStarQuery;
+	import com.lufylegend.legend.game.utils.Node;
+	import com.lufylegend.legend.utils.LGlobal;
+	import com.lufylegend.legend.utils.math.LCoordinate;
 
 	public class LSouSouStarR extends LStarQuery
 	{

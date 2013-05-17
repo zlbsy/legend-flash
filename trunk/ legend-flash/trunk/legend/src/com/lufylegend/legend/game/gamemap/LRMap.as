@@ -1,6 +1,6 @@
-package zhanglubin.legend.game.gamemap
+package com.lufylegend.legend.game.gamemap
 {
-	import zhanglubin.legend.display.LSprite;
+	import com.lufylegend.legend.display.LSprite;
 
 	public class LRMap extends LSprite
 	{

@@ -1,4 +1,4 @@
-package zhanglubin.legend.scripts.analysis.slg.sousou
+package com.lufylegend.legend.scripts.analysis.slg.sousou
 {
 	import flash.display.BitmapData;
 	import flash.events.Event;
@@ -8,17 +8,17 @@ package zhanglubin.legend.scripts.analysis.slg.sousou
 	import flash.net.URLRequest;
 	import flash.utils.ByteArray;
 	
-	import zhanglubin.legend.display.LBitmap;
-	import zhanglubin.legend.display.LImageLoader;
-	import zhanglubin.legend.display.LLoader;
-	import zhanglubin.legend.display.LSprite;
-	import zhanglubin.legend.display.LURLLoader;
-	import zhanglubin.legend.game.sousou.object.LSouSouObject;
-	import zhanglubin.legend.load.LLoading;
-	import zhanglubin.legend.scripts.LScript;
-	import zhanglubin.legend.utils.LGlobal;
-	import zhanglubin.legend.utils.LString;
-	import zhanglubin.legend.utils.math.LCoordinate;
+	import com.lufylegend.legend.display.LBitmap;
+	import com.lufylegend.legend.display.LImageLoader;
+	import com.lufylegend.legend.display.LLoader;
+	import com.lufylegend.legend.display.LSprite;
+	import com.lufylegend.legend.display.LURLLoader;
+	import com.lufylegend.legend.game.sousou.object.LSouSouObject;
+	import com.lufylegend.legend.load.LLoading;
+	import com.lufylegend.legend.scripts.LScript;
+	import com.lufylegend.legend.utils.LGlobal;
+	import com.lufylegend.legend.utils.LString;
+	import com.lufylegend.legend.utils.math.LCoordinate;
 
 	public class ScriptSouSouLoad
 	{

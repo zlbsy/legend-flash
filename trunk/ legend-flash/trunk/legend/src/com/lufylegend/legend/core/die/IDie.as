@@ -1,4 +1,4 @@
-package zhanglubin.legend.core.die
+package com.lufylegend.legend.core.die
 {
 	public interface IDie
 	{
