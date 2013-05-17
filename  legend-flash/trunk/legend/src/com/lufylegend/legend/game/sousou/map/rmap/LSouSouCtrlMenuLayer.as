@@ -1,19 +1,19 @@
-package zhanglubin.legend.game.sousou.map.rmap
+package com.lufylegend.legend.game.sousou.map.rmap
 {
 	import flash.events.MouseEvent;
 	import flash.filters.GlowFilter;
 	
-	import zhanglubin.legend.display.LButton;
-	import zhanglubin.legend.display.LSprite;
-	import zhanglubin.legend.game.sousou.character.LSouSouCharacterS;
-	import zhanglubin.legend.game.sousou.map.LSouSouCharacterProfile;
-	import zhanglubin.legend.game.sousou.map.LSouSouWindow;
-	import zhanglubin.legend.game.sousou.map.window.LSouSouWindwoArchive;
-	import zhanglubin.legend.game.sousou.map.window.LSouSouWindwoCondition;
-	import zhanglubin.legend.game.sousou.map.window.LSouSouWindwoEquipment;
-	import zhanglubin.legend.game.sousou.object.LSouSouObject;
-	import zhanglubin.legend.utils.LGlobal;
-	import zhanglubin.legend.utils.math.LCoordinate;
+	import com.lufylegend.legend.display.LButton;
+	import com.lufylegend.legend.display.LSprite;
+	import com.lufylegend.legend.game.sousou.character.LSouSouCharacterS;
+	import com.lufylegend.legend.game.sousou.map.LSouSouCharacterProfile;
+	import com.lufylegend.legend.game.sousou.map.LSouSouWindow;
+	import com.lufylegend.legend.game.sousou.map.window.LSouSouWindwoArchive;
+	import com.lufylegend.legend.game.sousou.map.window.LSouSouWindwoCondition;
+	import com.lufylegend.legend.game.sousou.map.window.LSouSouWindwoEquipment;
+	import com.lufylegend.legend.game.sousou.object.LSouSouObject;
+	import com.lufylegend.legend.utils.LGlobal;
+	import com.lufylegend.legend.utils.math.LCoordinate;
 	
 	public class LSouSouCtrlMenuLayer extends LSprite
 	{

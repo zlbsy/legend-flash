@@ -1,4 +1,4 @@
-package zhanglubin.legend.game.utils
+package com.lufylegend.legend.game.utils
 {
 	public class Node
 	{

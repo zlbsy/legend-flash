@@ -1,4 +1,4 @@
-package zhanglubin.legend.utils.transitions
+package com.lufylegend.legend.utils.transitions
 {
 	import flash.display.DisplayObject;
 	import flash.events.TimerEvent;

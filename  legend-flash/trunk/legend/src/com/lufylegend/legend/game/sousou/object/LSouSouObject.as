@@ -1,16 +1,16 @@
-package zhanglubin.legend.game.sousou.object
+package com.lufylegend.legend.game.sousou.object
 {
 	import flash.display.BitmapData;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
-	import zhanglubin.legend.display.LBitmap;
-	import zhanglubin.legend.display.LSprite;
-	import zhanglubin.legend.game.sousou.character.LSouSouCharacterS;
-	import zhanglubin.legend.game.sousou.map.*;
-	import zhanglubin.legend.game.sousou.script.LSouSouSoundScript;
-	import zhanglubin.legend.utils.LGlobal;
-	import zhanglubin.legend.utils.LImage;
+	import com.lufylegend.legend.display.LBitmap;
+	import com.lufylegend.legend.display.LSprite;
+	import com.lufylegend.legend.game.sousou.character.LSouSouCharacterS;
+	import com.lufylegend.legend.game.sousou.map.*;
+	import com.lufylegend.legend.game.sousou.script.LSouSouSoundScript;
+	import com.lufylegend.legend.utils.LGlobal;
+	import com.lufylegend.legend.utils.LImage;
 
 	public class LSouSouObject
 	{

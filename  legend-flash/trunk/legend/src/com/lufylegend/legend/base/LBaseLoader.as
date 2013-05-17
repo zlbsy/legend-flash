@@ -1,9 +1,9 @@
-package zhanglubin.legend.base
+package com.lufylegend.legend.base
 {
 	import flash.display.Loader;
 	
-	import zhanglubin.legend.core.die.IDie;
-	import zhanglubin.legend.core.events.IEventListener;
+	import com.lufylegend.legend.core.die.IDie;
+	import com.lufylegend.legend.core.events.IEventListener;
 	
 	/**
 	 * legend的Loader类继承自flash.display.Loader

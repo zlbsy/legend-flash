@@ -1,4 +1,4 @@
-package zhanglubin.legend.core.display
+package com.lufylegend.legend.core.display
 {
 
 	/**

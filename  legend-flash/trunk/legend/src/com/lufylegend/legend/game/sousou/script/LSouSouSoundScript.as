@@ -1,4 +1,4 @@
-package zhanglubin.legend.game.sousou.script
+package com.lufylegend.legend.game.sousou.script
 {
 	import flash.events.Event;
 	import flash.media.Sound;
@@ -7,15 +7,15 @@ package zhanglubin.legend.game.sousou.script
 	import flash.media.SoundTransform;
 	import flash.net.URLRequest;
 	
-	import zhanglubin.legend.game.sousou.character.LSouSouCharacterS;
-	import zhanglubin.legend.game.sousou.object.LSouSouObject;
-	import zhanglubin.legend.scripts.LScript;
-	import zhanglubin.legend.scripts.analysis.ScriptFunction;
-	import zhanglubin.legend.scripts.analysis.ScriptIF;
-	import zhanglubin.legend.scripts.analysis.ScriptVarlable;
-	import zhanglubin.legend.utils.LGlobal;
-	import zhanglubin.legend.utils.LString;
-	import zhanglubin.legend.utils.math.LCoordinate;
+	import com.lufylegend.legend.game.sousou.character.LSouSouCharacterS;
+	import com.lufylegend.legend.game.sousou.object.LSouSouObject;
+	import com.lufylegend.legend.scripts.LScript;
+	import com.lufylegend.legend.scripts.analysis.ScriptFunction;
+	import com.lufylegend.legend.scripts.analysis.ScriptIF;
+	import com.lufylegend.legend.scripts.analysis.ScriptVarlable;
+	import com.lufylegend.legend.utils.LGlobal;
+	import com.lufylegend.legend.utils.LString;
+	import com.lufylegend.legend.utils.math.LCoordinate;
 
 	public class LSouSouSoundScript
 	{

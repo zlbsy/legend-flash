@@ -1,19 +1,19 @@
-package zhanglubin.legend.scripts.analysis
+package com.lufylegend.legend.scripts.analysis
 {
 	
 	import flash.events.Event;
 	
-	import zhanglubin.legend.components.LRadio;
-	import zhanglubin.legend.display.LBitmap;
-	import zhanglubin.legend.display.LButton;
-	import zhanglubin.legend.display.LSprite;
-	import zhanglubin.legend.scripts.LScript;
-	import zhanglubin.legend.text.LTextField;
-	import zhanglubin.legend.utils.LDisplay;
-	import zhanglubin.legend.utils.LFilter;
-	import zhanglubin.legend.utils.LGlobal;
-	import zhanglubin.legend.utils.LString;
-	import zhanglubin.legend.utils.transitions.LManager;
+	import com.lufylegend.legend.components.LRadio;
+	import com.lufylegend.legend.display.LBitmap;
+	import com.lufylegend.legend.display.LButton;
+	import com.lufylegend.legend.display.LSprite;
+	import com.lufylegend.legend.scripts.LScript;
+	import com.lufylegend.legend.text.LTextField;
+	import com.lufylegend.legend.utils.LDisplay;
+	import com.lufylegend.legend.utils.LFilter;
+	import com.lufylegend.legend.utils.LGlobal;
+	import com.lufylegend.legend.utils.LString;
+	import com.lufylegend.legend.utils.transitions.LManager;
 
 	public class ScriptLayer
 	{

@@ -1,4 +1,4 @@
-package zhanglubin.legend.core.net
+package com.lufylegend.legend.core.net
 {
 	import flash.events.IOErrorEvent;
 	import flash.net.URLRequestMethod;

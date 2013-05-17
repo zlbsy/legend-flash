@@ -1,4 +1,4 @@
-package zhanglubin.legend.game.sousou.character
+package com.lufylegend.legend.game.sousou.character
 {
 	import flash.display.BitmapData;
 	import flash.filters.BlurFilter;
@@ -7,23 +7,23 @@ package zhanglubin.legend.game.sousou.character
 	import flash.geom.Rectangle;
 	import flash.xml.XMLDocument;
 	
-	import zhanglubin.legend.display.LBitmap;
-	import zhanglubin.legend.events.LEvent;
-	import zhanglubin.legend.game.sousou.character.characterS.LSouSouCharacterSAI;
-	import zhanglubin.legend.game.sousou.meff.LSouSouMeff;
-	import zhanglubin.legend.game.sousou.meff.LSouSouMeffShow;
-	import zhanglubin.legend.game.sousou.meff.LSouSouSkill;
-	import zhanglubin.legend.game.sousou.object.LSouSouCalculate;
-	import zhanglubin.legend.game.sousou.object.LSouSouObject;
-	import zhanglubin.legend.game.sousou.object.LSouSouSMapMethod;
-	import zhanglubin.legend.game.sousou.script.LSouSouSMapScript;
-	import zhanglubin.legend.game.utils.Node;
-	import zhanglubin.legend.objects.LAnimation;
-	import zhanglubin.legend.utils.LDisplay;
-	import zhanglubin.legend.utils.LFilter;
-	import zhanglubin.legend.utils.LGlobal;
-	import zhanglubin.legend.utils.LImage;
-	import zhanglubin.legend.utils.math.LCoordinate;
+	import com.lufylegend.legend.display.LBitmap;
+	import com.lufylegend.legend.events.LEvent;
+	import com.lufylegend.legend.game.sousou.character.characterS.LSouSouCharacterSAI;
+	import com.lufylegend.legend.game.sousou.meff.LSouSouMeff;
+	import com.lufylegend.legend.game.sousou.meff.LSouSouMeffShow;
+	import com.lufylegend.legend.game.sousou.meff.LSouSouSkill;
+	import com.lufylegend.legend.game.sousou.object.LSouSouCalculate;
+	import com.lufylegend.legend.game.sousou.object.LSouSouObject;
+	import com.lufylegend.legend.game.sousou.object.LSouSouSMapMethod;
+	import com.lufylegend.legend.game.sousou.script.LSouSouSMapScript;
+	import com.lufylegend.legend.game.utils.Node;
+	import com.lufylegend.legend.objects.LAnimation;
+	import com.lufylegend.legend.utils.LDisplay;
+	import com.lufylegend.legend.utils.LFilter;
+	import com.lufylegend.legend.utils.LGlobal;
+	import com.lufylegend.legend.utils.LImage;
+	import com.lufylegend.legend.utils.math.LCoordinate;
 
 	public class LSouSouCharacterS extends LSouSouCharacter
 	{

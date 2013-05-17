@@ -1,18 +1,18 @@
-package zhanglubin.legend.game.sousou.character
+package com.lufylegend.legend.game.sousou.character
 {
 	import flash.display.BitmapData;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
-	import zhanglubin.legend.components.LLabel;
-	import zhanglubin.legend.display.LBitmap;
-	import zhanglubin.legend.display.LShape;
-	import zhanglubin.legend.display.LSprite;
-	import zhanglubin.legend.game.sousou.object.LSouSouObject;
-	import zhanglubin.legend.utils.LDisplay;
-	import zhanglubin.legend.utils.LGlobal;
-	import zhanglubin.legend.utils.math.LCoordinate;
+	import com.lufylegend.legend.components.LLabel;
+	import com.lufylegend.legend.display.LBitmap;
+	import com.lufylegend.legend.display.LShape;
+	import com.lufylegend.legend.display.LSprite;
+	import com.lufylegend.legend.game.sousou.object.LSouSouObject;
+	import com.lufylegend.legend.utils.LDisplay;
+	import com.lufylegend.legend.utils.LGlobal;
+	import com.lufylegend.legend.utils.math.LCoordinate;
 
 	public class LSouSouCharacterPreWar extends LSprite
 	{

@@ -1,4 +1,4 @@
-package zhanglubin.legend.utils
+package com.lufylegend.legend.utils
 {
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
@@ -10,12 +10,12 @@ package zhanglubin.legend.utils
 	import flash.net.SharedObject;
 	import flash.utils.getDefinitionByName;
 	
-	import zhanglubin.legend.components.LLabel;
-	import zhanglubin.legend.display.LBitmap;
-	import zhanglubin.legend.display.LButton;
-	import zhanglubin.legend.display.LSprite;
-	import zhanglubin.legend.net.LNet;
-	import zhanglubin.legend.scripts.LScript;
+	import com.lufylegend.legend.components.LLabel;
+	import com.lufylegend.legend.display.LBitmap;
+	import com.lufylegend.legend.display.LButton;
+	import com.lufylegend.legend.display.LSprite;
+	import com.lufylegend.legend.net.LNet;
+	import com.lufylegend.legend.scripts.LScript;
  
 	/**
 	 * legend Object操作类

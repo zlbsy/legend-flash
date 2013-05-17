@@ -1,9 +1,9 @@
-package zhanglubin.legend.scripts.analysis
+package com.lufylegend.legend.scripts.analysis
 {
 	import flash.net.SharedObject;
 	
-	import zhanglubin.legend.scripts.LScript;
-	import zhanglubin.legend.utils.LGlobal;
+	import com.lufylegend.legend.scripts.LScript;
+	import com.lufylegend.legend.utils.LGlobal;
 
 	public class ScriptSave
 	{

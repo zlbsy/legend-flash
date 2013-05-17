@@ -1,10 +1,10 @@
-package zhanglubin.legend.game.sousou.map.smap
+package com.lufylegend.legend.game.sousou.map.smap
 {
 	import flash.display.BitmapData;
 	
-	import zhanglubin.legend.display.LSprite;
-	import zhanglubin.legend.game.sousou.object.LSouSouObject;
-	import zhanglubin.legend.utils.LGlobal;
+	import com.lufylegend.legend.display.LSprite;
+	import com.lufylegend.legend.game.sousou.object.LSouSouObject;
+	import com.lufylegend.legend.utils.LGlobal;
 
 	public class LSouSouRound extends LSprite
 	{

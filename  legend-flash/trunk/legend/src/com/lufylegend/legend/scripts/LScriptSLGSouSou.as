@@ -1,14 +1,14 @@
-package zhanglubin.legend.scripts
+package com.lufylegend.legend.scripts
 {
 	import flash.display.BitmapData;
 	
-	import zhanglubin.legend.game.sousou.map.LSouSouRMap;
-	import zhanglubin.legend.game.sousou.map.LSouSouSMap;
-	import zhanglubin.legend.game.sousou.object.LSouSouObject;
-	import zhanglubin.legend.game.sousou.object.LSouSouSMapMethod;
-	import zhanglubin.legend.game.sousou.script.LSouSouSoundScript;
-	import zhanglubin.legend.scripts.analysis.slg.sousou.*;
-	import zhanglubin.legend.utils.LGlobal;
+	import com.lufylegend.legend.game.sousou.map.LSouSouRMap;
+	import com.lufylegend.legend.game.sousou.map.LSouSouSMap;
+	import com.lufylegend.legend.game.sousou.object.LSouSouObject;
+	import com.lufylegend.legend.game.sousou.object.LSouSouSMapMethod;
+	import com.lufylegend.legend.game.sousou.script.LSouSouSoundScript;
+	import com.lufylegend.legend.scripts.analysis.slg.sousou.*;
+	import com.lufylegend.legend.utils.LGlobal;
 
 	internal class LScriptSLGSouSou
 	{

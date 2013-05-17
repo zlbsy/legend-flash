@@ -1,6 +1,6 @@
-package zhanglubin.legend.scripts
+package com.lufylegend.legend.scripts
 {
-	import zhanglubin.legend.display.LSprite;
+	import com.lufylegend.legend.display.LSprite;
 
 	internal class LScriptArray
 	{

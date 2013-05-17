@@ -1,4 +1,4 @@
-package zhanglubin.legend.game.sousou.map
+package com.lufylegend.legend.game.sousou.map
 {
 	import flash.display.BitmapData;
 	import flash.events.Event;
@@ -14,45 +14,45 @@ package zhanglubin.legend.game.sousou.map
 	import flash.utils.ByteArray;
 	import flash.utils.getTimer;
 	
-	import zhanglubin.legend.components.LLabel;
-	import zhanglubin.legend.display.LBitmap;
-	import zhanglubin.legend.display.LButton;
-	import zhanglubin.legend.display.LShape;
-	import zhanglubin.legend.display.LSprite;
-	import zhanglubin.legend.display.LURLLoader;
-	import zhanglubin.legend.events.LEvent;
-	import zhanglubin.legend.game.map.LMap;
-	import zhanglubin.legend.game.sousou.character.LSouSouCharacter;
-	import zhanglubin.legend.game.sousou.character.LSouSouCharacterR;
-	import zhanglubin.legend.game.sousou.character.LSouSouCharacterS;
-	import zhanglubin.legend.game.sousou.character.LSouSouMember;
-	import zhanglubin.legend.game.sousou.map.smap.LSouSouCtrlMenuLayer;
-	import zhanglubin.legend.game.sousou.map.smap.LSouSouRound;
-	import zhanglubin.legend.game.sousou.map.smap.LSouSouSMapClick;
-	import zhanglubin.legend.game.sousou.map.smap.LSouSouSMapDraw;
-	import zhanglubin.legend.game.sousou.map.window.LSouSouWindwoTerrain;
-	import zhanglubin.legend.game.sousou.meff.LSouSouMeff;
-	import zhanglubin.legend.game.sousou.meff.LSouSouMeffShow;
-	import zhanglubin.legend.game.sousou.meff.LSouSouSkill;
-	import zhanglubin.legend.game.sousou.menu.LSouSouSMapMenu;
-	import zhanglubin.legend.game.sousou.object.LSouSouCalculate;
-	import zhanglubin.legend.game.sousou.object.LSouSouObject;
-	import zhanglubin.legend.game.sousou.object.LSouSouSMapMethod;
-	import zhanglubin.legend.game.sousou.script.LSouSouSMapScript;
-	import zhanglubin.legend.game.utils.Node;
-	import zhanglubin.legend.load.LLoading;
-	import zhanglubin.legend.objects.LAnimation;
-	import zhanglubin.legend.scripts.LScript;
-	import zhanglubin.legend.scripts.analysis.ScriptFunction;
-	import zhanglubin.legend.scripts.analysis.slg.sousou.ScriptSouSouSCharacter;
-	import zhanglubin.legend.text.LTextField;
-	import zhanglubin.legend.utils.LDisplay;
-	import zhanglubin.legend.utils.LFilter;
-	import zhanglubin.legend.utils.LGlobal;
-	import zhanglubin.legend.utils.LHitTest;
-	import zhanglubin.legend.utils.LImage;
-	import zhanglubin.legend.utils.LString;
-	import zhanglubin.legend.utils.math.LCoordinate;
+	import com.lufylegend.legend.components.LLabel;
+	import com.lufylegend.legend.display.LBitmap;
+	import com.lufylegend.legend.display.LButton;
+	import com.lufylegend.legend.display.LShape;
+	import com.lufylegend.legend.display.LSprite;
+	import com.lufylegend.legend.display.LURLLoader;
+	import com.lufylegend.legend.events.LEvent;
+	import com.lufylegend.legend.game.map.LMap;
+	import com.lufylegend.legend.game.sousou.character.LSouSouCharacter;
+	import com.lufylegend.legend.game.sousou.character.LSouSouCharacterR;
+	import com.lufylegend.legend.game.sousou.character.LSouSouCharacterS;
+	import com.lufylegend.legend.game.sousou.character.LSouSouMember;
+	import com.lufylegend.legend.game.sousou.map.smap.LSouSouCtrlMenuLayer;
+	import com.lufylegend.legend.game.sousou.map.smap.LSouSouRound;
+	import com.lufylegend.legend.game.sousou.map.smap.LSouSouSMapClick;
+	import com.lufylegend.legend.game.sousou.map.smap.LSouSouSMapDraw;
+	import com.lufylegend.legend.game.sousou.map.window.LSouSouWindwoTerrain;
+	import com.lufylegend.legend.game.sousou.meff.LSouSouMeff;
+	import com.lufylegend.legend.game.sousou.meff.LSouSouMeffShow;
+	import com.lufylegend.legend.game.sousou.meff.LSouSouSkill;
+	import com.lufylegend.legend.game.sousou.menu.LSouSouSMapMenu;
+	import com.lufylegend.legend.game.sousou.object.LSouSouCalculate;
+	import com.lufylegend.legend.game.sousou.object.LSouSouObject;
+	import com.lufylegend.legend.game.sousou.object.LSouSouSMapMethod;
+	import com.lufylegend.legend.game.sousou.script.LSouSouSMapScript;
+	import com.lufylegend.legend.game.utils.Node;
+	import com.lufylegend.legend.load.LLoading;
+	import com.lufylegend.legend.objects.LAnimation;
+	import com.lufylegend.legend.scripts.LScript;
+	import com.lufylegend.legend.scripts.analysis.ScriptFunction;
+	import com.lufylegend.legend.scripts.analysis.slg.sousou.ScriptSouSouSCharacter;
+	import com.lufylegend.legend.text.LTextField;
+	import com.lufylegend.legend.utils.LDisplay;
+	import com.lufylegend.legend.utils.LFilter;
+	import com.lufylegend.legend.utils.LGlobal;
+	import com.lufylegend.legend.utils.LHitTest;
+	import com.lufylegend.legend.utils.LImage;
+	import com.lufylegend.legend.utils.LString;
+	import com.lufylegend.legend.utils.math.LCoordinate;
 	
 	public class LSouSouSMap extends LMap
 	{

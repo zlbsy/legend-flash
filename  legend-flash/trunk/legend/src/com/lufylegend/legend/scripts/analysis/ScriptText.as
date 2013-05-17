@@ -1,16 +1,16 @@
-package zhanglubin.legend.scripts.analysis
+package com.lufylegend.legend.scripts.analysis
 {
 	import flash.events.TextEvent;
 	import flash.net.URLRequest;
 	import flash.xml.XMLDocument;
 	import flash.net.navigateToURL;
 	
-	import zhanglubin.legend.components.LLabel;
-	import zhanglubin.legend.display.LSprite;
-	import zhanglubin.legend.scripts.LScript;
-	import zhanglubin.legend.scripts.analysis.text.ScriptLabel;
-	import zhanglubin.legend.scripts.analysis.text.ScriptWind;
-	import zhanglubin.legend.utils.LGlobal;
+	import com.lufylegend.legend.components.LLabel;
+	import com.lufylegend.legend.display.LSprite;
+	import com.lufylegend.legend.scripts.LScript;
+	import com.lufylegend.legend.scripts.analysis.text.ScriptLabel;
+	import com.lufylegend.legend.scripts.analysis.text.ScriptWind;
+	import com.lufylegend.legend.utils.LGlobal;
 
 	public class ScriptText
 	{

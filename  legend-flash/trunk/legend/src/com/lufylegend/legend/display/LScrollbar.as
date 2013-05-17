@@ -1,12 +1,12 @@
-package zhanglubin.legend.display
+package com.lufylegend.legend.display
 {
 	import flash.display.DisplayObject;
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	import zhanglubin.legend.utils.LDisplay;
-	import zhanglubin.legend.utils.math.LCoordinate;
+	import com.lufylegend.legend.utils.LDisplay;
+	import com.lufylegend.legend.utils.math.LCoordinate;
 
 	public class LScrollbar extends LSprite
 	{

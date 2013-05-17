@@ -1,4 +1,4 @@
-package zhanglubin.legend.utils
+package com.lufylegend.legend.utils
 {
 	import flash.display.DisplayObject;
 	import flash.filters.ColorMatrixFilter;

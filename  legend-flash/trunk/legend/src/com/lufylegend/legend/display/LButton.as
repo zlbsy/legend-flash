@@ -1,4 +1,4 @@
-package zhanglubin.legend.display
+package com.lufylegend.legend.display
 {
 	import flash.display.BitmapData;
 	import flash.display.SimpleButton;
@@ -6,13 +6,13 @@ package zhanglubin.legend.display
 	
 	import mx.controls.Label;
 	
-	import zhanglubin.legend.components.LLabel;
-	import zhanglubin.legend.core.die.IDie;
-	import zhanglubin.legend.core.display.ISprite;
-	import zhanglubin.legend.core.events.IEventListener;
-	import zhanglubin.legend.text.LTextField;
-	import zhanglubin.legend.utils.LFilter;
-	import zhanglubin.legend.utils.math.LCoordinate;
+	import com.lufylegend.legend.components.LLabel;
+	import com.lufylegend.legend.core.die.IDie;
+	import com.lufylegend.legend.core.display.ISprite;
+	import com.lufylegend.legend.core.events.IEventListener;
+	import com.lufylegend.legend.text.LTextField;
+	import com.lufylegend.legend.utils.LFilter;
+	import com.lufylegend.legend.utils.math.LCoordinate;
 	
 	/**
 	 * legend按钮类

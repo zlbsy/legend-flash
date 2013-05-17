@@ -1,9 +1,9 @@
-package zhanglubin.legend.display
+package com.lufylegend.legend.display
 {
 	import flash.net.URLLoader;
 	
-	import zhanglubin.legend.core.die.IDie;
-	import zhanglubin.legend.core.events.IEventListener;
+	import com.lufylegend.legend.core.die.IDie;
+	import com.lufylegend.legend.core.events.IEventListener;
 
 	public class LURLLoader extends URLLoader implements IDie,IEventListener
 	{

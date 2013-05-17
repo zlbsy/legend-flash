@@ -1,6 +1,6 @@
-package zhanglubin.legend.game.sousou.character
+package com.lufylegend.legend.game.sousou.character
 {
-	import zhanglubin.legend.game.character.LCharacter;
+	import com.lufylegend.legend.game.character.LCharacter;
 
 	public class LSouSouCharacter extends LCharacter
 	{

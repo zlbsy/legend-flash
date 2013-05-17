@@ -1,9 +1,9 @@
-package zhanglubin.legend.objects
+package com.lufylegend.legend.objects
 {
 	import flash.events.Event;
 	
-	import zhanglubin.legend.display.LBitmap;
-	import zhanglubin.legend.display.LSprite;
+	import com.lufylegend.legend.display.LBitmap;
+	import com.lufylegend.legend.display.LSprite;
 	
 	public class LAnimationMovie extends LSprite
 	{

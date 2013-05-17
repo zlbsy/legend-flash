@@ -1,12 +1,12 @@
-package zhanglubin.legend.display
+package com.lufylegend.legend.display
 {
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 	
-	import zhanglubin.legend.base.BaseSprite;
-	import zhanglubin.legend.core.die.IDie;
-	import zhanglubin.legend.core.display.ISprite;
+	import com.lufylegend.legend.base.BaseSprite;
+	import com.lufylegend.legend.core.die.IDie;
+	import com.lufylegend.legend.core.display.ISprite;
 	
 	/**
 	 * legend显示类

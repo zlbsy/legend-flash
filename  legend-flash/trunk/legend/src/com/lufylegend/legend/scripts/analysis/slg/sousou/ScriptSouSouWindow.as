@@ -1,13 +1,13 @@
-package zhanglubin.legend.scripts.analysis.slg.sousou
+package com.lufylegend.legend.scripts.analysis.slg.sousou
 {
-	import zhanglubin.legend.game.sousou.map.LSouSouWindow;
-	import zhanglubin.legend.game.sousou.map.window.LSouSouWindwoArchive;
-	import zhanglubin.legend.game.sousou.map.window.LSouSouWindwoCondition;
-	import zhanglubin.legend.game.sousou.map.window.LSouSouWindwoShop;
-	import zhanglubin.legend.game.sousou.map.window.LSouSouWindwoSupport;
-	import zhanglubin.legend.game.sousou.map.window.LSouSouWindwoSystem;
-	import zhanglubin.legend.game.sousou.object.LSouSouObject;
-	import zhanglubin.legend.utils.LGlobal;
+	import com.lufylegend.legend.game.sousou.map.LSouSouWindow;
+	import com.lufylegend.legend.game.sousou.map.window.LSouSouWindwoArchive;
+	import com.lufylegend.legend.game.sousou.map.window.LSouSouWindwoCondition;
+	import com.lufylegend.legend.game.sousou.map.window.LSouSouWindwoShop;
+	import com.lufylegend.legend.game.sousou.map.window.LSouSouWindwoSupport;
+	import com.lufylegend.legend.game.sousou.map.window.LSouSouWindwoSystem;
+	import com.lufylegend.legend.game.sousou.object.LSouSouObject;
+	import com.lufylegend.legend.utils.LGlobal;
 
 	public class ScriptSouSouWindow
 	{

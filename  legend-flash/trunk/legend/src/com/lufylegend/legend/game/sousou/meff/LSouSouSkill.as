@@ -1,15 +1,15 @@
-package zhanglubin.legend.game.sousou.meff
+package com.lufylegend.legend.game.sousou.meff
 {
 	import flash.display.BitmapData;
 	
-	import zhanglubin.legend.display.LBitmap;
-	import zhanglubin.legend.events.LEvent;
-	import zhanglubin.legend.game.sousou.character.LSouSouCharacterS;
-	import zhanglubin.legend.game.sousou.object.LSouSouCalculate;
-	import zhanglubin.legend.game.sousou.object.LSouSouObject;
-	import zhanglubin.legend.objects.LAnimation;
-	import zhanglubin.legend.utils.LGlobal;
-	import zhanglubin.legend.utils.LImage;
+	import com.lufylegend.legend.display.LBitmap;
+	import com.lufylegend.legend.events.LEvent;
+	import com.lufylegend.legend.game.sousou.character.LSouSouCharacterS;
+	import com.lufylegend.legend.game.sousou.object.LSouSouCalculate;
+	import com.lufylegend.legend.game.sousou.object.LSouSouObject;
+	import com.lufylegend.legend.objects.LAnimation;
+	import com.lufylegend.legend.utils.LGlobal;
+	import com.lufylegend.legend.utils.LImage;
 
 	public class LSouSouSkill extends LBitmap
 	{

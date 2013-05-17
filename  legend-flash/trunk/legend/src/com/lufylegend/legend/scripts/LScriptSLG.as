@@ -1,7 +1,7 @@
-package zhanglubin.legend.scripts
+package com.lufylegend.legend.scripts
 {
-	import zhanglubin.legend.display.LSprite;
-	import zhanglubin.legend.scripts.analysis.slg.sousou.*;
+	import com.lufylegend.legend.display.LSprite;
+	import com.lufylegend.legend.scripts.analysis.slg.sousou.*;
 
 	public class LScriptSLG extends LScript
 	{

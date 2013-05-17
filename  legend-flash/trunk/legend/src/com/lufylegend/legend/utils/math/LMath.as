@@ -1,4 +1,4 @@
-package zhanglubin.legend.utils.math
+package com.lufylegend.legend.utils.math
 {
 	import flash.display.Bitmap;
 	import flash.display.DisplayObject;

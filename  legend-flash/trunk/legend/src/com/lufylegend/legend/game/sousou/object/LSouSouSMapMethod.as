@@ -1,10 +1,10 @@
-package zhanglubin.legend.game.sousou.object
+package com.lufylegend.legend.game.sousou.object
 {
-	import zhanglubin.legend.game.sousou.character.LSouSouCharacterS;
-	import zhanglubin.legend.game.sousou.script.LSouSouSMapScript;
-	import zhanglubin.legend.scripts.analysis.ScriptFunction;
-	import zhanglubin.legend.utils.LGlobal;
-	import zhanglubin.legend.utils.math.LCoordinate;
+	import com.lufylegend.legend.game.sousou.character.LSouSouCharacterS;
+	import com.lufylegend.legend.game.sousou.script.LSouSouSMapScript;
+	import com.lufylegend.legend.scripts.analysis.ScriptFunction;
+	import com.lufylegend.legend.utils.LGlobal;
+	import com.lufylegend.legend.utils.math.LCoordinate;
 
 	public class LSouSouSMapMethod
 	{

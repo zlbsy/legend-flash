@@ -1,6 +1,6 @@
-package zhanglubin.legend.game.utils
+package com.lufylegend.legend.game.utils
 {
-	import zhanglubin.legend.utils.math.LCoordinate;
+	import com.lufylegend.legend.utils.math.LCoordinate;
 
 	public class LStarQuery
 	{

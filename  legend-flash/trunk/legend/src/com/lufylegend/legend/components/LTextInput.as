@@ -1,8 +1,8 @@
-package zhanglubin.legend.components
+package com.lufylegend.legend.components
 {
 	import flash.text.TextFieldType;
 	
-	import zhanglubin.legend.text.LTextField;
+	import com.lufylegend.legend.text.LTextField;
 
 	public class LTextInput extends LTextField
 	{

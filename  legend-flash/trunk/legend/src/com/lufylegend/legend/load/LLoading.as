@@ -1,6 +1,6 @@
-package zhanglubin.legend.load
+package com.lufylegend.legend.load
 {
-	import zhanglubin.legend.display.LSprite;
+	import com.lufylegend.legend.display.LSprite;
 
 	public class LLoading extends LSprite
 	{

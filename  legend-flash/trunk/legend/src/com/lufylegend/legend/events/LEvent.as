@@ -1,4 +1,4 @@
-package zhanglubin.legend.events
+package com.lufylegend.legend.events
 {
 	import flash.events.Event;
 

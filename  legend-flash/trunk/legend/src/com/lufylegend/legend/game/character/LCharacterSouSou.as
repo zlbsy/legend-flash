@@ -1,4 +1,4 @@
-package zhanglubin.legend.game.character
+package com.lufylegend.legend.game.character
 {
 	public class LCharacterSouSou extends LCharacter
 	{

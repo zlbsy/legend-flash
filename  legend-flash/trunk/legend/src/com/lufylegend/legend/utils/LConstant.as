@@ -1,4 +1,4 @@
-package zhanglubin.legend.utils
+package com.lufylegend.legend.utils
 {
 	public class LConstant
 	{

@@ -1,11 +1,11 @@
-package zhanglubin.legend.objects
+package com.lufylegend.legend.objects
 {
 	import flash.display.BitmapData;
 	import flash.events.EventDispatcher;
 	
-	import zhanglubin.legend.events.LEvent;
-	import zhanglubin.legend.core.die.IDie;
-	import zhanglubin.legend.core.events.IEventListener;
+	import com.lufylegend.legend.events.LEvent;
+	import com.lufylegend.legend.core.die.IDie;
+	import com.lufylegend.legend.core.events.IEventListener;
 	
 	public class LAnimation extends EventDispatcher implements IDie,IEventListener
 	{

@@ -1,11 +1,11 @@
-package zhanglubin.legend.display
+package com.lufylegend.legend.display
 {
 	import flash.display.BitmapData;
 	import flash.events.Event;
 	import flash.system.LoaderContext;
 	import flash.utils.ByteArray;
 	
-	import zhanglubin.legend.events.LEvent;
+	import com.lufylegend.legend.events.LEvent;
 	
 	/**
 	 * legend的图片加载类继承自BaseLoader
